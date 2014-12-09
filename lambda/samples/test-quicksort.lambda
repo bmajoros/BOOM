@@ -1,0 +1,27 @@
+
+(load "rand-real-array.lambda")
+(load "quicksort.lambda");
+
+(define 'reload [|(load "test-quicksort.lambda")])
+
+(define 'trial
+  [|
+    (define 'my-array (rand-real-array 100))
+    (if (is-sorted? my-array < =)
+      [|(print "already sorted\n")]
+      [|(print "not sorted\n")]
+    )
+    (print "sorting...")
+    (sort-array my-array < =)
+    (print "done\n")
+    (if (is-sorted? my-array < =)
+      [|(print "sorted correctly\n")]
+      [|(print "still not sorted!!!!\n")]
+    )
+  ]
+)
+
+
+
+
+

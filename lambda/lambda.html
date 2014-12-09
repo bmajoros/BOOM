@@ -1,0 +1,231 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.51C-Caldera [en] (X11; I; Linux 2.2.5 i686) [Netscape]">
+</head>
+<body>
+
+<center>
+<h1>
+Lambda Reference</h1></center>
+
+<center><i>Bill Majoros</i></center>
+
+<p><br>
+<h2>
+Introduction</h2>
+This is a brief reference for the language <i>lambda</i>, which is an implementation
+of the <i>lambda calculus</i>.&nbsp; The lambda calculus is an abstract
+language consisting of only three constructs: lambda expressions (lambda
+(x) &lt;expr>), function calls (&lt;f> &lt;x>), and atoms, which are variables
+and literals.
+<p>The lambda calculus is normally just used in programming textbooks to
+teach abstract concepts of programming languages and interpreters.&nbsp;
+However, lambda, which is the basis for LISP and Scheme, can be implemented
+to act as a real programming language, which, given a suitable set of primitives,
+can support arbitrary computation.
+<p>The advantage of lambda is that it has such a simple and consistent
+syntax that it is relatively easy to implement an intrepter for it.&nbsp;
+Because it is Turing-complete, it can easily be used for Genetic Programming,
+a form of Genetic Algorithms used for evolving algorithms.&nbsp; The present
+implementation of the language is written in C++, and provides an API for
+C++ programs to communicate with lambda, so that Genetic Programming can
+now be done in an efficient language like C++, while still evolving LISP-like
+expressions.
+<p>
+<hr WIDTH="100%">
+<h2>
+Identifiers</h2>
+An identifier can be any sequences of letters, digits, ?, -, and possibly
+other characters (I don't remember at the moment).
+<p>
+<hr WIDTH="100%">
+<h2>
+Literals</h2>
+<b>1. Character Literals</b>
+<p>#a is the character a.&nbsp; #\n is the newline.&nbsp; You can also
+use #\r, #\t, #\\, #', and #".
+<p><b>2. Numeric literals</b>
+<p>An integer is something like 123 or -123.&nbsp; A real number is something
+like 3.14.
+<p><b>3. String literals</b>
+<p>A string literal is something like "Hello, world."
+<p><b>4. Symbols</b>
+<p>A symbol literal is something like 'x.&nbsp; A symbol is not a variable;
+it does not stand for something.&nbsp; It just stands for itself.&nbsp;
+However, if you (define 'x 6), because of the semantics of the define function,
+the variable x (not the symbol, 'x) will come to be bound to 6.&nbsp; But
+the symbol 'x is still just the symbol 'x, and stands for nothing but itself.
+<p>
+<hr WIDTH="100%">
+<h2>
+Lambda Expressions</h2>
+A lambda expression is a function literal.&nbsp; Such a function literal
+is a <i>first-class object</i>, because it can be stored in data structures
+and executed later.&nbsp; A lambda expression can occur anywhere in a program
+that any other literal can occur.
+<p>A lambda expression is denoted by a set of square brackets containing
+a parameter list, followed by a vertical bar (|), followed by the function
+body, which may consist of one or more expressions.&nbsp; The last expression
+is the value returned by the function.&nbsp; All the expressions are evaluated
+left-to-right, so this feature can be use to execute statements sequentially.
+<p>For example, this line:
+<br>&nbsp;&nbsp; [x y z | (print x) (print y) (print z)]
+<br>will print x, followed by y, followed by z.
+<p>
+<hr WIDTH="100%">
+<h2>
+If-Then-Else</h2>
+Lambda has no built-in if-then-else construct, but it is easy to get the
+same functionality using lambda expressions.
+<p>The pre-defined <i>if</i> function takes 3 arguments.&nbsp; It evaluates
+the first, and if it evaluates to true, it executes the second parameter,
+otherwise the third.&nbsp; For example:
+<p>(if (&lt; x 10) [|(print "less than ten")] [|(print "not less than ten")]
+<p>First, the (&lt; x 10) is evaluated.&nbsp; The <i>then</i> and
+<i>else</i>
+parts are not immediately executed, because they occur inside lambda constructs.&nbsp;
+They will be wrapped in closures and passed as first-class objects into
+the <i>if</i> function as its second and third parameters.&nbsp; The appropriate
+clause (<i>then</i> or <i>else</i>) will be called by <i>if</i> (with no
+arguments) depending on the value of the first argument.
+<p>
+<hr WIDTH="100%">
+<h2>
+True and False</h2>
+True and false are not built into the lambda language, so it uses 1 to
+denote true and <i>nil</i> to denote false.&nbsp; However, two predefined
+variables, <i>true</i> and <i>false</i>, are bound to these values, so
+that they may be used in your programs.
+<p>
+<hr WIDTH="100%">
+<h2>
+nil</h2>
+
+<p><br>The value <i>nil</i> represents the absence of an object.&nbsp;
+It is equivalent to NULL in C++ and nil in Smalltalk.
+<p>
+<hr WIDTH="100%">
+<h2>
+Function Invocation</h2>
+A function is invoked by listing the function followed by its arguments
+within parentheses:
+<p>(f x y z)
+<p>This will call the function currently bound to f, passing in the values
+currently bound to x, y, and z as it arguments.
+<p>
+<hr WIDTH="100%">
+<h2>
+Equality</h2>
+Two distinct objects may have the same value, but they are still two different
+objects.&nbsp; Thus, if you compare 6 and 6 using the = function, as in
+(= 6 6), the value will be true.&nbsp; However, if you execute (eq? 6 6),
+the value will be false, because both instances of '6' will evaluate to
+a new 6 object, and those objects have different addresses.&nbsp; Thus,
+eq? compares addresses of objects, and evaluates to true only when both
+of its arguments evaluate to the address of one object.
+<p>
+<hr WIDTH="100%">
+<h2>
+Lists</h2>
+One of the few built-in types in lambda is the <i>cons cell</i>, also called
+a <i>dotted pair</i>.&nbsp; A cons cell is an ordered pair of object pointers.&nbsp;
+It is denoted in print by (a . b), but this is not legal lambda syntax,
+so you may not use this in a lambda program.&nbsp; To create a cons cell
+containing objects <i>a </i>and <i>b</i>, use (cons a b).
+<p>A list can easily be constructed by creating a series of cons cells,
+where the first element of each pair points to an object to be stored in
+the list, and the second element of the pair points to the next pair in
+the list.&nbsp; The second element of the very last pair in the sequence
+should be nil, to terminate the list.&nbsp; When a sequence of cons cells
+are set up in this way, the result is referred to as a list, but when a
+cons cell has something other than a another cons cell as its second element,
+it is instead referred to as an <i>improper list</i>.&nbsp; An improper
+list may have a sequence of cons cells but be terminated by something other
+than nil.&nbsp; Only when the last cell is terminated by nil is it called
+a true list.
+<p>For example, this is a list:&nbsp;(cons 1 (cons 2 (const 3 nil))).&nbsp;
+It contains the numbers 1, 2, and 3.&nbsp; However, this is an improper
+list:&nbsp;(cons 1 2), and so is this: (cons 1 (cons 2 3)).
+<p>
+<hr WIDTH="100%">
+<h2>
+Comments</h2>
+A comment begins with a semicolon and extends to the end of the line.
+<p>
+<hr WIDTH="100%">
+<h2>
+Built-in Functions and Objects</h2>
+<font size=+1>(print x) ; prints x to standard out</font>
+<br><font size=+1>(if x y z) ; if x evaluates to non-nil, evaluates and
+returns y, else z</font>
+<br><font size=+1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(note that y and z must be enclosed in lambda constructs)</font>
+<br><font size=+1>nil ; no object = false = a NULL pointer</font>
+<br><font size=+1>true ; evaluates to 1</font>
+<br><font size=+1>false ; evaluates to nil</font>
+<br><font size=+1>(cons x y) ; returns a list just like y, but with x at
+the front</font>
+<br><font size=+1>(car x) ; returns the first element in list x</font>
+<br><font size=+1>(cdr x) ; returns the sublist of x starting with the
+second element</font>
+<br><font size=+1>(+ x y) ; addition</font>
+<br><font size=+1>(- x y) ; subtraction</font>
+<br><font size=+1>(* x y) ; multiplication</font>
+<br><font size=+1>(/ x y) ; division</font>
+<br><font size=+1>(% x y) ; modulus (integer remainder)</font>
+<br><font size=+1>(define 'x y) ; binds variable x to whatever y evaluates
+to</font>
+<br><font size=+1>(&lt; x y) ; less than</font>
+<br><font size=+1>(&lt;= x y) ; less than or equal to</font>
+<br><font size=+1>(> x y) ; greater than</font>
+<br><font size=+1>(>= x y) ; greater than or equal to</font>
+<br><font size=+1>(= x y) ; converts x and y to real numbers and then tests
+for equality</font>
+<br><font size=+1>(!= x y) ; not equal (for real numbers)</font>
+<br><font size=+1>(load filename) ; loads a file with name&nbsp; given
+by string arg filename</font>
+<br><font size=+1>(eq? x y) ; tests if x and y evaluate to <i>the same
+object</i></font>
+<br><font size=+1>(nil? x) ; tests whether x evalutes to nil</font>
+<br><font size=+1>(list? x) ; tests whether x is a true list (i.e., a sequence
+of cons cells)</font>
+<br><font size=+1>(is-cons-cell? x) ; tests whether x is a cons cell</font>
+<br><font size=+1>(sin x) ; returns the sin of x</font>
+<br><font size=+1>(cos x) ; cosine of x</font>
+<br><font size=+1>(sqrt x) ; square root of x</font>
+<br><font size=+1>(acos x) ; inverse cosine of x</font>
+<br><font size=+1>(asin x) ; inverse sin of x</font>
+<br><font size=+1>(atan2 x y) ; inverse tangent of y/x (using sign of x
+and y to determine quadrant)</font>
+<br><font size=+1>(exp x) ; e (the Euler number)&nbsp;to the power x</font>
+<br><font size=+1>(log x) ; natural logarithm (i.e., base e) of x</font>
+<br><font size=+1>(log10 x) ; log base 10 of x</font>
+<br><font size=+1>(pow x y) ; x to the y</font>
+<br><font size=+1>(ceil x) ; round x up to nearest integer</font>
+<br><font size=+1>(floor x) ; round x down to nearest integer</font>
+<br><font size=+1>(fabs x) ; absolute value of real value</font>
+<br><font size=+1>(abs x) ; absolute value of integer (returns integer)</font>
+<br><font size=+1>(make-vector x) ; returns a new vector containing x elements
+(all nil)</font>
+<br><font size=+1>(vector? x) ; tests whether x evalutes to a vector</font>
+<br><font size=+1>(vector-ref v i) ; returns element i of vector v (zero-based)</font>
+<br><font size=+1>(vector-set v i x) ; stores x at location i in vector
+v (zero based)</font>
+<br><font size=+1>(vector-length v) ; returns length of vector v</font>
+<br><font size=+1>(vector-to-list v) ; returns a list containing the elements
+of v</font>
+<br><font size=+1>(list-to-vector x) ; returns a vector containing the
+elements of list x</font>
+<br><font size=+1>(set-local 'lp x) ; stores x at lexical position lp in
+innermost scope (advanced)</font>
+<br><font size=+1>(set-enclosing d p x) ; stores x at lexical address (:
+d p) (advanced)</font>
+<br><font size=+1>(random-real)&nbsp; ; random real between 0 and 1</font>
+<br><font size=+1>(random-int x) ; random integer between 0 and x-1, inclusive</font>
+<br><font size=+1>(protected-div x y) ; divides x by y, returning x if
+y is zero</font>
+<br>&nbsp;
+</body>
+</html>

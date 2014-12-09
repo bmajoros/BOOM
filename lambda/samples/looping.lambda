@@ -1,0 +1,96 @@
+;; ===================================
+;; looping.lambda
+;; Tail-recursive looping constructs
+;; (i.e., should be pretty efficient)
+;;
+;; B. Majoros, 6/97
+;; ===================================
+
+;; (do n [| ... ])
+(define 'do
+  [n f|
+    (if (= n 0)
+      [|nil]
+      [|
+        (f) 
+        (do (- n 1) f) ;; tail-recursive
+      ]
+    )
+  ]
+)
+
+
+
+;; (for-up-to 1 100 [i| (print i)])
+(define 'for-up-to
+  [from to f|
+    (if (> from to)
+      [|nil]
+      [|
+        (f from)
+        (for-up-to (+ from 1) to f) ;; tail-recursive
+      ]
+    )
+  ]
+)
+
+
+
+;; (for-down-to 100 1 [i| (print i)])
+(define 'for-down-to
+  [from to f|
+    (if (< from to)
+      [|nil]
+      [|
+        (f from)
+        (for-down-to (- from 1) to f) ;; tail-recursive
+      ]
+    )
+  ]
+)
+
+
+
+;; (list-foreach list [elem|(print elem)])
+(define 'list-foreach
+  [list f|
+    (if (nil? list)
+      [|nil]
+      [|
+        (f (car list))
+        (list-foreach (cdr list) f) ;; tail-recursive
+      ]
+    )
+  ]
+)
+
+
+
+;; (array-foreach array [elem|(print elem)])
+(define 'array-foreach
+  [array f|
+    (array-foreach-i 
+      array 
+      f 
+      0
+      (vector-length array)
+    )
+  ]
+)
+
+
+
+(define 'array-foreach-i
+  [array f i len|
+    (if (= i len)
+      [|nil]
+      [|
+        (f (vector-ref array i))
+        (array-foreach-i array f (+ i 1) len) ;; tail-recursive
+      ]
+    )
+  ]
+)
+
+
+

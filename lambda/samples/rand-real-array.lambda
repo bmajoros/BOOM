@@ -1,0 +1,26 @@
+;; ===============================================
+;; rand-real-array.lambda
+;;
+;; For generating an array of random real numbers
+;; between 0 and 1
+;;
+;; B. Majoros, 6/97
+;; ===============================================
+
+
+(define 'rand-real-array 
+  [len|
+    (init-rand-real-array (make-vector len) (- len 1))
+  ]
+)
+(define 'init-rand-real-array
+  [array index|
+    (if (< index 0)
+      [|array]
+      [|
+        (vector-set array index (random-real))
+        (init-rand-real-array array (- index 1))
+      ]
+    )
+  ]
+)

@@ -1,0 +1,163 @@
+;; ==============================
+;; quicksort.lambda
+;; 
+;; B. Majoros, 6/97
+;; ==============================
+
+(load "logic.lambda")
+
+;; ************************************************
+;;        verifying that an array is sorted
+;; ************************************************
+
+(define 'is-sorted?
+  [array less? equal?|
+    (is-sorted-rec? 
+      array 
+      less?
+      equal?
+      (- (vector-length array) 1)
+    )
+  ]
+)
+
+
+(define 'is-sorted-rec?
+  [array less? equal? index|
+    (if (<= index 0)
+      [|true]
+      [|
+        ([index-1|;;let*
+           ([a b|;;let*
+              (if (or (less? a b) (equal? a b))
+                [|(is-sorted-rec? array less? equal? index-1)]
+                [|false]
+              )
+            ]
+            (vector-ref array index-1)
+            (vector-ref array index)
+           )
+         ]
+         (- index 1)
+        )
+      ]
+    )
+  ]
+)
+
+
+
+;; ************************************************
+;;                sorting an array
+;; ************************************************
+
+(define 'sort-array
+  [array less? equal?|
+    (array-quicksort
+      array
+      0
+      (- (vector-length array) 1)
+      less?
+      equal?
+    )
+  ]
+)
+
+
+(define 'array-quicksort 
+  [A p r less? equal?|
+    (if (< p r)
+      [|
+        ([x| ;;let*
+           ([q| ;;let*
+              (array-quicksort A p q less? equal?)
+              (array-quicksort A (+ q 1) r less? equal?)            
+            ]
+            (array-partition A p r x less? equal?)
+           )
+         ]
+         (vector-ref A p)
+        )
+      ]
+      [|A]
+    )
+  ]
+)
+
+
+
+(define 'array-partition
+  [A p r x less? equal?|
+    ([i j| ;;let*
+       ([new-j| ;;let*
+          ([new-i| ;;let*
+            (if (< new-i new-j)
+              [|
+                (array-part-swap A new-i new-j)
+	        (array-partition 
+                  A (+ new-i 1) (- new-j 1) x less? equal?
+                )
+	      ]
+	      [|new-j]
+	    )
+           ]
+           (array-part-move-p A i new-j x less? equal?)
+          )
+        ]
+        (array-part-move-r A i j x less? equal?)
+       )
+     ]
+     (- p 1)
+     (+ r 1)
+    )
+  ]
+)
+
+
+(define 'array-part-swap
+  [A p r|
+    ([p-item r-item| ;;let
+       (vector-set A p r-item)
+       (vector-set A r p-item)
+     ]
+     (vector-ref A p)
+     (vector-ref A r)
+    )
+  ]
+)
+
+
+(define 'array-part-move-p
+  [A p  r x less? equal?|
+    ([new-p| ;;let*
+       ([p-item| ;;let*
+          (if (less? p-item x)
+            [|(array-part-move-p A new-p r x less? equal?)]
+            [|new-p]
+          )
+        ]
+        (vector-ref A new-p)
+       )
+     ]
+     (+ p 1)
+    )
+  ]
+)
+
+(define 'array-part-move-r
+  [A p r x less? equal?|
+    ([new-r| ;;let*
+       ([r-item| ;;let*
+          (if (or (less? r-item x) (equal? r-item x))
+            [|new-r]
+            [|(array-part-move-r A p new-r x less? equal?)]
+          )
+        ]
+        (vector-ref A new-r)
+       )
+     ]
+     (- r 1)
+    )
+  ]
+)
+

@@ -1,0 +1,57 @@
+;; ===================================
+;; some routines associated with lists
+;;
+;; B. Majoros, 6/97
+;; ===================================
+
+
+(define 'make-empty-list
+   [|nil]
+)
+
+
+;; for making a single-element list
+(define 'make-singleton-list
+   [elem|(cons elem nil)]
+)
+
+
+;; for making a list with more than one element
+(define 'make-nonsingleton-list
+   [list|list]
+)
+
+
+(define 'list-length
+   [list|(list-length-plus list 0)]
+)
+(define 'list-length-plus
+   [list n|
+      (if (nil? list)
+         [|n]
+         [|(list-length-plus (cdr list) (+ n 1))]
+      )
+   ]
+)
+
+
+;; for performing substitution of *equal* objects
+;; in a list
+(define 'list-replace
+   [list old new|
+      (if (nil? list)
+         [|nil]
+         [|
+            (cons
+               (if (eq? (car list) old)
+                  [|new]
+                  [|(car list)]
+               )
+               (list-replace (cdr list) old new)
+            )
+         ]
+      )
+   ]
+)
+
+

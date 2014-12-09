@@ -1,0 +1,38 @@
+
+;;=============================
+;; logic functions
+;;
+;; B. Majoros, 6/97
+;;=============================
+
+
+
+(define 'and
+   [a b|
+      (if a
+         [|(if b [|true] [|false])]
+         [|false]
+      )
+   ]
+)
+
+
+
+(define 'or
+   [a b|
+      (if a
+         [|true]
+         [|(if b [|true] [|false])]
+      )
+   ]
+)
+
+
+(define 'not
+   [b|
+      (if b
+         [|false]
+         [|true]
+      )
+   ]
+)
