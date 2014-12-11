@@ -9,7 +9,7 @@ OBJ		= obj
 AR		= ar -s
 GSL		= GSL
 
-all:	libBOOM.a lambda/liblambda.a GSL/BOOM lambda/BOOM
+all:	GSL/BOOM lambda/BOOM libBOOM.a lambda/liblambda.a 
 
 GSL/BOOM:
 	cd GSL ; ln -s .. BOOM

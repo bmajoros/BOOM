@@ -74,6 +74,7 @@ inline double safeAdd(double a,double b,double c,double d)
   return a+b+c+d;
 }
 
+#ifdef feenableexcept 
 inline void catchFloatOverflow()
 {
   feenableexcept(FE_OVERFLOW);
@@ -83,6 +84,7 @@ inline bool didOverflow()
 {
   return fetestexcept(FE_OVERFLOW);
 }
+#endif
 
 inline setPrecision(ostream &os,int d)
 {
