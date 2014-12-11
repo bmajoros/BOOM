@@ -10,6 +10,7 @@
 #include "ConsCell.H"
 #include <iostream>
 #include <time.h>
+#include <string.h>
 #include "globals.H"
 using namespace std;
 using namespace BOOM;

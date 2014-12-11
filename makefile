@@ -9,7 +9,13 @@ OBJ		= obj
 AR		= ar -s
 GSL		= GSL
 
-all:	libBOOM.a lambda/liblambda.a
+all:	libBOOM.a lambda/liblambda.a GSL/BOOM lambda/BOOM
+
+GSL/BOOM:
+	cd GSL ; ln -s .. BOOM
+
+lambda/BOOM:
+	cd lambda ; ln -s .. BOOM
 
 lambda/liblambda.a:
 	cd lambda ; make liblambda.a
@@ -23,6 +29,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/SubsetEnumerator.o \
 	$(OBJ)/Math.o \
 	$(OBJ)/WigBinary.o \
 	$(OBJ)/FastcReader.o \
@@ -82,6 +89,9 @@ libBOOM.a:\
 	$(OBJ)/FastaWriter.o \
 	$(OBJ)/File.o \
 	$(OBJ)/FixedSizePriorityQueue.o \
+	$(OBJ)/GenericToken.o \
+	$(OBJ)/GenericTokenStream.o \
+	$(OBJ)/GenericScanner.o \
 	$(OBJ)/GaussJordan.o \
 	$(OBJ)/GffExon.o \
 	$(OBJ)/GffFeature.o \
@@ -141,6 +151,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/SubsetEnumerator.o \
 	$(OBJ)/Math.o \
 	$(OBJ)/WigBinary.o \
 	$(OBJ)/FastcReader.o \
@@ -153,6 +164,9 @@ libBOOM.a:\
 	$(OBJ)/BandedMatrix3D.o \
 	$(OBJ)/TopologicalSort.o \
 	$(OBJ)/Poset.o \
+	$(OBJ)/GenericToken.o \
+	$(OBJ)/GenericTokenStream.o \
+	$(OBJ)/GenericScanner.o \
 	$(OBJ)/HigherOrderAlphabet.o \
 	$(OBJ)/IndexMap.o \
 	$(OBJ)/GammaDistribution.o \
@@ -1125,4 +1139,32 @@ $(OBJ)/HashTable.o:\
 		HashTable.H
 	$(CC) $(CFLAGS) -o $(OBJ)/HashTable.o -c \
 		HashTable.C
+#---------------------------------------------
+$(OBJ)/GenericToken.o:\
+		GenericToken.C\
+		GenericToken.H
+	$(CC) $(CFLAGS) -o $(OBJ)/GenericToken.o -c \
+		GenericToken.C
 #---------------------------------------------------------
+$(OBJ)/GenericScanner.o:\
+		GenericScanner.C\
+		GenericScanner.H
+	$(CC) $(CFLAGS) -o $(OBJ)/GenericScanner.o -c \
+		GenericScanner.C
+#---------------------------------------------------------
+$(OBJ)/GenericTokenStream.o:\
+		GenericTokenStream.C\
+		GenericTokenStream.H
+	$(CC) $(CFLAGS) -o $(OBJ)/GenericTokenStream.o -c \
+		GenericTokenStream.C
+#---------------------------------------------------------
+$(OBJ)/SubsetEnumerator.o:\
+		SubsetEnumerator.C\
+		SubsetEnumerator.H
+	$(CC) $(CFLAGS) -o $(OBJ)/SubsetEnumerator.o -c \
+		SubsetEnumerator.C
+#---------------------------------------------------------
+
+
+
+

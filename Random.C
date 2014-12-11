@@ -10,8 +10,8 @@
 #include <limits.h>
 #include <iostream>
 #include "Random.H"
-#include "BOOM/GSL/Random.H"
-#include "BOOM/Constants.H"
+#include "GSL/Random.H"
+#include "Constants.H"
 using namespace std;
 using namespace BOOM;
 

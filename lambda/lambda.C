@@ -8,6 +8,7 @@
 #include <sstream>
 #include <fstream>
 #include <math.h>
+#include <string.h>
 #include "BOOM/Random.H"
 #include "lambda.H"
 #include "Parser.H"

@@ -98,6 +98,7 @@ public:
   virtual ~StringMap();
   T &lookup(const char *,int index,int len);
   T &lookup(const char *,int len);
+  T &lookup(const String &);
   bool isDefined(const char *,int index,int len);
   bool isDefined(const char *,int len);
   int size();
@@ -253,6 +254,14 @@ template<class T>
 T &BOOM::StringMap<T>::lookup(const char *p,int len)
 {
   return lookup(p,0,len);
+}
+
+
+
+template<class T>
+T &BOOM::StringMap<T>::lookup(const String &S)
+{
+  return lookup(S.c_str(),0,S.length());
 }
 
 

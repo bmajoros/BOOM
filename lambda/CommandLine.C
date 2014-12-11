@@ -7,6 +7,7 @@
 */
 #include "CommandLine.H"
 #include <sstream>
+#include <string.h>
 #include "LambdaException.H"
 
 using namespace std;

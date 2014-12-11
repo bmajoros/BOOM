@@ -5,6 +5,8 @@
  License (GPL) version 3, as described at www.opensource.org.
 */
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include "linked.H"
 using namespace std;
 using namespace Lambda;

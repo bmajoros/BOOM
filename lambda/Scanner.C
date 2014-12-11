@@ -7,6 +7,7 @@
 */
 #include "Scanner.H"
 #include <ctype.h>
+#include <stdio.h>
 #include "LambdaException.H"
 #include "BOOM/ElasVector.H"
 using namespace BOOM;
