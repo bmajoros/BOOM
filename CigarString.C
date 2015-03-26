@@ -10,7 +10,7 @@
 using namespace std;
 using namespace BOOM;
 
-Regex CigarString::re("^(\\d+)(\\S)(.*)");
+Regex CigarString::re("^(\\d+)(\\D)(.*)");
 
 
 ostream &BOOM::operator<<(ostream &os,const CigarOpType &t)
