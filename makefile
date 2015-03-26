@@ -29,6 +29,8 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/CigarAlignment.o \
+	$(OBJ)/CigarString.o \
 	$(OBJ)/SubsetEnumerator.o \
 	$(OBJ)/Math.o \
 	$(OBJ)/WigBinary.o \
@@ -151,6 +153,8 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/CigarAlignment.o \
+	$(OBJ)/CigarString.o \
 	$(OBJ)/SubsetEnumerator.o \
 	$(OBJ)/Math.o \
 	$(OBJ)/WigBinary.o \
@@ -1163,8 +1167,16 @@ $(OBJ)/SubsetEnumerator.o:\
 		SubsetEnumerator.H
 	$(CC) $(CFLAGS) -o $(OBJ)/SubsetEnumerator.o -c \
 		SubsetEnumerator.C
+#--------------------------------------------------------
+$(OBJ)/CigarString.o:\
+		CigarString.C\
+		CigarString.H
+	$(CC) $(CFLAGS) -o $(OBJ)/CigarString.o -c \
+		CigarString.C
+#--------------------------------------------------------
+$(OBJ)/CigarAlignment.o:\
+		CigarAlignment.C\
+		CigarAlignment.H
+	$(CC) $(CFLAGS) -o $(OBJ)/CigarAlignment.o -c \
+		CigarAlignment.C
 #---------------------------------------------------------
-
-
-
-
