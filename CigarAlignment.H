@@ -18,6 +18,7 @@ public:
   CigarAlignment(int length);
   int &operator[](int);
   CigarAlignment *invert(int length);
+  int length() const;
 private:
   Array1D<int> A;
 };

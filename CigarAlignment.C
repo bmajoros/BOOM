@@ -37,3 +37,10 @@ CigarAlignment *CigarAlignment::invert(int length)
 }
 
 
+
+int CigarAlignment::length() const
+{
+  return A.size();
+}
+
+

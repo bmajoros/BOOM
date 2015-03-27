@@ -126,7 +126,7 @@ CigarAlignment *CigarString::getAlignment()
   for(const Vector<CigarOp>::iterator cur=ops.begin(), end=ops.end() ; 
       cur!=end ; ++cur) {
     CigarOp op=*cur;
-    if(op.type!=CIGAR_INSERT) ++len;
+    if(op.type!=CIGAR_INSERT) len+=op.rep;
   }
   CigarAlignment &A=*new CigarAlignment(len);
   int fromPos=0, toPos=0;
@@ -140,6 +140,9 @@ CigarAlignment *CigarString::getAlignment()
 	break;
       case CIGAR_DELETE:
 	for(int i=0 ; i<op.rep ; ++i) A[fromPos++]=CIGAR_UNDEFINED;
+	break;
+      case CIGAR_INSERT:
+	toPos+=op.rep;
 	break;
       }
   }
