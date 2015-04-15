@@ -269,3 +269,37 @@ void Alignment::render(String &str1,String &str2)
 }
 
 
+char matchTypeToCigarLetter(MatchType m)
+{
+  switch(m)
+    {
+    case MATCH: return 'M';
+    case FIRST_UNMATCHED: return 'D';
+    case SECOND_UNMATCHED: return 'I';
+    default: INTERNAL_ERROR;
+    }
+}
+
+
+
+String Alignment::getCigarString() const
+{
+  int L=matchData.size();
+  if(L==0) return "";
+  String cigar;
+  int opLen=1;
+  MatchType matchType=matchData[0];
+  char op=matchTypeToCigarLetter(matchType);
+  for(int i=1 ; i<L ; ) {
+    while(matchData[i]==matchType && i<L) { ++opLen; ++i; }
+    cigar+=String(opLen); cigar+=String(op);
+    if(i<L) { 
+      matchType=matchData[i]; 
+      op=matchTypeToCigarLetter(matchType); 
+      opLen=1; 
+      ++i; }
+  }
+  return cigar;
+}
+
+

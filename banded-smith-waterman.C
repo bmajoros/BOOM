@@ -9,6 +9,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 #include <math.h>
 #include "CommandLine.H"
 #include "FastaReader.H"
@@ -65,13 +66,14 @@ Application::Application()
 int Application::main(int argc,char *argv[])
   {
     // Process command line
-    CommandLine cmd(argc,argv,"qn:w:r:");
+    CommandLine cmd(argc,argv,"qn:w:r:c:");
     if(cmd.numArgs()!=7)
       throw string(
 "\nbanded-smith-waterman <SubstitutionMatrix> <+GapOpenPenalty> \n\
                        <+GapExtendPenalty> <*.fasta> <*.fasta> \n\
                        DNA|PROTEIN <band-width> [-q] [-w #]\n\n\
 example: banded-smith-waterman blosum62 5 2 1.fasta 2.fasta DNA 5\n\n\
+             -c <file> = write CIGAR string to file\n\
              -q = quiet (no alignment output)\n\
              -w # = format output to given width (default is 60)\n\
              -r M = recommend band width for M bytes of RAM\n\n");
@@ -85,11 +87,13 @@ example: banded-smith-waterman blosum62 5 2 1.fasta 2.fasta DNA 5\n\n\
     if(type!="DNA" && type!="PROTEIN") throw "specify DNA or PROTEIN";
     bool quiet=cmd.option('q');
     if(cmd.option('w')) Alignment::MAX_WIDTH=cmd.optParm('w').asInt();
+    ofstream cigarFile;
+    if(cmd.option('c')) cigarFile.open(cmd.optParm('c').c_str());
 
     Alphabet &alphabet=
       (type=="DNA") ? 
-      static_cast<Alphabet&>(DnaAlphabet::global) : 
-      static_cast<Alphabet&>(AminoAlphabet::global);
+      static_cast<Alphabet&>(DnaAlphabet::global()) : 
+      static_cast<Alphabet&>(AminoAlphabet::global());
     SubstitutionMatrix<double> M(matrixFile,alphabet);
     Sequence *seq1=Sequence::load(file1,alphabet);
     Sequence *seq2=Sequence::load(file2,alphabet);
@@ -110,6 +114,7 @@ example: banded-smith-waterman blosum62 5 2 1.fasta 2.fasta DNA 5\n\n\
 	BandedSmithWaterman<double> aligner(alphabet,*seq1,*seq2,M,gapOpen,
 					    gapExtend,bandWidth);
 	Alignment *alignment=aligner.fullAlignment();
+	if(cmd.option('c')) cigarFile<<alignment->getCigarString()<<endl;
 	int mismatches, insertions;
 	alignment->countMismatches(mismatches,insertions);
 	int alignmentLength=alignment->getAlignmentLength();

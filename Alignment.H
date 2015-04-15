@@ -44,6 +44,7 @@ public:
   void getResidualsOnRight(Sequence &,Sequence &);
   void render(String &,String &);
   void printOn(ostream &) const;
+  String getCigarString() const;
 private:
   const Sequence &s1, &s2;
   Vector<MatchType> matchData;

@@ -928,10 +928,15 @@ $(OBJ)/TwoBitFastaFile.o:\
 		$(BOOM)/TwoBitFastaFile.C
 #---------------------------------------------------------
 $(OBJ)/banded-smith-waterman.o:\
-		$(BOOM)/banded-smith-waterman.H \
 		$(BOOM)/banded-smith-waterman.C
 	$(CC) $(CFLAGS) -o $(OBJ)/banded-smith-waterman.o -c \
 		$(BOOM)/banded-smith-waterman.C
+#---------------------------------------------------------
+banded-smith-waterman:\
+		$(OBJ)/banded-smith-waterman.o
+	$(CC) $(LDFLAGS) -o banded-smith-waterman \
+		$(OBJ)/banded-smith-waterman.o \
+		-lgsl -lm -lgslcblas -L. -lBOOM 
 #---------------------------------------------------------
 $(OBJ)/cypher.o:\
 		$(BOOM)/cypher.H \
