@@ -46,8 +46,10 @@ public:
   char getStrand() const;
   const BOOM::String &getSource() const;
   const BOOM::String &getSubstrate() const;
-  int getBegin();  
-  int getEnd();    
+  int getBegin();
+  int getEnd();
+  void setBegin(int);
+  void setEnd(int);
   void toGff(ostream &);
   float getScore() { return score; }
 private:

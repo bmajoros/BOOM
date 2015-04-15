@@ -100,6 +100,20 @@ const BOOM::String &BOOM::GffExon::getSubstrate() const
 
 
 
+void BOOM::GffExon::setBegin(int b)
+{
+  begin=b;
+}
+
+
+
+void BOOM::GffExon::setEnd(int e)
+{
+  end=e;
+}
+
+
+
 int BOOM::GffExon::getBegin()  
 {
   return begin;
