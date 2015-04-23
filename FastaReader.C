@@ -101,3 +101,11 @@ BOOM::String BOOM::FastaReader::getId(const BOOM::String &defline)
 
 
 
+static FastaReader::load(const String &filename,String &defline,String &sequence,
+			 const Alphabet &alphabet)
+{
+  FastaReader reader(filename,alphabet);
+  reader.nextSequence(defline,sequence);
+}
+
+

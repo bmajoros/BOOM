@@ -46,11 +46,14 @@ ostream &operator<<(ostream &,const CigarOp &);
 class CigarString {
 public:
   CigarString(const String &);
+  CigarString() {}
+  void load(const String &filename);
   CigarAlignment *getAlignment();
   int length() const;
   CigarOp &operator[](int);
   Vector<CigarOp> &asVector();
   void printOn(ostream &) const;
+  CigarString *unrollMatches() const;
 private:
   static Regex re;
   Vector<CigarOp> ops;

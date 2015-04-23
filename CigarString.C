@@ -1,10 +1,11 @@
 /****************************************************************
  CigarString.C
- Copyright (C)2014 William H. Majoros (martiandna@gmail.com).
+ Copyright (C)2015 William H. Majoros (martiandna@gmail.com).
  This is OPEN SOURCE SOFTWARE governed by the Gnu General Public
  License (GPL) version 3, as described at www.opensource.org.
  ****************************************************************/
 #include <iostream>
+#include <fstream>
 #include "CigarString.H"
 #include "Exceptions.H"
 using namespace std;
@@ -147,6 +148,32 @@ CigarAlignment *CigarString::getAlignment()
       }
   }
   return &A;
+}
+
+
+
+void CigarString::load(const String &filename)
+{
+  ifstream is(filename.c_str());
+  String line;
+  is>>line;
+  parse(line);
+}
+
+
+
+CigarString *CigarString::unrollMatches() const
+{
+  CigarString *unrolled=new CigarString();
+  CigarOp match(CIGAR_MATCH,1);
+  for(Vector<CigarOp>::const_iterator cur=ops.begin(), end=ops.end() ;
+      cur!=end ; ++cur) {
+    CigarOp op=*cur;
+    if(op.type==CIGAR_MATCH)
+      for(int i=0 ; i<op.rep ; ++i) unrolled->ops.push_back(match);
+    else unrolled->ops.push_back(op);
+  }
+  return unrolled;
 }
 
 
