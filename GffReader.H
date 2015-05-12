@@ -34,6 +34,7 @@ public:
 				   int maxFeatureLength=20000);
   static void filterBySource(Vector<GffFeature*> &,const String &source);
   TranscriptList *loadTranscripts();
+  static TranscriptList *loadTranscripts(const String &filename);
   Map<String,TranscriptList*> *loadByContig(); // organized by substrate
   Map<String,Vector<GffFeature*> > *featuresBySubstrate();
 private:

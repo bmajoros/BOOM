@@ -20,31 +20,32 @@
 namespace BOOM {
 
 template<class ENTRY_TYPE>
-class SubstitutionMatrix
-{
+class SubstitutionMatrix {
 public:
-    SubstitutionMatrix(const String &filename,Alphabet &);
-    ENTRY_TYPE operator()(Symbol row,Symbol column) const;
-    inline ENTRY_TYPE getMeanValue() const { return meanValue; }
-    inline float percentageGreaterThanZero() const {return percentOverZero;}
-    inline float smallestEntry() const {return smallestValue;}
-    inline float largestEntry() const {return largestValue;}
+  SubstitutionMatrix(const String &filename,Alphabet &);
+  ENTRY_TYPE operator()(Symbol row,Symbol column) const;
+  inline ENTRY_TYPE getMeanValue() const { return meanValue; }
+  inline float percentageGreaterThanZero() const {return percentOverZero;}
+  inline float smallestEntry() const {return smallestValue;}
+  inline float largestEntry() const {return largestValue;}
+  void multiply(ENTRY_TYPE);
+  void add(ENTRY_TYPE);
+  void printOn(ostream &) const;
 private:
-    static Regex commentRegex, headerRegex, tableRegex, errorRegex;
-    Array2D<ENTRY_TYPE> matrix;
-    ENTRY_TYPE meanValue, smallestValue, largestValue;
-    float percentOverZero;
+  static Regex commentRegex, headerRegex, tableRegex, errorRegex;
+  Array2D<ENTRY_TYPE> matrix;
+  ENTRY_TYPE meanValue, smallestValue, largestValue;
+  float percentOverZero;
     
-    void load(const String &);
-    friend ostream &operator<<(ostream &,
-                     const SubstitutionMatrix<ENTRY_TYPE> &);
-    void printOn(ostream &) const;
+  void load(const String &);
+  friend ostream &operator<<(ostream &,
+			     const SubstitutionMatrix<ENTRY_TYPE> &);
 protected:
-    Alphabet &alphabet;
-    SubstitutionMatrix(Alphabet &);
-    void computeMeanValue(int ignoreIndex);
-    void computePercentOverZero(int);
-    void set(int i,int j,ENTRY_TYPE value) {matrix[i][j]=value;}
+  Alphabet &alphabet;
+  SubstitutionMatrix(Alphabet &);
+  void computeMeanValue(int ignoreIndex);
+  void computePercentOverZero(int);
+  void set(int i,int j,ENTRY_TYPE value) {matrix[i][j]=value;}
 };
 }
 using namespace BOOM;
@@ -258,6 +259,34 @@ void SubstitutionMatrix<ENTRY_TYPE>::computePercentOverZero(int
 	}
     }
   percentOverZero=count/float(maxX*maxY);
+}
+
+
+
+template<class ENTRY_TYPE>
+void SubstitutionMatrix<ENTRY_TYPE>::multiply(ENTRY_TYPE x)
+{
+  int maxX=matrix.getFirstDim(), maxY=matrix.getSecondDim();
+  for(int i=0 ; i<maxX ; ++i)
+    for(int j=0 ; j<maxY ; ++j)
+      matrix(i,j)*=x;
+  int ignoreIndex=alphabet.isDefined('*') ? alphabet.lookup('*') : -1;
+  computeMeanValue(ignoreIndex);
+  computePercentOverZero(ignoreIndex);
+}
+
+
+
+template<class ENTRY_TYPE>
+void SubstitutionMatrix<ENTRY_TYPE>::add(ENTRY_TYPE x)
+{
+  int maxX=matrix.getFirstDim(), maxY=matrix.getSecondDim();
+  for(int i=0 ; i<maxX ; ++i)
+    for(int j=0 ; j<maxY ; ++j)
+      matrix(i,j)+=x;
+  int ignoreIndex=alphabet.isDefined('*') ? alphabet.lookup('*') : -1;
+  computeMeanValue(ignoreIndex);
+  computePercentOverZero(ignoreIndex);
 }
 
 

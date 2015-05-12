@@ -44,6 +44,15 @@ GffFeature *GffReader::nextFeature()
 
 
 
+Vector<GffTranscript*> *GffReader::loadTranscripts(const String &filename)
+{
+  GffReader reader(filename);
+  TranscriptList *t=reader.loadTranscripts();
+  return t;
+}
+
+
+
 Vector<GffTranscript*> *GffReader::loadTranscripts()
 {
   // Read the features fromthe GFF file
