@@ -20,6 +20,7 @@ GffReader::GffReader(const String &filename)
   if(!file.open(filename.c_str(),"rb"))
     throw String("Can't open file ")+filename;
 
+  exonTypes.insert("CDS");
   exonTypes.insert("exon");
   exonTypes.insert("initial-exon");
   exonTypes.insert("internal-exon");
@@ -55,7 +56,7 @@ Vector<GffTranscript*> *GffReader::loadTranscripts(const String &filename)
 
 Vector<GffTranscript*> *GffReader::loadTranscripts()
 {
-  // Read the features fromthe GFF file
+  // Read the features from the GFF file
   Map<String,GffTranscript*> transHash;
   while(GffFeature *f=nextFeature())
     {
