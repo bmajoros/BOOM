@@ -67,8 +67,10 @@ BOOM::String BOOM::GffFeature::toGff() const
   if(hasFrame) gff+=BOOM::String("")+frame; else gff+=".";
   if(extraFields.size()>0) {
     gff+="\t";
-    for(int i=0 ; i<extraFields.size() ; ++i)
-      gff+=extraFields[i]+";";
+    for(int i=0 ; i<extraFields.size() ; ++i) {
+      gff+=extraFields[i];
+      if(i+1<extraFields.size()) gff+="; ";
+    }
   }
   gff+="\n";
   return gff;
