@@ -247,14 +247,8 @@ Vector<GffGene> *GffReader::loadGenes(const String &filename)
   Set<String> IDs;
   byID.getKeys(IDs);
   Vector<GffGene> &genes=*new Vector<GffGene>;
-  for(Set<String>::iterator cur=IDs.begin(), end=IDs.end() ; cur!=end ; ++cur) {
-    cout<<*cur<<endl;
-    cout<<byID[*cur]<<endl;
-    cout<<byID[*cur]->getID()<<endl;
+  for(Set<String>::iterator cur=IDs.begin(), end=IDs.end() ; cur!=end ; ++cur)
     genes.push_back(*byID[*cur]);
-    TRACE
-  }
-TRACE
   return &genes;
 }
 

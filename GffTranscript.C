@@ -28,10 +28,14 @@ GffTranscript::GffTranscript(const GffTranscript &other)
   : begin(other.begin), end(other.end), score(other.score),
     strand(other.strand), hasScore(other.hasScore), 
     transcriptId(other.transcriptId), geneId(other.geneId),
-    substrate(other.substrate), source(other.source)
+    substrate(other.substrate), source(other.source),
+    startCodon(NULL), stopCodon(NULL)
 {
   if(other.startCodon) startCodon=new GffFeature(*other.startCodon);
   if(other.stopCodon) stopCodon=new GffFeature(*other.stopCodon);
+  for(Vector<GffExon*>::const_iterator cur=other.exons.begin(), end=
+	other.exons.end() ; cur!=end ; ++cur)
+    exons.push_back(new GffExon(**cur));
 }
 
 
@@ -247,7 +251,7 @@ void BOOM::GffTranscript::toGff(ostream &os)
     os << ".\t";
   os << strand << "\t"
      << ".\ttranscript_id=" << transcriptId 
-     << " gene_id=" << geneId
+     << "; gene_id=" << geneId
      << endl;
 }
 

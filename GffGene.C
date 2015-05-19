@@ -29,7 +29,6 @@ GffGene::GffGene(const GffGene &other)
 
 GffGene::~GffGene()
 {
-  cout<<" gene dtor"<<endl;
   for(Vector<GffTranscript*>::iterator cur=transcripts.begin(), 
 	end=transcripts.end() ; cur!=end ; ++cur)
     delete *cur;

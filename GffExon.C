@@ -149,7 +149,9 @@ void BOOM::GffExon::toGff(ostream &os)
   if(hasScore) os << score; else os << ".";
   os << "\t" << parent.getStrand() << "\t";
   if(hasFrame) os << frame; else os << ".";
-  os << "\ttransgrp=" << parent.getTranscriptId() << endl;
+  os << "\ttranscript_id=" << parent.getTranscriptId() 
+     << "; gene_id=" << parent.getGeneId()
+     << endl;
 }
 
 
