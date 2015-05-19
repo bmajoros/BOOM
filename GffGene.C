@@ -28,6 +28,14 @@ GffGene::~GffGene()
 
 void GffGene::addTranscript(GffTranscript *transcript)
 {
+  if(transcripts.size()==0) {
+    begin=transcript->getBegin(); 
+    end=transcript->getEnd();
+  }
+  else {
+    if(transcript->getBegin()<begin) begin=transcript->getBegin();
+    if(transcript->getEnd()>end) end=transcript->getEnd();
+  }
   transcripts.push_back(transcript);
 }
 
