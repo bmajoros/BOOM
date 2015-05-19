@@ -130,8 +130,9 @@ void BOOM::GffTranscript:: printOn(ostream &os) const
      << end << "\t"
      << ".\t"
      << strand << "\t"
-     << ".\ttransgrp=" << transcriptId
-     << ";\tnumExons=" << getNumExons();
+     << ".\ttransscript_id=" << transcriptId
+     << "; gene_id=" << geneId
+     << "; numExons=" << getNumExons();
 }
 
 
@@ -233,7 +234,8 @@ void BOOM::GffTranscript::toGff(ostream &os)
   else
     os << ".\t";
   os << strand << "\t"
-     << ".\ttransgrp=" << transcriptId 
+     << ".\ttranscript_id=" << transcriptId 
+     << " gene_id=" << geneId
      << endl;
 }
 
