@@ -28,6 +28,19 @@ BOOM::GffFeature::GffFeature(const BOOM::String &rawLine,
 
 
 
+GffFeature::GffFeature(const GffFeature &other)
+  : frame(other.frame), begin(other.begin), end(other.end),
+    score(other.score), strand(other.strand), hasScore(other.hasScore),
+    hasFrame(other.hasFrame), extraFields(other.extraFields),
+    allFields(other.allFields), substrate(other.substrate),
+    source(other.source), rawLine(other.rawLine), 
+    featureType(other.featureType)
+{
+  // copy ctor
+}
+
+
+
 BOOM::GffFeature::GffFeature(const BOOM::String &rawLine)
   : rawLine(rawLine), score(0), frame(0)
 {

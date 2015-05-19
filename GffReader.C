@@ -68,13 +68,17 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
 	  Vector<String> &extraFields=f->getExtraFields();
 	  int n=extraFields.size();
 	  for(int i=0 ; i<n ; ++i)  
-	    if(geneIdRegex.search(extraFields[i]))
+	    if(geneIdRegex.search(extraFields[i])) {
 	      geneId=geneIdRegex[2];
+	      geneId=geneId.substitute("\"","");
+	    }
 
 	  // Parse out transcript ID
 	  String transcriptId=extraFields[0];
-	  if(transgrpRegex.search(transcriptId)) 
+	  if(transgrpRegex.search(transcriptId)) {
 	    transcriptId=transgrpRegex[2];
+	    transcriptId=transcriptId.substitute("\"","");
+	  }
 	  if(!transHash.isDefined(transcriptId))
 	    transHash[transcriptId]=
 	      new GffTranscript(transcriptId,f->getSubstrate(),
@@ -230,7 +234,6 @@ Vector<GffGene> *GffReader::loadGenes()
 
 Vector<GffGene> *GffReader::loadGenes(const String &filename)
 {
-  Vector<GffGene> &genes=*new Vector<GffGene>;
   Map<String,GffGene*> byID;
   Vector<GffTranscript*> &allTrans=*loadTranscripts(filename);
   for(Vector<GffTranscript*>::iterator cur=allTrans.begin(), end=
@@ -241,6 +244,17 @@ Vector<GffGene> *GffReader::loadGenes(const String &filename)
     byID[geneID]->addTranscript(trans);
   }
   delete &allTrans;
+  Set<String> IDs;
+  byID.getKeys(IDs);
+  Vector<GffGene> &genes=*new Vector<GffGene>;
+  for(Set<String>::iterator cur=IDs.begin(), end=IDs.end() ; cur!=end ; ++cur) {
+    cout<<*cur<<endl;
+    cout<<byID[*cur]<<endl;
+    cout<<byID[*cur]->getID()<<endl;
+    genes.push_back(*byID[*cur]);
+    TRACE
+  }
+TRACE
   return &genes;
 }
 

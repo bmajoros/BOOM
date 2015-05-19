@@ -21,6 +21,7 @@ public:
   GffTranscript(const BOOM::String &transcriptId,
 		const BOOM::String &substrate,
 		char strand,const BOOM::String &source);
+  GffTranscript(const GffTranscript &);
   virtual ~GffTranscript();
   void loadSequence(const BOOM::String &substrate);
   void loadSequence(BOOM::IndexedFasta &);

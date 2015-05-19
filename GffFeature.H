@@ -23,6 +23,7 @@ public:
 	     const String &featureType,
 	     int begin,int end,double score,bool hasScore,char strand,
 	     int frame,bool hasFrame);
+  GffFeature(const GffFeature &);
   GffFeature(const String &rawLine);
   String toGff() const;
   Vector<String> &getExtraFields();

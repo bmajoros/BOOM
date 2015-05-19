@@ -17,8 +17,19 @@ GffGene::GffGene(const String &id)
 
 
 
+GffGene::GffGene(const GffGene &other)
+  : id(other.id), begin(other.begin), end(other.end)
+{
+  for(Vector<GffTranscript*>::const_iterator cur=other.transcripts.begin(),
+	end=other.transcripts.end() ; cur!=end ; ++cur)
+    transcripts.push_back(new GffTranscript(**cur));
+}
+
+
+
 GffGene::~GffGene()
 {
+  cout<<" gene dtor"<<endl;
   for(Vector<GffTranscript*>::iterator cur=transcripts.begin(), 
 	end=transcripts.end() ; cur!=end ; ++cur)
     delete *cur;

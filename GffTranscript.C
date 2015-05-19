@@ -24,6 +24,18 @@ BOOM::GffTranscript::GffTranscript(const BOOM::String &transcriptId,
 
 
 
+GffTranscript::GffTranscript(const GffTranscript &other)
+  : begin(other.begin), end(other.end), score(other.score),
+    strand(other.strand), hasScore(other.hasScore), 
+    transcriptId(other.transcriptId), geneId(other.geneId),
+    substrate(other.substrate), source(other.source)
+{
+  if(other.startCodon) startCodon=new GffFeature(*other.startCodon);
+  if(other.stopCodon) stopCodon=new GffFeature(*other.stopCodon);
+}
+
+
+
 BOOM::GffTranscript::~GffTranscript()
 {
   // dtor

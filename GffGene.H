@@ -16,6 +16,7 @@ using namespace BOOM;
 class GffGene {
 public:
   GffGene(const String &id);
+  GffGene(const GffGene &);
   virtual ~GffGene();
   void addTranscript(GffTranscript *);
   int numTranscripts() const;
