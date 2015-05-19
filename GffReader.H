@@ -35,8 +35,8 @@ public:
   static void filterBySource(Vector<GffFeature*> &,const String &source);
   TranscriptList *loadTranscripts();
   Vector<GffGene> *loadGenes();
-  Vector<GffGene> *loadGenes(const String &filename);
-  Map<String,Vector<GffGene> > *genesByChrom(const String &filename);
+  static Vector<GffGene> *loadGenes(const String &filename);
+  static Map<String,Vector<GffGene> > *genesByChrom(const String &filename);
   static TranscriptList *loadTranscripts(const String &filename);
   Map<String,TranscriptList*> *loadByContig(); // organized by substrate
   Map<String,Vector<GffFeature*> > *featuresBySubstrate();
