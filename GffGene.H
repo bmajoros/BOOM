@@ -22,6 +22,7 @@ public:
   GffTranscript &getIthTranscript(int i);
   int getBegin() const;
   int getEnd() const;
+  char getStrand() const;
   const String &getID() const;
 protected:
   String id;

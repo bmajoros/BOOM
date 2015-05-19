@@ -76,3 +76,11 @@ const String &GffGene::getID() const
 
 
 
+char GffGene::getStrand() const
+{
+  if(transcripts.size()==0) 
+    throw "Gene has no transcripts in GffGene::getStrand()";
+  return transcripts[0]->getStrand();
+}
+
+
