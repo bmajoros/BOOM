@@ -99,6 +99,7 @@ libBOOM.a:\
 	$(OBJ)/GffFeature.o \
 	$(OBJ)/GffReader.o \
 	$(OBJ)/GffTranscript.o \
+	$(OBJ)/GffGene.o \
 	$(OBJ)/Graph.o \
 	$(OBJ)/Hashpjw.o \
 	$(OBJ)/Histogram.o \
@@ -223,6 +224,7 @@ libBOOM.a:\
 	$(OBJ)/GffFeature.o \
 	$(OBJ)/GffReader.o \
 	$(OBJ)/GffTranscript.o \
+	$(OBJ)/GffGene.o \
 	$(OBJ)/Graph.o \
 	$(OBJ)/GslPermutation.o \
 	$(OBJ)/Hashpjw.o \
@@ -1184,4 +1186,10 @@ $(OBJ)/CigarAlignment.o:\
 		CigarAlignment.H
 	$(CC) $(CFLAGS) -o $(OBJ)/CigarAlignment.o -c \
 		CigarAlignment.C
+#---------------------------------------------------------
+$(OBJ)/GffGene.o:\
+		GffGene.C\
+		GffGene.H
+	$(CC) $(CFLAGS) -o $(OBJ)/GffGene.o -c \
+		GffGene.C
 #---------------------------------------------------------

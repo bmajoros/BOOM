@@ -405,3 +405,9 @@ unsigned BOOM::String::hash() const
 
 
 
+void String::replaceSubstring(int start,int length,const String &other)
+{
+  replace(start,length,other);
+}
+
+

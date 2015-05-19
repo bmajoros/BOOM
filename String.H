@@ -60,6 +60,7 @@ public:
   BOOM::String substitute(const BOOM::String &changeThis,  // CONST!!!!
 			  const BOOM::String &toThis) const;
   BOOM::String substring(int start,int length=-1) const;
+  void replaceSubstring(int start,int length,const String &); // may be unequal lengths
   BOOM::Vector<BOOM::String> *getFields(const char *separators=" \t\n\r") 
       const;
   int count(char);

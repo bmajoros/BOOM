@@ -190,3 +190,18 @@ BOOM::String &BOOM::GffExon::getSequence()
 }
 
 
+
+bool GffExon::hasDonor()
+{
+  return exonType==ET_INITIAL_EXON || exonType==ET_INTERNAL_EXON;
+}
+
+
+
+bool GffExon::hasAcceptor()
+{
+  return exonType==ET_INTERNAL_EXON || exonType==ET_FINAL_EXON;
+}
+
+
+

@@ -25,6 +25,7 @@ public:
   void loadSequence(const BOOM::String &substrate);
   void loadSequence(BOOM::IndexedFasta &);
   BOOM::String getSequence();
+  int getNumExons() const;
   BOOM::GffExon &getIthExon(int);
   BOOM::GffFeature *getStartCodon();
   BOOM::GffFeature *getStopCodon();
@@ -37,7 +38,6 @@ public:
   double getScore() const;
   int getBegin() const;
   int getEnd() const;
-  int getNumExons() const;
   void addExon(BOOM::GffExon *);
   void printOn(ostream &) const;
   void setScore(double);

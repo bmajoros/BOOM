@@ -74,3 +74,11 @@ void BOOM::FastaWriter::addToFasta(const BOOM::String &def,
 }
 
 
+
+void FastaWriter::appendToFasta(const BOOM::String &defline,const 
+				BOOM::String &sequence,const BOOM::String &filename)
+{
+  ofstream os(filename.c_str(),std::ios::app); // ios_base::app);
+  addToFasta(defline,sequence,os);
+}
+

@@ -52,6 +52,8 @@ public:
   void setEnd(int);
   void toGff(ostream &);
   float getScore() { return score; }
+  bool hasDonor();
+  bool hasAcceptor();
 private:
   static BOOM::Map<BOOM::String,ExonType> exonTypeNames;
   int frame;  

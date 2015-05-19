@@ -26,6 +26,8 @@ public:
 		  ostream &);
   void addToFasta(const BOOM::String &defline,const BOOM::String &sequence,
 		  ostream &);
+  void appendToFasta(const BOOM::String &defline,const BOOM::String &sequence,
+		     const BOOM::String &filename);
 private:
   int width;
   BOOM::Regex newline, greater;
