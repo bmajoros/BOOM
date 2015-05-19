@@ -209,3 +209,69 @@ void GffReader::filterBySource(Vector<GffFeature*> &features,
 
 
 
+Vector<GffGene> *GffReader::loadGenes()
+{
+  Vector<GffGene> &genes=*new Vector<GffGene>;
+  Map<String,GffGene*> byID;
+  Vector<GffTranscript*> &allTrans=*loadTranscripts();
+  for(Vector<GffTranscript*>::iterator cur=allTrans.begin(), end=
+	allTrans.end() ; cur!=end ; ++cur) {
+    GffTranscript *trans=*cur;
+    const String &geneID=trans->getGeneId();
+    if(!byID.isDefined(geneID)) byID[geneID]=new GffGene(geneID);
+    byID[geneID]->addTranscript(trans);
+  }
+  delete &allTrans;
+  return &genes;
+}
+
+
+
+Vector<GffGene> *GffReader::loadGenes(const String &filename)
+{
+  Vector<GffGene> &genes=*new Vector<GffGene>;
+  Map<String,GffGene*> byID;
+  Vector<GffTranscript*> &allTrans=*loadTranscripts(filename);
+  for(Vector<GffTranscript*>::iterator cur=allTrans.begin(), end=
+	allTrans.end() ; cur!=end ; ++cur) {
+    GffTranscript *trans=*cur;
+    const String &geneID=trans->getGeneId();
+    if(!byID.isDefined(geneID)) byID[geneID]=new GffGene(geneID);
+    byID[geneID]->addTranscript(trans);
+  }
+  delete &allTrans;
+  return &genes;
+}
+
+
+
+Map<String,Vector<GffGene> > *GffReader::genesByChrom(const String &filename)
+{
+  // Load transcripts and populate genes with them
+  Vector<GffGene> genes;
+  Map<String,GffGene*> byID;
+  Vector<GffTranscript*> &allTrans=*loadTranscripts(filename);
+  for(Vector<GffTranscript*>::iterator cur=allTrans.begin(), end=
+	allTrans.end() ; cur!=end ; ++cur) {
+    GffTranscript *trans=*cur;
+    const String &geneID=trans->getGeneId();
+    if(!byID.isDefined(geneID)) byID[geneID]=new GffGene(geneID);
+    byID[geneID]->addTranscript(trans);
+  }
+  delete &allTrans;
+
+  // Now organize genes by chromosome
+  Map<String,Vector<GffGene> > &byChrom=
+    *new Map<String,Vector<GffGene> >;
+  for(Vector<GffGene>::iterator cur=genes.begin(), end=genes.end() ;
+      cur!=end ; ++cur) {
+    GffGene &gene=*cur;
+    const String &id=gene.getID();
+    //if(!byChrom.isDefined(id)) byChrom[id]=Vector<GffGene>();
+    byChrom[id].push_back(gene);
+  }
+  return &byChrom;
+
+}
+
+

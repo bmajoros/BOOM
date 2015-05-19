@@ -19,8 +19,8 @@ GffGene::GffGene(const String &id)
 
 GffGene::~GffGene()
 {
-  for(Vector<GffTranscript*>::iterator cur=transcripts.begin() ; 
-      end=transcripts.end ; cur!=end)
+  for(Vector<GffTranscript*>::iterator cur=transcripts.begin(), 
+	end=transcripts.end() ; cur!=end ; ++cur)
     delete *cur;
 }
 
@@ -42,7 +42,7 @@ int GffGene::numTranscripts() const
 
 GffTranscript &GffGene::getIthTranscript(int i)
 {
-  return transcripts[i];
+  return *transcripts[i];
 }
 
 

@@ -12,6 +12,7 @@
 #include "Set.H"
 #include "Regex.H"
 #include "GffTranscript.H"
+#include "GffGene.H"
 #include "GffFeature.H"
 #include "File.H"
 #include "Comparator.H"
@@ -21,8 +22,7 @@ namespace BOOM {
 
 typedef Vector<GffTranscript*> TranscriptList;
 
-class GffReader
-{
+class GffReader {
 public:
   typedef Vector<GffTranscript*> TranscriptList;
   GffReader(const String &filename);
@@ -34,6 +34,9 @@ public:
 				   int maxFeatureLength=20000);
   static void filterBySource(Vector<GffFeature*> &,const String &source);
   TranscriptList *loadTranscripts();
+  Vector<GffGene> *loadGenes();
+  Vector<GffGene> *loadGenes(const String &filename);
+  Map<String,Vector<GffGene> > *genesByChrom(const String &filename);
   static TranscriptList *loadTranscripts(const String &filename);
   Map<String,TranscriptList*> *loadByContig(); // organized by substrate
   Map<String,Vector<GffFeature*> > *featuresBySubstrate();
