@@ -320,6 +320,17 @@ const BOOM::String &BOOM::GffTranscript::getGeneId() const
 
 
 
+void GffTranscript::extendFinalExonBy3()
+{
+  const int lastIndex=exons.size()-1;
+  if(lastIndex<0) throw "Empty transcript in extendFinalExonBy3()";
+  GffExon &lastExon=*exons[lastIndex];
+  if(strand=='+') lastExon.setEnd(lastExon.getEnd()+3);
+  else lastExon.setBegin(lastExon.getBegin()-3);
+}
+
+
+
 void BOOM::GffTranscript::setGeneId(const BOOM::String &id)
 {
   geneId=id;
@@ -348,6 +359,7 @@ bool TranscriptComparator::equal(BOOM::GffTranscript *&a,
 {
   return a->getBegin()==b->getBegin();
 }
+
 
 
 

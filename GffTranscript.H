@@ -48,6 +48,7 @@ public:
   void sortExons();
   void setExonTypes();
   void toGff(ostream &);
+  void extendFinalExonBy3(); // to include stop codon
   BOOM::Vector<BOOM::GffExon*>::iterator getExons() {return exons.begin();}
   BOOM::Vector<BOOM::GffExon*>::iterator getExonsEnd() {return exons.end();}
 private:
