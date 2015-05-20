@@ -51,6 +51,7 @@ public:
   int overlapBases(const GffFeature &other) const;
   int length() const;
   int getLength() const { return length(); }
+  void shiftCoords(int);
 private:
   int frame;  
   int begin, end;  

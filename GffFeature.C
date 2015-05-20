@@ -290,6 +290,14 @@ int BOOM::GffFeature::length() const
 
 
 
+void BOOM::GffFeature::shiftCoords(int d)
+{
+  begin+=d;
+  end+=d;
+}
+
+
+
 bool GffFeatureComparator::less(BOOM::GffFeature *&a,BOOM::GffFeature *&b)
 {
     return a->getBegin()<b->getBegin();
