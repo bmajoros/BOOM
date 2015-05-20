@@ -26,6 +26,7 @@ class GffReader {
 public:
   typedef Vector<GffTranscript*> TranscriptList;
   GffReader(const String &filename);
+  void close();
   GffFeature *nextFeature();
   Vector<GffFeature*> *loadFeatures(); // sorted by begin coord
   static void addNoncodingFeatures(Vector<GffFeature*> &,int substrateLength,

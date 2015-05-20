@@ -30,6 +30,13 @@ GffReader::GffReader(const String &filename)
 
 
 
+void GffReader::close()
+{
+  file.close();
+}
+
+
+
 GffFeature *GffReader::nextFeature()
 {
   while(true)
