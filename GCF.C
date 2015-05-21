@@ -31,7 +31,7 @@ void GCF::parse(const String &filename)
       cur!=end ; ++cur) {
     const String &field=*cur;
     Vector<String> fields; field.getFields(fields,":");
-    if(fields.size()!=5) throw field+" : bad entry in GCF header";
+    if(fields.size()!=5) throw field+" : bad entry in GCF header - "+filename;
     const String id=fields[0];
     const String chr=fields[1];
     const int pos=fields[2].asInt();
@@ -46,13 +46,13 @@ void GCF::parse(const String &filename)
     line.trimWhitespace();
     Vector<String> fields; line.getFields(fields);
     if(fields.size()==0) continue;
-    if(fields.size()!=numVariants+1) throw "wrong number of fields in GCF file";
+    if(fields.size()!=numVariants+1) throw "wrong number of fields in GCF file "+filename;
     const String &id=fields[0];
     individuals.push_back(GcfIndividual(id,numVariants));
     GcfIndividual &indiv=individuals[individuals.size()-1];
     for(int i=0 ; i<numVariants ; ++i) {
       const String &field=fields[i+1];
-      if(field.length()!=3) throw field+" : invalid genotype in GCF file";
+      if(field.length()!=3) throw field+" : invalid genotype in GCF file "+filename;
       indiv.chrom[0][i]=field[0]-'0';
       indiv.chrom[1][i]=field[2]-'0';
     }
