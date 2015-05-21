@@ -59,6 +59,13 @@ BOOM::Vector<BOOM::String*> *BOOM::StrTokenizer::tokenize(const char *src,
 
 
 
+void BOOM::StrTokenizer::getTokenStrings(BOOM::Vector<BOOM::String> &into)
+{
+  while(hasMoreTokens()) into.push_back(BOOM::String(nextToken()));
+}
+
+
+
 BOOM::Vector<BOOM::String> *BOOM::StrTokenizer::getTokenStrings()
 {
   BOOM::Vector<BOOM::String> &toks=

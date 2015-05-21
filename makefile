@@ -29,6 +29,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/GCF.o \
 	$(OBJ)/CigarAlignment.o \
 	$(OBJ)/CigarString.o \
 	$(OBJ)/SubsetEnumerator.o \
@@ -154,6 +155,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/GCF.o \
 	$(OBJ)/CigarAlignment.o \
 	$(OBJ)/CigarString.o \
 	$(OBJ)/SubsetEnumerator.o \
@@ -1192,4 +1194,11 @@ $(OBJ)/GffGene.o:\
 		GffGene.H
 	$(CC) $(CFLAGS) -o $(OBJ)/GffGene.o -c \
 		GffGene.C
+#---------------------------------------------------------
+#--------------------------------------------------------
+$(OBJ)/GCF.o:\
+		GCF.C\
+		GCF.H
+	$(CC) $(CFLAGS) -o $(OBJ)/GCF.o -c \
+		GCF.C
 #---------------------------------------------------------

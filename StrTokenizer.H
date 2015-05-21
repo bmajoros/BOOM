@@ -27,6 +27,7 @@ public:
 		  const char *wspace=DEFAULT_WHITESPACE);
   BOOM::Vector<BOOM::String*> *getAllTokens();
   BOOM::Vector<BOOM::String> *getTokenStrings();
+  void getTokenStrings(BOOM::Vector<BOOM::String> &);
   bool hasMoreTokens();
   const char *nextToken();
   StrVectPair *getTokensAndSeparators(const BOOM::String &);

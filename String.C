@@ -231,6 +231,15 @@ BOOM::String BOOM::String::substring(int begin,int len) const
 
 
 
+void BOOM::String::getFields(Vector<String> &into,const char *seps) const
+{
+  BOOM::String &self=const_cast<BOOM::String&>(*this);
+  BOOM::StrTokenizer tokenizer(self,seps);
+  tokenizer.getTokenStrings(into);
+}
+
+
+
 BOOM::Vector<BOOM::String> *BOOM::String::getFields(const char *seps) const
 {
   BOOM::String &self=const_cast<BOOM::String&>(*this);
