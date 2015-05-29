@@ -24,7 +24,14 @@ int &CigarAlignment::operator[](int i)
 
 
 
-CigarAlignment *CigarAlignment::invert(int length)
+int CigarAlignment::operator[](int i) const
+{
+  return A[i];
+}
+
+
+
+CigarAlignment *CigarAlignment::invert(int length) const
 {
   CigarAlignment &I=*new CigarAlignment(length);
   I.A.setAllTo(CIGAR_UNDEFINED);
