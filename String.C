@@ -420,3 +420,12 @@ void String::replaceSubstring(int start,int length,const String &other)
 }
 
 
+
+int String::findFirst(char c) const
+{
+  const char *p=c_str();
+  int pos=0;
+  for(; *p ; ++p, ++pos) if(*p==c) return pos;
+  return -1;
+}
+

@@ -10,7 +10,6 @@
 #include <stdlib.h>
 #include <iostream>
 #include <string>
-//#include "Vector.H"
 #undef toupper
 #undef tolower
 using namespace std;
@@ -19,11 +18,8 @@ namespace BOOM {
 
 template<class T>
 class Vector;
-//  class String;
-//  class Vector<String>;
 
-class String : public string
-{
+class String : public string {
 public:
   String(int n,char c); // create string of n c's
   String(unsigned);
@@ -68,6 +64,7 @@ public:
   bool contains(const BOOM::String &searchString) const;
   bool occursAt(const BOOM::String &substring,int pos) const;
   bool containsWordChar();
+  int findFirst(char) const; // -1 if not found, otherwise position
   inline bool isWordChar(char c);
   bool stricmp(const BOOM::String &) const;
   char lastChar() const { return (*this)[length()-1]; }
