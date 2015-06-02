@@ -29,6 +29,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/Interval.o \
 	$(OBJ)/GCF.o \
 	$(OBJ)/CigarAlignment.o \
 	$(OBJ)/CigarString.o \
@@ -155,6 +156,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/Interval.o \
 	$(OBJ)/GCF.o \
 	$(OBJ)/CigarAlignment.o \
 	$(OBJ)/CigarString.o \
@@ -1201,4 +1203,12 @@ $(OBJ)/GCF.o:\
 		GCF.H
 	$(CC) $(CFLAGS) -o $(OBJ)/GCF.o -c \
 		GCF.C
+#---------------------------------------------------------
+
+#--------------------------------------------------------
+$(OBJ)/Interval.o:\
+		Interval.C\
+		Interval.H
+	$(CC) $(CFLAGS) -o $(OBJ)/Interval.o -c \
+		Interval.C
 #---------------------------------------------------------
