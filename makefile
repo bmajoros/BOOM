@@ -1212,3 +1212,11 @@ $(OBJ)/Interval.o:\
 	$(CC) $(CFLAGS) -o $(OBJ)/Interval.o -c \
 		Interval.C
 #---------------------------------------------------------
+
+#--------------------------------------------------------
+$(OBJ)/CodonIterator.o:\
+		CodonIterator.C\
+		CodonIterator.H
+	$(CC) $(CFLAGS) -o $(OBJ)/CodonIterator.o -c \
+		CodonIterator.C
+#---------------------------------------------------------
