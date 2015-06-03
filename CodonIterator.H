@@ -22,7 +22,7 @@ struct Codon {
   int globalCoord;  // coordinate on substrate
   int splicedCoord; // coordinate in spliced transcript
   bool valid() const;
-  bool isStop() const;
+  bool isStop() const; // human-specific: TAG/TGA/TAA
 };
 
 
@@ -35,6 +35,11 @@ public:
   CodonIterator(const GffTranscript &,const String &substrate);
   bool done() const;
   Codon nextCodon();
+protected:
+  const GffTranscript &transcript;
+  const String &substrate;
+  const GffExon *currentExon;
+  int posWithinExon;
 };
 
 #endif

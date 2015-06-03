@@ -15,12 +15,14 @@ using namespace BOOM;
 
 bool Codon::valid() const
 {
+  return codon.length()==3;
 }
 
 
 
 bool Codon::isStop() const
 {
+  return codon=="TAG" || codon=="TGA" || codon=="TAA";
 }
 
 
@@ -29,20 +31,33 @@ bool Codon::isStop() const
                           class CodonIterator
  ****************************************************************/
 
-CodonIterator::CodonIterator(const GffTranscript &,const String &substrate)
+CodonIterator::CodonIterator(const GffTranscript &transcript,
+			     const String &substrate)
+  : transcript(transcript), substrate(substrate)
 {
+  reset();
+}
+
+
+void CodonIterator::reset()
+{
+  if(transcript.numExons()<1) throw "Transcript has no exons in CodonIterator";
+  currentExon=&transcript.getIthExon(0);
+  posWithinExon=0;
 }
 
 
 
 bool CodonIterator::done() const
 {
+  return currentExon!=NULL && posWithinExon<=currentExon->length()-3;
 }
 
 
 
 Codon CodonIterator::nextCodon()
 {
+
 }
 
 
