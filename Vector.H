@@ -16,8 +16,7 @@ using namespace std;
 
 namespace BOOM {
 template<class T>
-class Vector : public vector<T>
-{
+class Vector : public vector<T> {
 public:
   Vector();
   Vector(int size);
@@ -52,6 +51,16 @@ public:
   T pop();
   void shuffle();
   BOOM::Vector<T> *uniq() const; // you should sort first...just like UNIX
+  /*
+    INHERITED METHODS:
+    iterator begin();
+    iterator end();
+    void push_back(T);
+    void pop_back(); // delete last element
+    T &at(int i); // safer version of []
+    T &front(); // first element
+    T &back(); // last element
+   */
 };
 
 typedef BOOM::Vector<int> IntVector;
