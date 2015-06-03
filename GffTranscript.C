@@ -331,6 +331,17 @@ void BOOM::GffTranscript::setGeneId(const BOOM::String &id)
 
 
 
+int BOOM::GffTranscript::getSplicedLength() const
+{
+  int L=0;
+  for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end()
+	; cur!=end ; ++cur)
+    L+=(*cur)->length();
+  return L;
+}
+
+
+
 bool TranscriptComparator::less(BOOM::GffTranscript *&a,
 				BOOM::GffTranscript *&b) 
 {

@@ -48,6 +48,7 @@ public:
   const BOOM::String &getSubstrate() const;
   int getBegin();
   int getEnd();
+  int length() { return end-begin; }
   void setBegin(int);
   void setEnd(int);
   void toGff(ostream &);

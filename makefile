@@ -29,6 +29,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/CodonIterator.o \
 	$(OBJ)/Interval.o \
 	$(OBJ)/GCF.o \
 	$(OBJ)/CigarAlignment.o \
@@ -156,6 +157,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/CodonIterator.o \
 	$(OBJ)/Interval.o \
 	$(OBJ)/GCF.o \
 	$(OBJ)/CigarAlignment.o \

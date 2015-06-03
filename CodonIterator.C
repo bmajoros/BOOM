@@ -42,22 +42,40 @@ CodonIterator::CodonIterator(const GffTranscript &transcript,
 void CodonIterator::reset()
 {
   if(transcript.numExons()<1) throw "Transcript has no exons in CodonIterator";
-  currentExon=&transcript.getIthExon(0);
+  currentExonIndex=0;
+  currentExon=&transcript.getIthExon(currentExonIndex);
+  if(currentExon->length()<1) throw "Zero-length exon found in CodonIterator";
   posWithinExon=0;
+  splicedPos=0;
 }
 
 
 
-bool CodonIterator::done() const
+bool CodonIterator::nextCodon(Codon &codon)
 {
-  return currentExon!=NULL && posWithinExon<=currentExon->length()-3;
-}
+  // Invariant: if currentExon!=NULL, then character pointed to by
+  // posWithinExon is a valid coding nucleotide
 
-
-
-Codon CodonIterator::nextCodon()
-{
-
+  codon.codon=""; 
+  if(!currentExon) return false;
+  int exonBegin=currentExon->getBegin(), exonLen=currentExon->length();
+  codon.globalCoord=exonBegin+posWithinExon; codon.splicedCoord=splicedPos;
+  while(codon.codon.length()<3) {
+    const int substratePos=exonBegin+posWithinExon;
+    codon.codon+=substrate[substratePos];
+    ++posWithinExon;
+    ++splicedPos;
+    if(posWithinExon>=exonLen) {
+      ++currentExonIndex;
+      if(currentExonIndex>transcript.numExons()) { currentExon=NULL; break; }
+      currentExon=&transcript.getIthExon(currentExonIndex);
+      exonBegin=currentExon->getBegin(), exonLen=currentExon->length();
+      posWithinExon=0;
+    }
+  }
+  if(codon.codon.length()==3) return true;
+  codon.codon="";
+  return false;
 }
 
 

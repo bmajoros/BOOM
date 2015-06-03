@@ -33,13 +33,15 @@ struct Codon {
 class CodonIterator {
 public:
   CodonIterator(const GffTranscript &,const String &substrate);
-  bool done() const;
-  Codon nextCodon();
+  bool nextCodon(Codon &);
 protected:
   const GffTranscript &transcript;
   const String &substrate;
   const GffExon *currentExon;
+  int currentExonIndex;
   int posWithinExon;
+  int splicedPos;
+  void reset();
 };
 
 #endif
