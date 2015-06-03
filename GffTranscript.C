@@ -130,13 +130,6 @@ int BOOM::GffTranscript::getEnd() const
 
 
 
-int BOOM::GffTranscript::getNumExons() const
-{
-  return exons.size();
-}
-
-
-
 void BOOM::GffTranscript:: printOn(ostream &os) const
 {
   os << substrate << "\t"

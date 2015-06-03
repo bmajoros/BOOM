@@ -26,7 +26,7 @@ public:
   void loadSequence(const BOOM::String &substrate);
   void loadSequence(BOOM::IndexedFasta &);
   BOOM::String getSequence();
-  inline int getNumExons() const;
+  inline int getNumExons() const { return exons.size(); }
   inline int numExons() const { return getNumExons(); }
   BOOM::GffExon &getIthExon(int);
   BOOM::GffFeature *getStartCodon();
