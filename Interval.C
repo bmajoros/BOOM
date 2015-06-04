@@ -110,3 +110,10 @@ bool Interval::contains(int pos) const
 
 
 
+bool Interval::operator==(const Interval &other) const
+{
+  return begin==other.begin && end==other.end;
+}
+
+
+

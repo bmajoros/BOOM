@@ -67,7 +67,7 @@ bool CodonIterator::nextCodon(Codon &codon)
     ++splicedPos;
     if(posWithinExon>=exonLen) {
       ++currentExonIndex;
-      if(currentExonIndex>transcript.numExons()) { currentExon=NULL; break; }
+      if(currentExonIndex>=transcript.numExons()) { currentExon=NULL; break; }
       currentExon=&transcript.getIthExon(currentExonIndex);
       exonBegin=currentExon->getBegin(), exonLen=currentExon->length();
       posWithinExon=0;
