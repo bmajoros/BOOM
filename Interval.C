@@ -7,9 +7,11 @@
 #include <iostream>
 #include "Interval.H"
 using namespace std;
+using namespace BOOM;
 
 
 Interval::Interval()
+  : begin(0), end(0)
 {
   // ctor
 }
@@ -97,6 +99,13 @@ ostream &operator<<(ostream &os,const Interval &interval)
 {
   interval.printOn(os);
   return os;
+}
+
+
+
+bool Interval::contains(int pos) const
+{
+  return pos>=begin && pos<end;
 }
 
 

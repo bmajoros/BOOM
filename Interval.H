@@ -8,7 +8,7 @@
 #define INCL_Interval_H
 #include <iostream>
 using namespace std;
-
+namespace BOOM {
 
 class Interval {
 public:
@@ -19,6 +19,7 @@ public:
   void setBegin(int);
   void setEnd(int);
   bool isEmpty() const;
+  bool contains(int pos) const;
   bool overlaps(const Interval &) const;
   Interval intersect(const Interval &) const;
   void intersect(const Interval &other,Interval &into) const;
@@ -26,8 +27,9 @@ public:
 protected:
   int begin, end; // zero-based, half open: (inclusive,exclusive]
 };
+}
 
-ostream &operator<<(ostream &,const Interval &);
+ostream &operator<<(ostream &,const BOOM::Interval &);
 
 #endif
 
