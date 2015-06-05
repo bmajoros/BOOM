@@ -45,8 +45,6 @@ libBOOM.a:\
 	$(OBJ)/PowerMean.o \
 	$(OBJ)/Semaphore.o \
 	$(OBJ)/BandedMatrix3D.o \
-	$(OBJ)/TopologicalSort.o \
-	$(OBJ)/Poset.o \
 	$(OBJ)/HigherOrderAlphabet.o \
 	$(OBJ)/IndexMap.o \
 	$(OBJ)/GammaDistribution.o \
@@ -174,8 +172,6 @@ libBOOM.a:\
 	$(OBJ)/PowerMean.o \
 	$(OBJ)/Semaphore.o \
 	$(OBJ)/BandedMatrix3D.o \
-	$(OBJ)/TopologicalSort.o \
-	$(OBJ)/Poset.o \
 	$(OBJ)/GenericToken.o \
 	$(OBJ)/GenericTokenStream.o \
 	$(OBJ)/GenericScanner.o \
@@ -1056,18 +1052,6 @@ test-essex: \
 		$(OBJ)/test-essex.o \
 		-L. -lBOOM
 #--------------------------------------------------------
-$(OBJ)/Poset.o:\
-		Poset.C\
-		Poset.H
-	$(CC) $(CFLAGS) -o $(OBJ)/Poset.o -c \
-		Poset.C
-#--------------------------------------------------------
-$(OBJ)/TopologicalSort.o:\
-		TopologicalSort.C\
-		TopologicalSort.H
-	$(CC) $(CFLAGS) -o $(OBJ)/TopologicalSort.o -c \
-		TopologicalSort.C
-#---------------------------------------------------------
 $(OBJ)/BandedMatrix3D.o:\
 		BandedMatrix3D.C\
 		BandedMatrix3D.H

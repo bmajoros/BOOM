@@ -10,12 +10,9 @@ To compile:
       setenv LIBRARY_PATH /home/wmajoros/gsl/lib
       setenv LD_LIBRARY_PATH /home/wmajoros/gsl/lib
 
-2. In the BOOM main directory, create a subdirectory called obj:
-      cd BOOM ; mkdir obj
+2. In the BOOM/GSL subdirectory, create a symbolic link to the
+   parent directory, and call it BOOM:
+       cd BOOM/GSL ; ln -s .. BOOM ; cd -
 
-3. In the BOOM main directory and the BOOM/GSL subdirectory, create 
-   symbolic links to BOOM: ln -s /path/to/BOOM:
-       cd BOOM ; ln -s . BOOM ; cd GSL ; ln -s .. BOOM
-
-4. Type "make libBOOM.a"
+3. Type "make libBOOM.a"
 
