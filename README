@@ -1,0 +1,21 @@
+
+To compile:
+
+1. Set your environment variable GSLDIR to the pull path to the 
+   Gnu Scientific Library; this directory should have subdirectories
+   called bin, include, and lib.  Also set your LIBRARY_PATH and
+   LD_LIBRARY_PATH environment variables to the full path to the lib
+   subdirectory of GSL.  For example:
+      setenv GSLDIR /home/wmajoros/gsl
+      setenv LIBRARY_PATH /home/wmajoros/gsl/lib
+      setenv LD_LIBRARY_PATH /home/wmajoros/gsl/lib
+
+2. In the BOOM main directory, create a subdirectory called obj:
+      cd BOOM ; mkdir obj
+
+3. In the BOOM main directory and the BOOM/GSL subdirectory, create 
+   symbolic links to BOOM: ln -s /path/to/BOOM:
+       cd BOOM ; ln -s . BOOM ; cd GSL ; ln -s .. BOOM
+
+4. Type "make libBOOM.a"
+
