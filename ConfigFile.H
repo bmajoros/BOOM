@@ -16,6 +16,7 @@ namespace BOOM {
 class ConfigFile
 {
 public:
+  ConfigFile();
   ConfigFile(BOOM::String fname);
   virtual BOOM::String lookup(BOOM::String attr);
   virtual BOOM::String lookupOrDie(BOOM::String attr);
@@ -27,8 +28,6 @@ public:
   virtual bool isDefined(BOOM::String key);
   void enter(BOOM::String,BOOM::String);
   BOOM::Map<BOOM::String,BOOM::String> &peek();
-protected:
-  ConfigFile();
 private:
   BOOM::Map<BOOM::String,BOOM::String> dict;
   const char *charLookupOrDie(BOOM::String attr);
