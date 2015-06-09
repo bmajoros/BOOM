@@ -1207,3 +1207,16 @@ $(OBJ)/CodonIterator.o:\
 	$(CC) $(CFLAGS) -o $(OBJ)/CodonIterator.o -c \
 		CodonIterator.C
 #---------------------------------------------------------
+
+#--------------------------------------------------------
+$(OBJ)/map-coord.o:\
+		map-coord.C
+	$(CC) $(CFLAGS) -o $(OBJ)/map-coord.o -c \
+		map-coord.C
+#---------------------------------------------------------
+map-coord: \
+		$(OBJ)/map-coord.o
+	$(CC) $(LDFLAGS) -o map-coord \
+		$(OBJ)/map-coord.o \
+		-lgsl -lm -lgslcblas -L. -lBOOM 
+#---------------------------------------------
