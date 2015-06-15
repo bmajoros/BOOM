@@ -16,6 +16,7 @@ public:
   Interval(int begin,int end);
   int getBegin() const;
   int getEnd() const;
+  int length() const { return end-begin; }
   void setBegin(int);
   void setEnd(int);
   bool isEmpty() const;
