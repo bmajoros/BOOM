@@ -94,3 +94,16 @@ char GffGene::getStrand() const
 }
 
 
+
+
+GffTranscript *GffGene::longestTranscript()
+{
+  const int N=transcripts.size();
+  if(N<1) throw "GffGene.C: gene has no transcripts";
+  int longest=0;
+  for(int i=1 ; i<N ; ++i)
+    if(transcripts[i]->getExtent()>transcripts[longest]->getExtent()) longest=i;
+  return transcripts[longest];
+}
+
+

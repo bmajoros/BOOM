@@ -21,6 +21,7 @@ public:
   void addTranscript(GffTranscript *);
   int numTranscripts() const;
   GffTranscript &getIthTranscript(int i);
+  GffTranscript *longestTranscript();
   int getBegin() const;
   int getEnd() const;
   char getStrand() const;
