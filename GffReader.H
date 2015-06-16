@@ -39,6 +39,7 @@ public:
   static Vector<GffGene> *loadGenes(const String &filename);
   static Map<String,Vector<GffGene> > *genesByChrom(const String &filename);
   static TranscriptList *loadTranscripts(const String &filename);
+  static GffTranscript *longestTranscript(const String &filename);
   Map<String,TranscriptList*> *loadByContig(); // organized by substrate
   Map<String,Vector<GffFeature*> > *featuresBySubstrate();
 private:

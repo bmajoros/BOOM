@@ -41,6 +41,7 @@ public:
   double getScore() const;
   int getBegin() const;
   int getEnd() const;
+  int getExtent() const; // genomic length (unspliced)
   void addExon(BOOM::GffExon *);
   void printOn(ostream &) const;
   void setScore(double);

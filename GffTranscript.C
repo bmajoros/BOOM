@@ -342,6 +342,13 @@ int BOOM::GffTranscript::getSplicedLength() const
 
 
 
+int GffTranscript::getExtent() const
+{
+  return end-begin;
+}
+
+
+
 bool TranscriptComparator::less(BOOM::GffTranscript *&a,
 				BOOM::GffTranscript *&b) 
 {

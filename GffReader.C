@@ -291,3 +291,21 @@ Map<String,Vector<GffGene> > *GffReader::genesByChrom(const String &filename)
 }
 
 
+
+GffTranscript *GffReader::longestTranscript(const String &filename)
+{
+  TranscriptList &transcripts=*loadTranscripts(filename);
+  const int N=transcripts.size();
+  if(N<1) throw filename+" contains no transcripts";
+  int longest=0;
+  for(int i=1 ; i<N ; ++i)
+    if(transcripts[i]->getExtent()>transcripts[longest]->getExtent()) longest=i;
+  for(int i=0 ; i<N ; ++i)
+    if(i!=longest) delete transcripts[i];
+  GffTranscript *ret=transcripts[longest];
+  delete &transcripts;
+  return ret;
+}
+
+
+
