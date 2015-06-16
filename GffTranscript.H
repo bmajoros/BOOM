@@ -30,6 +30,7 @@ public:
   inline int getNumExons() const { return exons.size(); }
   inline int numExons() const { return getNumExons(); }
   BOOM::GffExon &getIthExon(int);
+  void deleteIthExon(int);
   BOOM::GffFeature *getStartCodon();
   BOOM::GffFeature *getStopCodon();
   char getStrand();

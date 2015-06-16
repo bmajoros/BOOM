@@ -349,6 +349,13 @@ int GffTranscript::getExtent() const
 
 
 
+void GffTranscript::deleteIthExon(int i)
+{
+  exons.cut(i);
+}
+
+
+
 bool TranscriptComparator::less(BOOM::GffTranscript *&a,
 				BOOM::GffTranscript *&b) 
 {
