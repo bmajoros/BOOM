@@ -73,6 +73,9 @@ BandedSmithWaterman<FLT_TYP>::BandedSmithWaterman(Alphabet &alphabet,
   if(s1.getLength()<1 || s2.getLength()<1)
     throw "Aligning to a zero-length sequence in BandedSmithWaterman::\
 BandedSmithWaterman";
+  if(bandWidth<0) throw "negative bandwidth";
+  if(bandWidth>s1.getLength()) bandWidth=s1.getLength();
+  if(bandWidth>s2.getLength()) bandWidth=s2.getLength();
 
   //cout<<"matrix size: "<<alignmentMatrix.getMatrixSize()<<" bytes"<<endl;
 }
