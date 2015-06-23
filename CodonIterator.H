@@ -34,6 +34,7 @@ class CodonIterator {
 public:
   CodonIterator(const GffTranscript &,const String &substrate);
   bool nextCodon(Codon &);
+  bool more() const;
 protected:
   const GffTranscript &transcript;
   const String &substrate;

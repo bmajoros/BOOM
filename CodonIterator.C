@@ -80,4 +80,13 @@ bool CodonIterator::nextCodon(Codon &codon)
 
 
 
+bool CodonIterator::more() const
+{
+  if(!currentExon) return false;
+  const int L=transcript.getSplicedLength();
+  const int remaining=L-splicedPos;
+  return remaining>=3;
+}
+
+
 

@@ -73,7 +73,7 @@ Interval Interval::intersect(const Interval &other) const
 void Interval::intersect(const Interval &other,Interval &into) const
 {
   int b=max(begin,other.begin);
-  int e=max(end,other.end);
+  int e=min(end,other.end);
   if(b>=e) b=e=-1;
   into.begin=b; 
   into.end=e;
