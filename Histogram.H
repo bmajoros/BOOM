@@ -19,6 +19,7 @@ public:
   typedef double PROBABILITY;
   Histogram(T minValue,T maxValue,int numBins,float pseudocount);
   Histogram(const BOOM::String &filename);
+  Histogram(istream &);
   void addCounts(BOOM::Vector<T> &);
   void addPoint(T);
   void normalize();
@@ -31,7 +32,8 @@ public:
   T getMax() const;
   void getBinBoundaries(int binNum,T &binMin,T &binMax) const;
   void divideBy(const Histogram<T> &other);
-  void save(const BOOM::String &filename);
+  void save(const BOOM::String &filename) const;
+  void save(ostream &) const;
   void useLogs();
   double sum() const;
   double getBinSize() const;
@@ -41,8 +43,8 @@ public:
 protected:
   BOOM::Array1D<double> bins;
   T minValue, maxValue, binSize;
-
   void load(const BOOM::String &filename);
+  void load(istream &);
 };
 }
 using namespace BOOM;
@@ -208,10 +210,18 @@ void Histogram<T>::divideBy(const Histogram<T> &other)
 
 
 template<class T>
-void Histogram<T>::save(const BOOM::String &filename)
+void Histogram<T>::save(const BOOM::String &filename) const
 {
   ofstream os(filename.c_str());
   if(!os.good()) throw BOOM::String("Can't write into file: ")+filename;
+  save(os);
+}
+
+
+
+template<class T>
+void Histogram<T>::save(ostream &os) const
+{
   int n=bins.size();
   os<<minValue<<"\t"<<maxValue<<"\t"<<n<<"\t"<<binSize<<endl;
   T binBegin=minValue;
@@ -230,6 +240,14 @@ void Histogram<T>::load(const BOOM::String &filename)
 {
   ifstream is(filename.c_str());
   if(!is.good()) throw BOOM::String("Can't open file: ")+filename;
+  load(is);
+}
+
+
+
+template<class T>
+void Histogram<T>::load(istream &is)
+{
   int numBins;
   is>>minValue>>maxValue>>numBins>>binSize;
   bins.resize(numBins);

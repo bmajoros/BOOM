@@ -30,6 +30,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/HistogramArray.o \
 	$(OBJ)/CodonIterator.o \
 	$(OBJ)/Interval.o \
 	$(OBJ)/GCF.o \
@@ -156,6 +157,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/HistogramArray.o \
 	$(OBJ)/CodonIterator.o \
 	$(OBJ)/Interval.o \
 	$(OBJ)/GCF.o \
@@ -1198,16 +1200,12 @@ $(OBJ)/Interval.o:\
 		Interval.H
 	$(CC) $(CFLAGS) -o $(OBJ)/Interval.o -c \
 		Interval.C
-#---------------------------------------------------------
-
 #--------------------------------------------------------
 $(OBJ)/CodonIterator.o:\
 		CodonIterator.C\
 		CodonIterator.H
 	$(CC) $(CFLAGS) -o $(OBJ)/CodonIterator.o -c \
 		CodonIterator.C
-#---------------------------------------------------------
-
 #--------------------------------------------------------
 $(OBJ)/map-coord.o:\
 		map-coord.C
@@ -1219,4 +1217,12 @@ map-coord: \
 	$(CC) $(LDFLAGS) -o map-coord \
 		$(OBJ)/map-coord.o \
 		-lgsl -lm -lgslcblas -L. -lBOOM 
-#---------------------------------------------
+#--------------------------------------------------------
+$(OBJ)/HistogramArray.o:\
+		HistogramArray.C\
+		HistogramArray.H
+	$(CC) $(CFLAGS) -o $(OBJ)/HistogramArray.o -c \
+		HistogramArray.C
+#---------------------------------------------------------
+
+

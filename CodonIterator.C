@@ -63,6 +63,7 @@ bool CodonIterator::nextCodon(Codon &codon)
   while(codon.codon.length()<3) {
     const int substratePos=exonBegin+posWithinExon;
     codon.codon+=substrate[substratePos];
+    //cout<<"added global coord "<<substratePos<<endl;//###
     ++posWithinExon;
     ++splicedPos;
     if(posWithinExon>=exonLen) {
