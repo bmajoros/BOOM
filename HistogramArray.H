@@ -21,7 +21,8 @@ public:
 		 double pseudocount=0.0);
   virtual ~HistogramArray();
   void save(const String &filename);
-  Histogram<double> &operator[](int) const;
+  const Histogram<double> &operator[](int) const;
+  Histogram<double> &operator[](int);
 protected:
   Array1D<Histogram<double>*> array;
   void load(const String &filename);

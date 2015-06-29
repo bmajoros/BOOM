@@ -24,7 +24,7 @@ HistogramArray::HistogramArray(int numHistograms,double minValue,
 {
   array.resize(numHistograms);
   for(int i=0 ; i<numHistograms ; ++i) {
-    array[i]=new Histogram(minValue,maxValue,numBins,pseudocount);
+    array[i]=new Histogram<double>(minValue,maxValue,numBins,pseudocount);
   }
 }
 
@@ -48,9 +48,16 @@ void HistogramArray::save(const String &filename)
 
 
 
-Histogram<double> &HistogramArray::operator[](int i) const
+Histogram<double> &HistogramArray::operator[](int i)
 {
-  return array[i];
+  return *array[i];
+}
+
+
+
+const Histogram<double> &HistogramArray::operator[](int i) const
+{
+  return *array[i];
 }
 
 
@@ -62,7 +69,7 @@ void HistogramArray::load(const String &filename)
   is>>N;
   array.resize(N);
   for(int i=0 ; i<N ; ++i)
-    array[i]=new Histogram(is);
+    array[i]=new Histogram<double>(is);
 }
 
 
