@@ -105,7 +105,6 @@ libBOOM.a:\
 	$(OBJ)/GffGene.o \
 	$(OBJ)/Graph.o \
 	$(OBJ)/Hashpjw.o \
-	$(OBJ)/Histogram.o \
 	$(OBJ)/HugeFastaReader.o \
 	$(OBJ)/IncidenceGraph.o \
 	$(OBJ)/IndexedFasta.o \
@@ -233,7 +232,6 @@ libBOOM.a:\
 	$(OBJ)/Graph.o \
 	$(OBJ)/GslPermutation.o \
 	$(OBJ)/Hashpjw.o \
-	$(OBJ)/Histogram.o \
 	$(OBJ)/HugeFastaReader.o \
 	$(OBJ)/IncidenceGraph.o \
 	$(OBJ)/IndexedFasta.o \
@@ -675,12 +673,6 @@ $(OBJ)/Hashpjw.o:\
 		$(BOOM)/Hashpjw.C
 	$(CC) $(CFLAGS) -o $(OBJ)/Hashpjw.o -c \
 		$(BOOM)/Hashpjw.C
-#---------------------------------------------------------
-$(OBJ)/Histogram.o:\
-		$(BOOM)/Histogram.H \
-		$(BOOM)/Histogram.C
-	$(CC) $(CFLAGS) -o $(OBJ)/Histogram.o -c \
-		$(BOOM)/Histogram.C
 #---------------------------------------------------------
 $(OBJ)/HugeFastaReader.o:\
 		$(BOOM)/HugeFastaReader.H \

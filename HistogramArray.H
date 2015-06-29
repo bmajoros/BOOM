@@ -23,6 +23,7 @@ public:
   void save(const String &filename);
   const Histogram<double> &operator[](int) const;
   Histogram<double> &operator[](int);
+  void normalize();
 protected:
   Array1D<Histogram<double>*> array;
   void load(const String &filename);

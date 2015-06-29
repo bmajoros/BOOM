@@ -86,6 +86,14 @@ Histogram<T>::Histogram(const BOOM::String &filename)
 
 
 template<class T>
+Histogram<T>::Histogram(istream &is)
+{
+  load(is);
+}
+
+
+
+template<class T>
 double Histogram<T>::getBinSize() const
 {
   return binSize;

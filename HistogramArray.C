@@ -10,6 +10,7 @@
 using namespace std;
 using namespace BOOM;
 
+static Histogram<double> dummy(0,0,0,0);
 
 HistogramArray::HistogramArray(const String &filename)
 {
@@ -41,9 +42,12 @@ void HistogramArray::save(const String &filename)
 {
   ofstream os(filename.c_str());
   const int N=array.size();
+  os<<"HistogramArray"<<endl;
   os<<N<<endl;
-  for(int i=0 ; i<N ; ++i)
+  for(int i=0 ; i<N ; ++i) {
+    os<<"Histogram #"<<(i+1)<<endl;
     array[i]->save(os);
+  }
 }
 
 
@@ -64,13 +68,25 @@ const Histogram<double> &HistogramArray::operator[](int i) const
 
 void HistogramArray::load(const String &filename)
 {
+  String line;
   ifstream is(filename.c_str());
+  line.getline(is); // "HistogramArray"
   int N;
   is>>N;
   array.resize(N);
-  for(int i=0 ; i<N ; ++i)
+  for(int i=0 ; i<N ; ++i) {
+    line.getline(is); // "Histogram"
     array[i]=new Histogram<double>(is);
+  }
 }
 
+
+
+void HistogramArray::normalize()
+{
+  const int N=array.size();
+  for(int i=0 ; i<N ; ++i)
+    array[i]->normalize();
+}
 
 
