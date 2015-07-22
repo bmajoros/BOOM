@@ -30,3 +30,21 @@ void BOOM::Pipe::close()
     pclose(fp);
   fp=NULL;
 }
+
+
+
+GunzipPipe::GunzipPipe(const String &infile)
+  : Pipe(String("cat ")+infile+" | gunzip","r")
+{
+  // ctor
+}
+
+
+
+GzipPipe::GzipPipe(const String &outfile)
+  : Pipe(String("gzip > "+outfile),"w")
+{
+}
+
+
+

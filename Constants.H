@@ -74,7 +74,8 @@ inline double safeAdd(double a,double b,double c,double d)
   return a+b+c+d;
 }
 
-#ifdef feenableexcept 
+//#ifdef feenableexcept 
+#ifdef __USE_GNU
 inline void catchFloatOverflow()
 {
   feenableexcept(FE_OVERFLOW);

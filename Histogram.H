@@ -257,11 +257,26 @@ template<class T>
 void Histogram<T>::load(istream &is)
 {
   int numBins;
-  is>>minValue>>maxValue>>numBins>>binSize;
+  String line;
+  line.getline(is);
+  Vector<String> fields;
+  line.getFields(fields);
+  if(fields.size()<4) throw line+" : error in Histogram file";
+  minValue=fields[0].asFloat();
+  maxValue=fields[1].asFloat();
+  numBins=fields[2].asInt();
+  binSize=fields[3].asFloat();
   bins.resize(numBins);
   T begin, end;
-  for(int i=0 ; i<numBins ; ++i)
-    is>>begin>>end>>bins[i];
+  for(int i=0 ; i<numBins ; ++i) {
+    line.getline(is);
+    fields.clear();
+    line.getFields(fields);
+    if(fields.size()<3) throw line+" : error in Histogram file";
+    begin=fields[0].asFloat();
+    end=fields[1].asFloat();
+    bins[i]=fields[2].asFloat();
+  }
 }
 
 

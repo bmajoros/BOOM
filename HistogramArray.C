@@ -71,8 +71,8 @@ void HistogramArray::load(const String &filename)
   String line;
   ifstream is(filename.c_str());
   line.getline(is); // "HistogramArray"
-  int N;
-  is>>N;
+  line.getline(is);
+  int N=line.asInt();
   array.resize(N);
   for(int i=0 ; i<N ; ++i) {
     line.getline(is); // "Histogram"

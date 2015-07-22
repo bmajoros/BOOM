@@ -9,14 +9,23 @@
 #define INCL_BOOM_Pipe_H
 #include "File.H"
 using namespace std;
+using namespace BOOM;
 
 namespace BOOM {
-class Pipe : public BOOM::File
-{
+
+class Pipe : public BOOM::File {
 public:
   Pipe(const BOOM::String &command,const BOOM::String &mode);
   virtual void close();
 };
-}
 
+class GunzipPipe : public Pipe {
+  GunzipPipe(const String &infile);
+};
+
+class GzipPipe : public Pipe {
+  GzipPipe(const String &outfile);
+};
+
+}
 #endif
