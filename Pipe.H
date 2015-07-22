@@ -20,10 +20,12 @@ public:
 };
 
 class GunzipPipe : public Pipe {
+public:
   GunzipPipe(const String &infile);
 };
 
 class GzipPipe : public Pipe {
+public:
   GzipPipe(const String &outfile);
 };
 
