@@ -44,6 +44,7 @@ BOOM::String BOOM::Time::elapsedTime()
 
 float BOOM::Time::elapsedSeconds()
 {
+  gettimeofday(&timevalStop,NULL);
   float seconds=timevalStop.tv_sec-timevalStart.tv_sec;
   float uSec=timevalStop.tv_usec-timevalStart.tv_usec;
   

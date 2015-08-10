@@ -12,6 +12,12 @@
 using namespace std;
 using namespace BOOM;
 
+enum HAPLOID_GENOTYPE {
+  HG_REF=0,
+  HG_ALT=1,
+  HG_NONE=-1
+};
+
 struct GcfVariant { // biallelic only!
   String id;
   String chr;

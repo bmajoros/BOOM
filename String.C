@@ -233,6 +233,7 @@ BOOM::String BOOM::String::substring(int begin,int len) const
 
 void BOOM::String::getFields(Vector<String> &into,const char *seps) const
 {
+  into.clear();
   BOOM::String &self=const_cast<BOOM::String&>(*this);
   BOOM::StrTokenizer tokenizer(self,seps);
   tokenizer.getTokenStrings(into);
