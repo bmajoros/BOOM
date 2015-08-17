@@ -152,15 +152,17 @@ void BOOM::GffExon::initExonTypeNames()
   exonTypeNames["UTR"]=ET_UTR;
   exonTypeNames["UTR5"]=ET_UTR5;
   exonTypeNames["UTR3"]=ET_UTR3;
-  exonTypeNames["single-UTR"]=ET_SINGLE_UTR;
-  exonTypeNames["initial-UTR5"]=  ET_INITIAL_UTR5;
-  exonTypeNames["internal-UTR5"]= ET_INTERNAL_UTR5;
-  exonTypeNames["final-UTR5"]=    ET_FINAL_UTR5;
-  exonTypeNames["single-UTR5"]=   ET_SINGLE_UTR5;
-  exonTypeNames["initial-UTR3"]=  ET_INITIAL_UTR3;
-  exonTypeNames["internal-UTR3"]= ET_INTERNAL_UTR3;
-  exonTypeNames["final-UTR3"]=    ET_FINAL_UTR3;
-  exonTypeNames["single-UTR3"]=   ET_SINGLE_UTR3;
+  exonTypeNames["five_prime_UTR"]= ET_UTR5;
+  exonTypeNames["three_prime_UTR"]=ET_UTR3;
+  exonTypeNames["single-UTR"]=     ET_SINGLE_UTR;
+  exonTypeNames["initial-UTR5"]=   ET_INITIAL_UTR5;
+  exonTypeNames["internal-UTR5"]=  ET_INTERNAL_UTR5;
+  exonTypeNames["final-UTR5"]=     ET_FINAL_UTR5;
+  exonTypeNames["single-UTR5"]=    ET_SINGLE_UTR5;
+  exonTypeNames["initial-UTR3"]=   ET_INITIAL_UTR3;
+  exonTypeNames["internal-UTR3"]=  ET_INTERNAL_UTR3;
+  exonTypeNames["final-UTR3"]=     ET_FINAL_UTR3;
+  exonTypeNames["single-UTR3"]=    ET_SINGLE_UTR3;
 }
 
 

@@ -370,6 +370,7 @@ void GffTranscript::getCDSbeginEnd(int &cdsBegin,int &cdsEnd)
 
 
 
+
 void BOOM::GffTranscript::loadSequence(BOOM::IndexedFasta &substrate)
 {
   int numExons=exons.size();

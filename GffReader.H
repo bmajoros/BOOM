@@ -43,9 +43,11 @@ public:
   Map<String,TranscriptList*> *loadByContig(); // organized by substrate
   Map<String,Vector<GffFeature*> > *featuresBySubstrate();
 private:
-  Set<String> exonTypes;
+  Set<String> exonTypes, UTRtypes;
   Regex commentPattern, transgrpRegex, geneIdRegex;
   File file;
+  void parseExon(GffFeature *,Map<String,GffTranscript*> &);
+  void parseUTR(GffFeature *,Map<String,GffTranscript*> &);
 };
 }
 
