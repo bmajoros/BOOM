@@ -31,6 +31,32 @@ int CigarAlignment::operator[](int i) const
 
 
 
+int CigarAlignment::mapApproximate(int i,Direction prefer) const
+{
+  const int L=A.size();
+  switch(prefer) {
+  case DIR_LEFT:
+    for(int j=i ; j>=0 ; --j)
+      if(A[j]!=CIGAR_UNDEFINED) return A[j];
+    for(int j=i+1 ; j<L ; ++j)
+      if(A[j]!=CIGAR_UNDEFINED) return A[j];
+    break;
+  case DIR_RIGHT:
+    for(int j=i+1 ; j<L ; ++j)
+      if(A[j]!=CIGAR_UNDEFINED) return A[j];
+   for(int j=i ; j>=0 ; --j)
+      if(A[j]!=CIGAR_UNDEFINED) return A[j];
+  case DIR_NONE:
+    for(int j=i, k=i ; j>=0 || k<L ; --j, ++k) {
+      
+    }
+  default: throw "Bad direction in CigarAlignment::mapApproximate()";
+  }
+  return CIGAR_UNDEFINED;
+}
+
+
+
 CigarAlignment *CigarAlignment::invert(int length) const
 {
   CigarAlignment &I=*new CigarAlignment(length);

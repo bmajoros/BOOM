@@ -8,6 +8,7 @@
 #define INCL_CigarAlignment_H
 #include <iostream>
 #include "Array1D.H"
+#include "Direction.H"
 using namespace std;
 namespace BOOM {
 
@@ -18,6 +19,7 @@ public:
   CigarAlignment(int length);
   int &operator[](int);
   int operator[](int) const;
+  int mapApproximate(int,Direction prefer=DIR_NONE) const;
   CigarAlignment *invert(int length) const;
   int length() const;
 private:

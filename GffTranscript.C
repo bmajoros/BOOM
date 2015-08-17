@@ -36,6 +36,9 @@ GffTranscript::GffTranscript(const GffTranscript &other)
   for(Vector<GffExon*>::const_iterator cur=other.exons.begin(), end=
 	other.exons.end() ; cur!=end ; ++cur)
     exons.push_back(new GffExon(**cur));
+  for(Vector<GffExon*>::const_iterator cur=other.UTR.begin(), end=
+	other.UTR.end() ; cur!=end ; ++cur)
+    UTR.push_back(new GffExon(**cur));
 }
 
 
