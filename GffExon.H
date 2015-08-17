@@ -10,22 +10,33 @@
 #include "Map.H"
 #include "GffFeature.H"
 #include "IndexedFasta.H"
+#include "Strand.H"
 using namespace std;
 
 namespace BOOM {
-enum ExonType
-  {
-    ET_EXON,
-    ET_INITIAL_EXON,
-    ET_INTERNAL_EXON,
-    ET_FINAL_EXON,
-    ET_SINGLE_EXON
-  };
+enum ExonType {
+  ET_EXON, // nonspecific
+  ET_INITIAL_EXON, // ATG to GT
+  ET_INTERNAL_EXON,// AG to GT
+  ET_FINAL_EXON,   // AG to TGA
+  ET_SINGLE_EXON,  // ATG to TGA
+  ET_UTR, // nonspecific
+  ET_UTR5,// nonspecific
+  ET_UTR3,// nonspecific
+  ET_SINGLE_UTR,   // TSS to TES (entire gene)
+  ET_INITIAL_UTR5, // TSS to GT
+  ET_INTERNAL_UTR5,// AG to GT
+  ET_FINAL_UTR5,   // AG to ATG
+  ET_SINGLE_UTR5,  // TSS to ATG
+  ET_INITIAL_UTR3, // TGA to GT
+  ET_INTERNAL_UTR3,// AG to GT
+  ET_FINAL_UTR3,   // AG to TES
+  ET_SINGLE_UTR3   // TGA to TES
+};
 class GffTranscript;
 ostream &operator<<(ostream &,ExonType);
 
-class ExonTypeInitializer
-{
+class ExonTypeInitializer {
 private:
   static ExonTypeInitializer e;
   ExonTypeInitializer();
@@ -43,7 +54,7 @@ public:
   ExonType getExonType() const;
   void changeExonType(ExonType);
   BOOM::GffTranscript &getParent();
-  char getStrand() const;
+  Strand getStrand() const;
   const BOOM::String &getSource() const;
   const BOOM::String &getSubstrate() const;
   int getBegin();

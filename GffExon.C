@@ -52,6 +52,19 @@ ostream &BOOM::operator<<(ostream &os,ExonType t)
     case ET_INTERNAL_EXON: os<<"internal-exon";   break;
     case ET_FINAL_EXON:    os<<"final-exon";      break;
     case ET_SINGLE_EXON:   os<<"single-exon";     break;
+
+    case ET_UTR:           os<<"UTR";             break;
+    case ET_UTR5:          os<<"UTR5";            break;
+    case ET_UTR3:          os<<"UTR3";            break;
+    case ET_SINGLE_UTR:    os<<"single-UTR";      break;
+    case ET_INITIAL_UTR5:  os<<"initial-UTR5";    break;
+    case ET_INTERNAL_UTR5: os<<"internal-UTR5";   break;
+    case ET_FINAL_UTR5:    os<<"final-UTR5";      break;
+    case ET_SINGLE_UTR5:   os<<"single-UTR5";     break;
+    case ET_INITIAL_UTR3:  os<<"initial-UTR3";    break;
+    case ET_INTERNAL_UTR3: os<<"internal-UTR3";   break;
+    case ET_FINAL_UTR3:    os<<"final-UTR3";      break;
+    case ET_SINGLE_UTR3:   os<<"single-UTR3";     break;
     }
   return os;
 }
@@ -79,7 +92,7 @@ BOOM::GffTranscript &BOOM::GffExon::getParent()
 
 
 
-char BOOM::GffExon::getStrand() const
+Strand BOOM::GffExon::getStrand() const
 {
   return parent.getStrand();
 }
@@ -131,10 +144,23 @@ int BOOM::GffExon::getEnd()
 void BOOM::GffExon::initExonTypeNames()
 {
   exonTypeNames["exon"]=ET_EXON;
-  exonTypeNames["initial-exon"]=ET_INITIAL_EXON;
-  exonTypeNames["final-exon"]=ET_FINAL_EXON;
-  exonTypeNames["internal-exon"]=ET_INTERNAL_EXON;
-  exonTypeNames["single-exon"]=ET_SINGLE_EXON;
+  exonTypeNames["initial-exon"]=  ET_INITIAL_EXON;
+  exonTypeNames["final-exon"]=    ET_FINAL_EXON;
+  exonTypeNames["internal-exon"]= ET_INTERNAL_EXON;
+  exonTypeNames["single-exon"]=   ET_SINGLE_EXON;
+
+  exonTypeNames["UTR"]=ET_UTR;
+  exonTypeNames["UTR5"]=ET_UTR5;
+  exonTypeNames["UTR3"]=ET_UTR3;
+  exonTypeNames["single-UTR"]=ET_SINGLE_UTR;
+  exonTypeNames["initial-UTR5"]=  ET_INITIAL_UTR5;
+  exonTypeNames["internal-UTR5"]= ET_INTERNAL_UTR5;
+  exonTypeNames["final-UTR5"]=    ET_FINAL_UTR5;
+  exonTypeNames["single-UTR5"]=   ET_SINGLE_UTR5;
+  exonTypeNames["initial-UTR3"]=  ET_INITIAL_UTR3;
+  exonTypeNames["internal-UTR3"]= ET_INTERNAL_UTR3;
+  exonTypeNames["final-UTR3"]=    ET_FINAL_UTR3;
+  exonTypeNames["single-UTR3"]=   ET_SINGLE_UTR3;
 }
 
 
@@ -178,6 +204,8 @@ void BOOM::GffExon::loadSequence(BOOM::IndexedFasta &substrate)
 
 void BOOM::GffExon::loadSequence(const BOOM::String &substrate)
 {
+  if(end>substrate.length()) end=substrate.length();
+  if(begin<0) begin=0;
   sequence=substrate.substring(begin,end-begin);
   sequence.toupper();
   if(getStrand()=='-')

@@ -44,8 +44,10 @@ BOOM::GffTranscript::~GffTranscript()
 {
   // dtor
 
-  BOOM::Vector<BOOM::GffExon*>::iterator cur=exons.begin(), end=exons.end();
-  for(; cur!=end ; ++cur) delete *cur;
+  for(BOOM::Vector<BOOM::GffExon*>::iterator cur=exons.begin(), end=exons.end()
+	; cur!=end ; ++cur) delete *cur;
+  for(BOOM::Vector<BOOM::GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur) delete *cur;
   delete startCodon;
   delete stopCodon;
 }
@@ -156,6 +158,16 @@ void BOOM::GffTranscript::addExon(BOOM::GffExon *exon)
 
 
 
+void BOOM::GffTranscript::addUTR(BOOM::GffExon *exon)
+{
+  UTR.push_back(exon);
+  int exonBegin=exon->getBegin(), exonEnd=exon->getEnd();
+  if(begin<0 || exonBegin<begin) begin=exonBegin;
+  if(end<0 || exonEnd>end) end=exonEnd;
+}
+
+
+
 void BOOM::GffTranscript::setScore(double s)
 {
   score=s;
@@ -203,20 +215,45 @@ void BOOM::GffTranscript::sortExons()
   int numExons=exons.size();
   ExonComparator comp;
   BOOM::VectorSorter<BOOM::GffExon*> sorter(exons,comp);
-  switch(strand)
-    {
-    case '+': 
-      sorter.sortAscendInPlace(); 
+  switch(strand) {
+  case '+': 
+    sorter.sortAscendInPlace();
+    if(UTR.size()==0) {
       begin=exons[0]->getBegin();
       end=exons[numExons-1]->getEnd();
-      break;
-    case '-': 
-      sorter.sortDescendInPlace(); 
+    }
+    break;
+  case '-': 
+    sorter.sortDescendInPlace(); 
+    if(UTR.size()==0) {
       begin=exons[numExons-1]->getBegin();
       end=exons[0]->getEnd();
-      break;
-      //default:  throw "strand is undefined in BOOM::GffTranscript::sortExons";
     }
+    break;
+  default:  throw "strand is undefined in GffTranscript::sortExons()";
+  }
+}
+
+
+
+void BOOM::GffTranscript::sortUTR()
+{
+  int numUTR=UTR.size();
+  ExonComparator comp;
+  BOOM::VectorSorter<BOOM::GffExon*> sorter(UTR,comp);
+  switch(strand) {
+  case '+': 
+    sorter.sortAscendInPlace(); 
+    begin=UTR[0]->getBegin();
+    end=UTR[numUTR-1]->getEnd();
+    break;
+  case '-': 
+    sorter.sortDescendInPlace(); 
+    begin=UTR[numUTR-1]->getBegin();
+    end=UTR[0]->getEnd();
+    break;
+  default:  throw "strand is undefined in GffTranscript::sortUTR()";
+  }
 }
 
 
@@ -253,12 +290,10 @@ void BOOM::GffTranscript::toGff(ostream &os)
 void BOOM::GffTranscript::setExonTypes()
 {
   int numExons=exons.size();
-  if(numExons==1)
-    {
-      exons[0]->changeExonType(ET_SINGLE_EXON);
-      return;
-    }
-
+  if(numExons==1) {
+    exons[0]->changeExonType(ET_SINGLE_EXON);
+    return;
+  }
   exons[0]->changeExonType(ET_INITIAL_EXON);
   exons[numExons-1]->changeExonType(ET_FINAL_EXON);
   int nMinus1=numExons-1;
@@ -268,12 +303,83 @@ void BOOM::GffTranscript::setExonTypes()
 
 
 
+void BOOM::GffTranscript::setUTRtypes()
+{
+  // First, hand the case of a single UTR (no coding segment)
+  int numUTR=UTR.size();
+  if(numUTR==1) {
+    UTR[0]->changeExonType(ET_SINGLE_UTR);
+    return;
+  }
+
+  // Assign segments to 5' or 3' UTR
+  sortUTR();
+  int cdsBegin, cdsEnd;
+  getCDSbeginEnd(cdsBegin,cdsEnd); // begin<end
+  Vector<GffExon*> UTR5, UTR3;
+  if(strand==PLUS_STRAND) {
+    for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+	cur!=end ; ++cur) {
+      GffExon *exon=*cur;
+      if(exon->getBegin()<cdsBegin) UTR5.push_back(exon);
+      else UTR3.push_back(exon);
+    }
+  }
+  else {
+    for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+	cur!=end ; ++cur) {
+      GffExon *exon=*cur;
+      if(exon->getEnd()>cdsEnd) UTR5.push_back(exon);
+      else UTR3.push_back(exon);
+    }
+  }
+
+  // Assign initial/internal/final
+  const int numUTR5=UTR5.size(), numUTR3=UTR3.size();
+  if(numUTR5==1) UTR5[0]->changeExonType(ET_SINGLE_UTR5);
+  else {
+    UTR5[0]->changeExonType(ET_INITIAL_UTR5);
+    UTR5[numUTR5-1]->changeExonType(ET_FINAL_UTR5);
+    for(int i=1 ; i<numUTR5-1 ; ++i) 
+      UTR5[i]->changeExonType(ET_INTERNAL_UTR5);
+  }
+  if(numUTR3==1) UTR3[0]->changeExonType(ET_SINGLE_UTR3);
+  else {
+    UTR3[0]->changeExonType(ET_INITIAL_UTR3);
+    UTR3[numUTR3-1]->changeExonType(ET_FINAL_UTR3);
+    for(int i=1 ; i<numUTR3-1 ; ++i) 
+      UTR3[i]->changeExonType(ET_INTERNAL_UTR3);
+  }
+}
+
+
+
+void GffTranscript::getCDSbeginEnd(int &cdsBegin,int &cdsEnd)
+{
+  if(exons.size()==0) throw "No exons in GffTranscript::getCDSbeginEnd()";
+  cdsBegin=exons[0]->getBegin();
+  cdsEnd=exons[0]->getEnd();
+  for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end()
+	; cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    const int exonBegin=exon->getBegin(), exonEnd=exon->getEnd();
+    if(exonBegin<cdsBegin) cdsBegin=exonBegin;
+    if(exonEnd>cdsEnd) cdsEnd=exonEnd;
+  }
+}
+
+
+
 void BOOM::GffTranscript::loadSequence(BOOM::IndexedFasta &substrate)
 {
   int numExons=exons.size();
-  for(int i=0 ; i<numExons ; ++i)
-    {
+  for(int i=0 ; i<numExons ; ++i) {
       BOOM::GffExon *exon=exons[i];
+      exon->loadSequence(substrate);
+    }
+  int numUTR=UTR.size();
+  for(int i=0 ; i<numUTR ; ++i) {
+      BOOM::GffExon *exon=UTR[i];
       exon->loadSequence(substrate);
     }
 }
@@ -283,9 +389,13 @@ void BOOM::GffTranscript::loadSequence(BOOM::IndexedFasta &substrate)
 void BOOM::GffTranscript::loadSequence(const BOOM::String &substrate)
 {
   int numExons=exons.size();
-  for(int i=0 ; i<numExons ; ++i)
-    {
+  for(int i=0 ; i<numExons ; ++i) {
       BOOM::GffExon *exon=exons[i];
+      exon->loadSequence(substrate);
+    }
+  int numUTR=UTR.size();
+  for(int i=0 ; i<numUTR ; ++i) {
+      BOOM::GffExon *exon=UTR[i];
       exon->loadSequence(substrate);
     }
 }

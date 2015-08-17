@@ -12,6 +12,7 @@
 #include "String.H"
 #include "GffExon.H"
 #include "IndexedFasta.H"
+#include "Strand.H"
 using namespace std;
 
 namespace BOOM {
@@ -27,10 +28,10 @@ public:
   void loadSequence(BOOM::IndexedFasta &);
   BOOM::String getSequence();
   int getSplicedLength() const;
-  inline int getNumExons() const { return exons.size(); }
-  inline int numExons() const { return getNumExons(); }
-  BOOM::GffExon &getIthExon(int);
-  void deleteIthExon(int);
+  inline int getNumExons() const { return exons.size(); }// coding only
+  inline int numExons() const { return getNumExons(); }// coding only
+  BOOM::GffExon &getIthExon(int); // coding only
+  void deleteIthExon(int); // coding only
   BOOM::GffFeature *getStartCodon();
   BOOM::GffFeature *getStopCodon();
   char getStrand();
@@ -40,27 +41,34 @@ public:
   const BOOM::String &getGeneId() const;
   void setGeneId(const BOOM::String &);
   double getScore() const;
-  int getBegin() const;
-  int getEnd() const;
-  int getExtent() const; // genomic length (unspliced)
-  void addExon(BOOM::GffExon *);
+  int getBegin() const; // includes UTR
+  int getEnd() const; // includes UTR
+  int getExtent() const; // genomic length (unspliced) = end-begin
+  void getCDSbeginEnd(int &begin,int &end); // begin<end
+  void addExon(BOOM::GffExon *); // coding only -- no UTR!
+  void addUTR(GffExon *);
   void printOn(ostream &) const;
   void setScore(double);
   void setStartCodon(BOOM::GffFeature *);
   void setStopCodon(BOOM::GffFeature *);
   void setStrand(char);
-  void sortExons();
-  void setExonTypes();
+  void sortExons(); // translation order - coding only (no UTR)
+  void sortUTR(); // transcription order
+  void setExonTypes(); // coding only (no UTR)
+  void setUTRtypes();
   void toGff(ostream &);
   void extendFinalExonBy3(); // to include stop codon
-  BOOM::Vector<BOOM::GffExon*>::iterator getExons() {return exons.begin();}
+  BOOM::Vector<BOOM::GffExon*>::iterator getExons() { return exons.begin();}
   BOOM::Vector<BOOM::GffExon*>::iterator getExonsEnd() {return exons.end();}
+  BOOM::Vector<BOOM::GffExon*>::iterator getUTR() { return UTR.begin();}
+  BOOM::Vector<BOOM::GffExon*>::iterator getUTRend() {return UTR.end();}
 private:
-  int begin, end;  
+  int begin, end;  // actually coordinates of CDS portion of gene
   double score;
-  char strand;
+  Strand strand;
   bool hasScore;
-  BOOM::Vector<BOOM::GffExon*> exons;
+  BOOM::Vector<BOOM::GffExon*> exons; // actually CDS portions of exons
+  BOOM::Vector<BOOM::GffExon*> UTR;
   BOOM::String transcriptId, geneId;
   BOOM::String substrate;    
   BOOM::String source;       
