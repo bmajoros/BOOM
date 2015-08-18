@@ -44,10 +44,11 @@ public:
   Map<String,Vector<GffFeature*> > *featuresBySubstrate();
 private:
   Set<String> exonTypes, UTRtypes;
-  Regex commentPattern, transgrpRegex, geneIdRegex;
+  Regex commentPattern, transgrpRegex, geneIdRegex, parentRegex;
   File file;
   void parseExon(GffFeature *,Map<String,GffTranscript*> &);
   void parseUTR(GffFeature *,Map<String,GffTranscript*> &);
+  void parseIDs(GffFeature *,String &transcriptID,String &geneID);
 };
 }
 

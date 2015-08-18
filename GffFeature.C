@@ -12,6 +12,8 @@ using namespace std;
 
 
 BOOM::Regex BOOM::GffFeature::transgrpRegex("transgrp=([^;]+)");
+BOOM::Regex BOOM::GffFeature::assignRegex("(\\S+)\\s*=\\s*([^; \t\r\n]+)");
+BOOM::Regex BOOM::GffFeature::pairRegex("(\\S+)\\s+([^; \t\r\n]+)");
 
 
 BOOM::GffFeature::GffFeature(const BOOM::String &rawLine,
@@ -187,6 +189,39 @@ int BOOM::GffFeature::getFrame() const
 
 void BOOM::GffFeature::parseLine(const BOOM::String &line)
 {
+  line.getFields(allFields,"\t");
+  if(allFields.size()<8) throw String("Cannot parse GFF line: ")+line;
+  substrate=allFields[0];
+  source=allFields[1];
+  featureType=allFields[2];
+  begin=allFields[3].asInt()-1;
+  end=allFields[4].asInt();
+  if(allFields[5]==".") hasScore=false;
+  else { hasScore=true; score=allFields[5].asFloat(); }
+  strand=allFields[6][0];
+  if(allFields[7]==".") hasFrame=false;
+  else { hasFrame=true; frame=allFields[7].asInt(); }
+  if(allFields.size()>8) {
+    String extra;
+    for(int i=8 ; i<allFields.size() ; ++i) {
+      allFields[i].trimWhitespace();
+      allFields[i]=allFields[i].substitute("\"","");
+      extra+=allFields[i];
+      if(assignRegex.match(allFields[i])) 
+	setExtra(assignRegex[1],assignRegex[2]);
+      else if(pairRegex.match(allFields[i])) 
+	setExtra(pairRegex[1],pairRegex[2]);
+      if(i+1<allFields.size() && extra.lastChar()!=';')	extra+=';';
+    }
+    extra.getFields(extraFields,";");
+  }
+}
+
+
+
+/*
+void BOOM::GffFeature::parseLine(const BOOM::String &line)
+{
   BOOM::Vector<BOOM::String> extra;
   BOOM::StrTokenizer tokenizer(line);
   int fieldNum=0;
@@ -254,6 +289,7 @@ void BOOM::GffFeature::parseLine(const BOOM::String &line)
       else extraFields[extraFields.size()-1]+=(BOOM::String(" ")+field);
     }
 }
+*/
 
 
 
@@ -312,6 +348,34 @@ bool GffFeatureComparator::greater(BOOM::GffFeature *&a,BOOM::GffFeature *&b)
 bool GffFeatureComparator::equal(BOOM::GffFeature *&a,BOOM::GffFeature *&b)
 {
     return a->getBegin()==b->getBegin();
+}
+
+
+
+void GffFeature::getExtraKeys(Set<String> &into)
+{
+  extraMap.getKeys(into);
+}
+
+
+
+String GffFeature::lookupExtra(const String &key)
+{
+  return extraMap.isDefined(key) ? extraMap[key] : String("");
+}
+
+
+
+void GffFeature::setExtra(const String &key,const String &value)
+{
+  extraMap[key]=value;
+}
+
+
+
+bool GffFeature::isExtraDefined(const String &key)
+{
+  return extraMap.isDefined(key);
 }
 
 

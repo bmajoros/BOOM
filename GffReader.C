@@ -14,8 +14,9 @@ using namespace BOOM;
 
 GffReader::GffReader(const String &filename)
   : commentPattern("\\s*#.*"), 
-    transgrpRegex("(transgrp|transcript_id|ID)\\s*=?\\s*([^; \t]+)"),
-    geneIdRegex("(gene|gene_id|Parent)\\s*=?\\s*([^; \t]+)")
+    transgrpRegex("(transgrp|transcript_id|transcript)\\s*=?\\s*([^; \t]+)"),
+    geneIdRegex("(gene|gene_id)\\s*=?\\s*([^; \t]+)"),
+    parentRegex("[pP]arent\\s*=?\\s*([^; \t]+)")
 {
   if(!file.open(filename.c_str(),"rb"))
     throw String("Can't open file ")+filename;
@@ -77,8 +78,6 @@ Vector<GffTranscript*> *GffReader::loadTranscripts(const String &filename)
 
 Vector<GffTranscript*> *GffReader::loadTranscripts()
 {
-  cout<<"loadTranscripts"<<endl;
-
   // Read the features from the GFF file
   Map<String,GffTranscript*> transHash;
   while(GffFeature *f=nextFeature()) {
@@ -99,7 +98,6 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
     end=transHash.end();
   for(; cur!=end ; ++cur) {
     GffTranscript *transcript=(*cur).second;
-    cout<<"XXX "<<transcript->getTranscriptId()<<endl;
     transcript->sortExons();
     transcript->sortUTR();
     transcript->setExonTypes();
@@ -117,10 +115,29 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
 
 
 
+void GffReader::parseIDs(GffFeature *f,String &transcriptId,String &geneId)
+{
+  if(f->isExtraDefined("gene")) geneId=f->lookupExtra("gene");
+  else if(f->isExtraDefined("gene_id")) geneId=f->lookupExtra("gene_id");
+
+  if(f->isExtraDefined("transcript_id")) 
+    transcriptId=f->lookupExtra("transcript_id");
+  else if(f->isExtraDefined("transcript")) 
+    transcriptId=f->lookupExtra("transcript");
+  else if(f->isExtraDefined("transgrp")) 
+    transcriptId=f->lookupExtra("transgrp");
+  else if(f->isExtraDefined("parent")) 
+    transcriptId=f->lookupExtra("parent");
+}
+
+
+
 void GffReader::parseExon(GffFeature *f,Map<String,GffTranscript*> &transHash)
 {
-  // Parse out the gene ID, if present
-  String geneId;
+  // Parse out the gene & transcript IDs, if present
+  String geneId, transcriptId;
+  parseIDs(f,transcriptId,geneId);
+  /*
   Vector<String> &extraFields=f->getExtraFields();
   int n=extraFields.size();
   for(int i=0 ; i<n ; ++i)  
@@ -128,19 +145,18 @@ void GffReader::parseExon(GffFeature *f,Map<String,GffTranscript*> &transHash)
       geneId=geneIdRegex[2];
       geneId=geneId.substitute("\"","");
     }
-  
-  // Parse out transcript ID
   String transcriptId=extraFields[0];
   if(transgrpRegex.search(transcriptId)) {
     transcriptId=transgrpRegex[2];
     transcriptId=transcriptId.substitute("\"","");
   }
+  */
+
+  // Add this exon to the appropriate transcript
   if(!transHash.isDefined(transcriptId))
     transHash[transcriptId]=
       new GffTranscript(transcriptId,f->getSubstrate(),
 			f->getStrand(),f->getSource());
-  
-  // Add this exon to the appropriate transcript
   GffTranscript *transcript=transHash[transcriptId];
   GffExon *exon=new GffExon(*f,*transcript);
   transcript->addExon(exon);

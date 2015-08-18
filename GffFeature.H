@@ -14,8 +14,7 @@
 using namespace std;
 
 namespace BOOM {
-class GffFeature
-{
+class GffFeature {
 public:
   GffFeature(const String &rawLine,
 	     const String &substrate,
@@ -27,6 +26,10 @@ public:
   GffFeature(const String &rawLine);
   String toGff() const;
   Vector<String> &getExtraFields();
+  void getExtraKeys(Set<String> &into);
+  String lookupExtra(const String &key);
+  void setExtra(const String &key,const String &value);
+  bool isExtraDefined(const String &key);
   bool hasExtraFields() const;
   bool isFramed() const;  
   bool isScored() const;  
@@ -60,11 +63,12 @@ private:
   bool hasScore;  
   bool hasFrame;  
   Vector<String> extraFields, allFields;
+  Map<String,String> extraMap;
   String substrate;  
   String source;  
   String rawLine;  
   String featureType;  
-  static Regex transgrpRegex;
+  static Regex transgrpRegex, assignRegex, pairRegex;
   void parseLine(const String &);
 };
 

@@ -310,7 +310,6 @@ void BOOM::GffTranscript::setExonTypes()
 
 void BOOM::GffTranscript::setUTRtypes()
 {
-TRACE
   // First, handle the case of a single UTR (no coding segment)
   int numUTR=UTR.size();
   if(numUTR==0) return;
@@ -322,10 +321,13 @@ TRACE
 
   // Assign segments to 5' or 3' UTR
   sortUTR();
+TRACE
   int cdsBegin, cdsEnd;
   getCDSbeginEnd(cdsBegin,cdsEnd); // begin<end
+TRACE
   Vector<GffExon*> UTR5, UTR3;
   if(strand==PLUS_STRAND) {
+TRACE
     for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
 	cur!=end ; ++cur) {
       GffExon *exon=*cur;
@@ -334,6 +336,7 @@ TRACE
     }
   }
   else {
+TRACE
     for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
 	cur!=end ; ++cur) {
       GffExon *exon=*cur;
