@@ -128,6 +128,8 @@ void GffReader::parseIDs(GffFeature *f,String &transcriptId,String &geneId)
     transcriptId=f->lookupExtra("transgrp");
   else if(f->isExtraDefined("parent")) 
     transcriptId=f->lookupExtra("parent");
+  else if(f->isExtraDefined("Parent")) 
+    transcriptId=f->lookupExtra("Parent");
 }
 
 

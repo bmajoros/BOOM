@@ -43,6 +43,32 @@ GffTranscript::GffTranscript(const GffTranscript &other)
 
 
 
+GffTranscript &GffTranscript::operator=(const GffTranscript &other)
+{
+  begin=other.begin;
+  end=other.end;
+  score=other.score;
+  strand=other.strand;
+  hasScore=other.hasScore;
+  transcriptId=other.transcriptId;
+  geneId=other.geneId;
+  substrate=other.substrate;
+  source=other.source;
+  startCodon=NULL;
+  stopCodon=NULL;
+
+  if(other.startCodon) startCodon=new GffFeature(*other.startCodon);
+  if(other.stopCodon) stopCodon=new GffFeature(*other.stopCodon);
+  for(Vector<GffExon*>::const_iterator cur=other.exons.begin(), end=
+	other.exons.end() ; cur!=end ; ++cur)
+    exons.push_back(new GffExon(**cur));
+  for(Vector<GffExon*>::const_iterator cur=other.UTR.begin(), end=
+	other.UTR.end() ; cur!=end ; ++cur)
+    UTR.push_back(new GffExon(**cur));
+}
+
+
+
 BOOM::GffTranscript::~GffTranscript()
 {
   // dtor
@@ -431,7 +457,7 @@ BOOM::String BOOM::GffTranscript::getSequence()
 
 const BOOM::String &BOOM::GffTranscript::getGeneId() const
 {
-  return geneId;
+  return geneId.isEmpty() ? transcriptId : geneId;
 }
 
 

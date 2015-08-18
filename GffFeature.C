@@ -207,13 +207,18 @@ void BOOM::GffFeature::parseLine(const BOOM::String &line)
       allFields[i].trimWhitespace();
       allFields[i]=allFields[i].substitute("\"","");
       extra+=allFields[i];
-      if(assignRegex.match(allFields[i])) 
-	setExtra(assignRegex[1],assignRegex[2]);
-      else if(pairRegex.match(allFields[i])) 
-	setExtra(pairRegex[1],pairRegex[2]);
-      if(i+1<allFields.size() && extra.lastChar()!=';')	extra+=';';
     }
     extra.getFields(extraFields,";");
+    const int n=extraFields.size();
+    for(int i=0 ; i<n ; ++i) {
+      extraFields[i].trimWhitespace();
+      if(assignRegex.match(extraFields[i]))
+	setExtra(assignRegex[1],assignRegex[2]);
+      else if(pairRegex.match(extraFields[i])) 
+	setExtra(pairRegex[1],pairRegex[2]);
+      if(i+1<extraFields.size() && extraFields[i].lastChar()!=';') 
+	extra+=';';
+    }
   }
 }
 

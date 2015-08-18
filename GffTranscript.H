@@ -24,6 +24,7 @@ public:
 		char strand,const BOOM::String &source);
   GffTranscript(const GffTranscript &);
   virtual ~GffTranscript();
+  GffTranscript &operator=(const GffTranscript &);
   void loadSequence(const BOOM::String &substrate);
   void loadSequence(BOOM::IndexedFasta &);
   BOOM::String getSequence();
