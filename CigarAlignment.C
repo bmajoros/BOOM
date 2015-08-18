@@ -43,9 +43,9 @@ int CigarAlignment::mapApproximate(int i,Direction prefer) const
     break;
 
   case DIR_RIGHT:// prefer right
-    for(int j=i+1 ; j<L ; ++j)
+    for(int j=i ; j<L ; ++j)
       if(A[j]!=CIGAR_UNDEFINED) return A[j];
-    for(int j=i ; j>=0 ; --j)
+    for(int j=i-1 ; j>=0 ; --j)
       if(A[j]!=CIGAR_UNDEFINED) return A[j];
     break;
 

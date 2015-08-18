@@ -14,14 +14,13 @@ using namespace BOOM;
 
 GffReader::GffReader(const String &filename)
   : commentPattern("\\s*#.*"), 
-    transgrpRegex("(transgrp|transcript_id)\\s*=?\\s*([^; \t]+)"),
-    geneIdRegex("(gene|gene_id)\\s*=?\\s*([^; \t]+)")
+    transgrpRegex("(transgrp|transcript_id|ID)\\s*=?\\s*([^; \t]+)"),
+    geneIdRegex("(gene|gene_id|Parent)\\s*=?\\s*([^; \t]+)")
 {
   if(!file.open(filename.c_str(),"rb"))
     throw String("Can't open file ")+filename;
 
   exonTypes.insert("CDS");
-  exonTypes.insert("exon");
   exonTypes.insert("initial-exon");
   exonTypes.insert("internal-exon");
   exonTypes.insert("final-exon");
@@ -78,13 +77,15 @@ Vector<GffTranscript*> *GffReader::loadTranscripts(const String &filename)
 
 Vector<GffTranscript*> *GffReader::loadTranscripts()
 {
+  cout<<"loadTranscripts"<<endl;
+
   // Read the features from the GFF file
   Map<String,GffTranscript*> transHash;
   while(GffFeature *f=nextFeature()) {
     if(f->hasExtraFields()) {
       const String &featureType=f->getFeatureType();
       if(exonTypes.isMember(featureType)) parseExon(f,transHash);
-      else if(UTRtypes.isMember(featureType)) parseUTR(f,transHash);      
+      else if(UTRtypes.isMember(featureType)) parseUTR(f,transHash);
     }
     delete f;
   }
@@ -98,11 +99,18 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
     end=transHash.end();
   for(; cur!=end ; ++cur) {
     GffTranscript *transcript=(*cur).second;
+    cout<<"XXX "<<transcript->getTranscriptId()<<endl;
+TRACE
     transcript->sortExons();
+TRACE
     transcript->sortUTR();
+TRACE
     transcript->setExonTypes();
+TRACE
     transcript->setUTRtypes();
+TRACE
     transcriptList->push_back(transcript);
+TRACE
   }
 
   // Sort the transcripts by position

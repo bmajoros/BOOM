@@ -46,7 +46,7 @@ void GCF::parse(const String &filename)
     line.trimWhitespace();
     Vector<String> fields; line.getFields(fields);
     if(fields.size()==0) continue;
-    if(fields.size()!=numVariants+1) throw "wrong number of fields in GCF file "+filename;
+    if(fields.size()!=numVariants+1) throw String("wrong number of fields in GCF file ")+filename+": "+fields.size()+" vs. "+(numVariants+1);
     const String &id=fields[0];
     individuals.push_back(GcfIndividual(id,numVariants));
     GcfIndividual &indiv=individuals[individuals.size()-1];

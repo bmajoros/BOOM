@@ -208,12 +208,9 @@ void BOOM::GffFeature::parseLine(const BOOM::String &line)
 	  break;
 	case 3:
 	  begin=atoi(token)-1;
-	  //cerr<<"reader: begin="<<begin<<endl;
 	  break;
 	case 4:
 	  end=atoi(token);
-	  //cerr<<"reader: end="<<end<<endl;
-	  //cerr<<line<<endl;
 	  break;
 	case 5:
 	  if(dot==token)

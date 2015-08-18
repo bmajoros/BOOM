@@ -242,6 +242,7 @@ void BOOM::GffTranscript::sortExons()
 void BOOM::GffTranscript::sortUTR()
 {
   int numUTR=UTR.size();
+  if(numUTR==0) return;
   ExonComparator comp;
   BOOM::VectorSorter<BOOM::GffExon*> sorter(UTR,comp);
   switch(strand) {
@@ -293,6 +294,7 @@ void BOOM::GffTranscript::toGff(ostream &os)
 void BOOM::GffTranscript::setExonTypes()
 {
   int numExons=exons.size();
+  if(numExons==0) return;
   if(numExons==1) {
     exons[0]->changeExonType(ET_SINGLE_EXON);
     return;
@@ -308,12 +310,15 @@ void BOOM::GffTranscript::setExonTypes()
 
 void BOOM::GffTranscript::setUTRtypes()
 {
-  // First, hand the case of a single UTR (no coding segment)
+TRACE
+  // First, handle the case of a single UTR (no coding segment)
   int numUTR=UTR.size();
+  if(numUTR==0) return;
   if(numUTR==1) {
     UTR[0]->changeExonType(ET_SINGLE_UTR);
     return;
   }
+TRACE
 
   // Assign segments to 5' or 3' UTR
   sortUTR();
@@ -336,6 +341,7 @@ void BOOM::GffTranscript::setUTRtypes()
       else UTR3.push_back(exon);
     }
   }
+TRACE
 
   // Assign initial/internal/final
   const int numUTR5=UTR5.size(), numUTR3=UTR3.size();
