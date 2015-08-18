@@ -100,17 +100,11 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
   for(; cur!=end ; ++cur) {
     GffTranscript *transcript=(*cur).second;
     cout<<"XXX "<<transcript->getTranscriptId()<<endl;
-TRACE
     transcript->sortExons();
-TRACE
     transcript->sortUTR();
-TRACE
     transcript->setExonTypes();
-TRACE
     transcript->setUTRtypes();
-TRACE
     transcriptList->push_back(transcript);
-TRACE
   }
 
   // Sort the transcripts by position
