@@ -309,6 +309,16 @@ void BOOM::String::chop()
 
 
 
+void BOOM::String::removeWhitespace()
+{
+  String s;
+  for(const char *p=c_str() ; *p ; ++p)
+    if(!isspace(*p)) s+=*p;
+  *this=s;
+}
+
+
+
 void BOOM::String::trimWhitespace()
 {
   BOOM::String &self=*this;

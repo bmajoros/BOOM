@@ -74,7 +74,8 @@ public:
   long asLong() const { return atol(c_str()); }
   unsigned asUnsigned() const { return asLong(); }
   void chop();
-  void trimWhitespace();
+  void trimWhitespace(); // only at ends
+  void removeWhitespace();
   inline bool isEmpty() {return empty();}
   void getline(istream &is) {std::getline(is,*this);}
   BOOM::String toHex(); // for writing strings into source code safely

@@ -340,7 +340,7 @@ void BOOM::GffTranscript::setUTRtypes()
   int numUTR=UTR.size();
   if(numUTR==0) return;
   if(numUTR==1) {
-    UTR[0]->changeExonType(ET_SINGLE_UTR);
+    UTR[0]->changeExonType(ET_SINGLE_UTR5);
     return;
   }
 TRACE

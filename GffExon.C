@@ -56,7 +56,6 @@ ostream &BOOM::operator<<(ostream &os,ExonType t)
     case ET_UTR:           os<<"UTR";             break;
     case ET_UTR5:          os<<"UTR5";            break;
     case ET_UTR3:          os<<"UTR3";            break;
-    case ET_SINGLE_UTR:    os<<"single-UTR";      break;
     case ET_INITIAL_UTR5:  os<<"initial-UTR5";    break;
     case ET_INTERNAL_UTR5: os<<"internal-UTR5";   break;
     case ET_FINAL_UTR5:    os<<"final-UTR5";      break;
@@ -145,16 +144,15 @@ void BOOM::GffExon::initExonTypeNames()
 {
   exonTypeNames["exon"]=ET_EXON;
   exonTypeNames["initial-exon"]=  ET_INITIAL_EXON;
-  exonTypeNames["final-exon"]=    ET_FINAL_EXON;
   exonTypeNames["internal-exon"]= ET_INTERNAL_EXON;
   exonTypeNames["single-exon"]=   ET_SINGLE_EXON;
+  exonTypeNames["final-exon"]=    ET_FINAL_EXON;
 
   exonTypeNames["UTR"]=ET_UTR;
   exonTypeNames["UTR5"]=ET_UTR5;
   exonTypeNames["UTR3"]=ET_UTR3;
   exonTypeNames["five_prime_UTR"]= ET_UTR5;
   exonTypeNames["three_prime_UTR"]=ET_UTR3;
-  exonTypeNames["single-UTR"]=     ET_SINGLE_UTR;
   exonTypeNames["initial-UTR5"]=   ET_INITIAL_UTR5;
   exonTypeNames["internal-UTR5"]=  ET_INTERNAL_UTR5;
   exonTypeNames["final-UTR5"]=     ET_FINAL_UTR5;

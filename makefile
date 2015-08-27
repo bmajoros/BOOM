@@ -30,6 +30,8 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/Process.o \
+	$(OBJ)/TempFilename.o \
 	$(OBJ)/HistogramArray.o \
 	$(OBJ)/CodonIterator.o \
 	$(OBJ)/Interval.o \
@@ -156,6 +158,8 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/TempFilename.o \
+	$(OBJ)/Process.o \
 	$(OBJ)/HistogramArray.o \
 	$(OBJ)/CodonIterator.o \
 	$(OBJ)/Interval.o \
@@ -1215,6 +1219,16 @@ $(OBJ)/HistogramArray.o:\
 		HistogramArray.H
 	$(CC) $(CFLAGS) -o $(OBJ)/HistogramArray.o -c \
 		HistogramArray.C
+#--------------------------------------------------------
+$(OBJ)/Process.o:\
+		Process.C\
+		Process.H
+	$(CC) $(CFLAGS) -o $(OBJ)/Process.o -c \
+		Process.C
 #---------------------------------------------------------
-
-
+$(OBJ)/TempFilename.o:\
+		TempFilename.C\
+		TempFilename.H
+	$(CC) $(CFLAGS) -o $(OBJ)/TempFilename.o -c \
+		TempFilename.C
+#---------------------------------------------------------

@@ -23,7 +23,6 @@ enum ExonType {
   ET_UTR, // nonspecific
   ET_UTR5,// nonspecific
   ET_UTR3,// nonspecific
-  ET_SINGLE_UTR,   // TSS to TES (entire gene)
   ET_INITIAL_UTR5, // TSS to GT
   ET_INTERNAL_UTR5,// AG to GT
   ET_FINAL_UTR5,   // AG to ATG
