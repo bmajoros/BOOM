@@ -343,17 +343,15 @@ void BOOM::GffTranscript::setUTRtypes()
     UTR[0]->changeExonType(ET_SINGLE_UTR5);
     return;
   }
-TRACE
 
   // Assign segments to 5' or 3' UTR
   sortUTR();
-TRACE
   int cdsBegin, cdsEnd;
+TRACE
   getCDSbeginEnd(cdsBegin,cdsEnd); // begin<end
 TRACE
   Vector<GffExon*> UTR5, UTR3;
   if(strand==PLUS_STRAND) {
-TRACE
     for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
 	cur!=end ; ++cur) {
       GffExon *exon=*cur;
@@ -362,7 +360,6 @@ TRACE
     }
   }
   else {
-TRACE
     for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
 	cur!=end ; ++cur) {
       GffExon *exon=*cur;
@@ -370,7 +367,6 @@ TRACE
       else UTR3.push_back(exon);
     }
   }
-TRACE
 
   // Assign initial/internal/final
   const int numUTR5=UTR5.size(), numUTR3=UTR3.size();

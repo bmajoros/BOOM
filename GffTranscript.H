@@ -33,6 +33,8 @@ public:
   inline int numExons() const { return getNumExons(); }// coding only
   BOOM::GffExon &getIthExon(int); // coding only
   void deleteIthExon(int); // coding only
+  inline int numUTR() const { return UTR.size(); }
+  inline GffExon &getIthUTR(int i) { return *UTR[i]; }
   BOOM::GffFeature *getStartCodon();
   BOOM::GffFeature *getStopCodon();
   char getStrand();

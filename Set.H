@@ -28,6 +28,7 @@ public:
   void unionWith(BOOM::Set<T,C> &,BOOM::Set<T,C> &destination);
   inline bool isEmpty() const {return empty();}
   void printOn(ostream &) const;
+  T getSingleElement() const; // throws exception if size()!=1
 };
 
 template<class T, class C>
@@ -35,6 +36,16 @@ ostream &operator<<(ostream &,const Set<T,C> &);
 
 }
 using namespace BOOM;
+
+
+
+template<class T, class C>
+T BOOM::Set<T,C>::getSingleElement() const
+{
+  if(size()!=1) throw "Set size not 1 in Set<T,C>::getSingleElement()";
+  return *begin();
+}
+
 
 
 template<class T, class C>

@@ -91,13 +91,13 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
 
   // Sort exons and resolve exon types; also convert the hash table
   // to a vector of transcripts
-  Vector<GffTranscript*> *transcriptList=
-    new Vector<GffTranscript*>;
+  Vector<GffTranscript*> *transcriptList=new Vector<GffTranscript*>;
   Map<String,GffTranscript*>::iterator 
     cur=transHash.begin(),
     end=transHash.end();
   for(; cur!=end ; ++cur) {
     GffTranscript *transcript=(*cur).second;
+    //cout<<"B "<<transcript->getTranscriptId()<<" "<<transcript->getNumExons()<<endl;
     transcript->sortExons();
     transcript->sortUTR();
     transcript->setExonTypes();
@@ -130,6 +130,8 @@ void GffReader::parseIDs(GffFeature *f,String &transcriptId,String &geneId)
     transcriptId=f->lookupExtra("parent");
   else if(f->isExtraDefined("Parent")) 
     transcriptId=f->lookupExtra("Parent");
+
+  //cout<<"XXX "<<f->isExtraDefined("Parent")<<" "<<f->lookupExtra("Parent")<<" "<<transcriptId<<endl;
 }
 
 
@@ -139,20 +141,6 @@ void GffReader::parseExon(GffFeature *f,Map<String,GffTranscript*> &transHash)
   // Parse out the gene & transcript IDs, if present
   String geneId, transcriptId;
   parseIDs(f,transcriptId,geneId);
-  /*
-  Vector<String> &extraFields=f->getExtraFields();
-  int n=extraFields.size();
-  for(int i=0 ; i<n ; ++i)  
-    if(geneIdRegex.search(extraFields[i])) {
-      geneId=geneIdRegex[2];
-      geneId=geneId.substitute("\"","");
-    }
-  String transcriptId=extraFields[0];
-  if(transgrpRegex.search(transcriptId)) {
-    transcriptId=transgrpRegex[2];
-    transcriptId=transcriptId.substitute("\"","");
-  }
-  */
 
   // Add this exon to the appropriate transcript
   if(!transHash.isDefined(transcriptId))
@@ -169,28 +157,15 @@ void GffReader::parseExon(GffFeature *f,Map<String,GffTranscript*> &transHash)
 
 void GffReader::parseUTR(GffFeature *f,Map<String,GffTranscript*> &transHash)
 {
-  // Parse out the gene ID, if present
-  String geneId;
-  Vector<String> &extraFields=f->getExtraFields();
-  int n=extraFields.size();
-  for(int i=0 ; i<n ; ++i)  
-    if(geneIdRegex.search(extraFields[i])) {
-      geneId=geneIdRegex[2];
-      geneId=geneId.substitute("\"","");
-    }
-  
-  // Parse out transcript ID
-  String transcriptId=extraFields[0];
-  if(transgrpRegex.search(transcriptId)) {
-    transcriptId=transgrpRegex[2];
-    transcriptId=transcriptId.substitute("\"","");
-  }
+  // Parse out the gene & transcript IDs, if present
+  String geneId, transcriptId;
+  parseIDs(f,transcriptId,geneId);
+
+  // Add this UTR to the appropriate transcript
   if(!transHash.isDefined(transcriptId))
     transHash[transcriptId]=
       new GffTranscript(transcriptId,f->getSubstrate(),
 			f->getStrand(),f->getSource());
-  
-  // Add this UTR to the appropriate transcript
   GffTranscript *transcript=transHash[transcriptId];
   GffExon *exon=new GffExon(*f,*transcript);
   transcript->addUTR(exon);
