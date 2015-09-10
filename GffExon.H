@@ -34,6 +34,8 @@ enum ExonType {
 };
 class GffTranscript;
 ostream &operator<<(ostream &,ExonType);
+bool isUTR5(ExonType);
+bool isUTR3(ExonType);
 
 class ExonTypeInitializer {
 private:
@@ -52,6 +54,8 @@ public:
   BOOM::String &getSequence();
   ExonType getExonType() const;
   void changeExonType(ExonType);
+  bool isUTR5() { return ::isUTR5(exonType); }
+  bool isUTR3() { return ::isUTR3(exonType); }
   BOOM::GffTranscript &getParent();
   Strand getStrand() const;
   const BOOM::String &getSource() const;

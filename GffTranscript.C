@@ -290,12 +290,10 @@ void BOOM::GffTranscript::sortUTR()
 
 void BOOM::GffTranscript::toGff(ostream &os)
 {
-  int n=exons.size();
-  for(int i=0 ; i<n ; ++i)
-    {
-      BOOM::GffExon *exon=exons[i];
-      exon->toGff(os);
-    }
+  const int n=exons.size(), u=UTR.size();
+  for(int i=0 ; i<u ; ++i) if(exons[i]->isUTR5()) exons[i]->toGff(os);
+  for(int i=0 ; i<n ; ++i) exons[i]->toGff(os);
+  for(int i=0 ; i<u ; ++i) if(exons[i]->isUTR3()) exons[i]->toGff(os);
 
   if(startCodon) os << startCodon->toGff();
   if(stopCodon) os << stopCodon->toGff();

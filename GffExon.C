@@ -18,6 +18,36 @@ ExonTypeInitializer ExonTypeInitializer::e;
 
 
 
+bool isUTR5(ExonType t)
+{
+  switch(t) {
+  case ET_UTR5:// nonspecific
+  case ET_INITIAL_UTR5: // TSS to GT
+  case ET_INTERNAL_UTR5:// AG to GT
+  case ET_FINAL_UTR5:   // AG to ATG
+  case ET_SINGLE_UTR5:  // TSS to ATG
+    return true;
+  }
+  return false;
+}
+
+
+
+bool isUTR3(ExonType t)
+{
+  switch(t) {
+  case ET_UTR3:// nonspecific
+  case ET_INITIAL_UTR3: // TGA to GT
+  case ET_INTERNAL_UTR3:// AG to GT
+  case ET_FINAL_UTR3:   // AG to TES
+  case ET_SINGLE_UTR3:  // TGA to TES
+    return true;
+  }
+  return false;
+}
+
+
+
 BOOM::GffExon::GffExon(BOOM::GffFeature &feature,
 		       BOOM::GffTranscript &parent)
   : parent(parent)
