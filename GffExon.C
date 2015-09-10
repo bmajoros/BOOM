@@ -223,14 +223,32 @@ BOOM::String &BOOM::GffExon::getSequence()
 
 bool GffExon::hasDonor()
 {
-  return exonType==ET_INITIAL_EXON || exonType==ET_INTERNAL_EXON;
+  switch(exonType) {
+  case ET_INITIAL_EXON:
+  case ET_INTERNAL_EXON:
+  case ET_INITIAL_UTR5:
+  case ET_INTERNAL_UTR5:
+  case ET_INITIAL_UTR3:
+  case ET_INTERNAL_UTR3:
+    return true;
+  }
+  return false;
 }
 
 
 
 bool GffExon::hasAcceptor()
 {
-  return exonType==ET_INTERNAL_EXON || exonType==ET_FINAL_EXON;
+  switch(exonType) {
+  case ET_INTERNAL_EXON:
+  case ET_FINAL_EXON:
+  case ET_INTERNAL_UTR5:
+  case ET_FINAL_UTR5:
+  case ET_INTERNAL_UTR3:
+  case ET_FINAL_UTR3:
+    return true;
+  }
+  return false;
 }
 
 

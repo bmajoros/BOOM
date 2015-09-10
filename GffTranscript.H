@@ -25,9 +25,9 @@ public:
   GffTranscript(const GffTranscript &);
   virtual ~GffTranscript();
   GffTranscript &operator=(const GffTranscript &);
-  void loadSequence(const BOOM::String &substrate);
-  void loadSequence(BOOM::IndexedFasta &);
-  BOOM::String getSequence();
+  void loadSequence(const BOOM::String &substrate);//CDS & UTR
+  void loadSequence(BOOM::IndexedFasta &);//CDS & UTR
+  BOOM::String getSequence(); // CDS only!
   int getSplicedLength() const;
   inline int getNumExons() const { return exons.size(); }// coding only
   inline int numExons() const { return getNumExons(); }// coding only

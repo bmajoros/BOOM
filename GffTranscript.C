@@ -347,9 +347,7 @@ void BOOM::GffTranscript::setUTRtypes()
   // Assign segments to 5' or 3' UTR
   sortUTR();
   int cdsBegin, cdsEnd;
-TRACE
   getCDSbeginEnd(cdsBegin,cdsEnd); // begin<end
-TRACE
   Vector<GffExon*> UTR5, UTR3;
   if(strand==PLUS_STRAND) {
     for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
