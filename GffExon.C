@@ -18,7 +18,7 @@ ExonTypeInitializer ExonTypeInitializer::e;
 
 
 
-bool isUTR5(ExonType t)
+bool BOOM::isUTR5(ExonType t)
 {
   switch(t) {
   case ET_UTR5:// nonspecific
@@ -33,7 +33,7 @@ bool isUTR5(ExonType t)
 
 
 
-bool isUTR3(ExonType t)
+bool BOOM::isUTR3(ExonType t)
 {
   switch(t) {
   case ET_UTR3:// nonspecific
