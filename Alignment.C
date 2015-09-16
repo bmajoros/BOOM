@@ -93,15 +93,22 @@ void Alignment::printOn(ostream &os) const
       }
 
   int len=getAlignmentLength(), begin=0, subLen=MAX_WIDTH;
-  while(begin<len)
-    {
-      if(begin+subLen>len) subLen=len-begin;
-      os << "Query: " << topRow.substring(begin,subLen) << endl;
-      os << "       " << middleRow.substring(begin,subLen) << endl;
-      os << "Sbjct: " << bottomRow.substring(begin,subLen) << endl;
-      begin+=subLen;
-      if(begin<len) os << endl;
-    }
+  int pos1=0, pos2=0;
+  while(begin<len) {
+    if(begin+subLen>len) subLen=len-begin;
+    const String topSubstr=topRow.substring(begin,subLen);
+    const String middleSubstr=middleRow.substring(begin,subLen);
+    const String bottomSubstr=bottomRow.substring(begin,subLen);
+    const int topResidues=topSubstr.length()-topSubstr.count(' ');
+    const int bottomResidues=bottomSubstr.length()-bottomSubstr.count(' ');
+    os<<"Query: "<<topSubstr<<" "<<pos1<<"-"<<pos1+topResidues<<endl;
+    os<<"       "<<middleSubstr<<endl;
+    os<<"Sbjct: "<<bottomSubstr<<" "<<pos2<<"-"<<pos2+bottomResidues<<endl;
+    pos1+=topResidues;
+    pos2+=bottomResidues;
+    begin+=subLen;
+    if(begin<len) os << endl;
+  }
 }
 
 
