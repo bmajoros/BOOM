@@ -101,9 +101,9 @@ void Alignment::printOn(ostream &os) const
     const String bottomSubstr=bottomRow.substring(begin,subLen);
     const int topResidues=topSubstr.length()-topSubstr.count('-');
     const int bottomResidues=bottomSubstr.length()-bottomSubstr.count(' ');
-    os<<"Query: "<<topSubstr<<" "<<pos1<<"-"<<pos1+topResidues<<endl;
+    os<<"Query: "<<topSubstr<<" "<<pos1<<"-"<<pos1+topResidues-1<<endl;
     os<<"       "<<middleSubstr<<endl;
-    os<<"Sbjct: "<<bottomSubstr<<" "<<pos2<<"-"<<pos2+bottomResidues<<endl;
+    os<<"Sbjct: "<<bottomSubstr<<" "<<pos2<<"-"<<pos2+bottomResidues-1<<endl;
     pos1+=topResidues;
     pos2+=bottomResidues;
     begin+=subLen;
