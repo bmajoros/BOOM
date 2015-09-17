@@ -114,13 +114,13 @@ public:
   //-----------------------------------------------------
   const T *operator ->() const {return p;}
   //-----------------------------------------------------
-#ifndef USE_SMART_POINTERS
+//#ifndef USE_SMART_POINTERS
   T &operator*() {return *p;}
-#endif
+//#endif
   //-----------------------------------------------------
-#ifndef USE_SMART_POINTERS
+//#ifndef USE_SMART_POINTERS
   const T &operator*() const {return *p;}
-#endif
+//#endif
   //-----------------------------------------------------
 #ifndef USE_SMART_POINTERS
   operator T*() const {return p;}

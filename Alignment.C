@@ -99,7 +99,7 @@ void Alignment::printOn(ostream &os) const
     const String topSubstr=topRow.substring(begin,subLen);
     const String middleSubstr=middleRow.substring(begin,subLen);
     const String bottomSubstr=bottomRow.substring(begin,subLen);
-    const int topResidues=topSubstr.length()-topSubstr.count(' ');
+    const int topResidues=topSubstr.length()-topSubstr.count('-');
     const int bottomResidues=bottomSubstr.length()-bottomSubstr.count(' ');
     os<<"Query: "<<topSubstr<<" "<<pos1<<"-"<<pos1+topResidues<<endl;
     os<<"       "<<middleSubstr<<endl;
