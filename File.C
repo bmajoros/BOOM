@@ -60,7 +60,7 @@ static BOOM::String BOOM::File::getPath(const BOOM::String &filename)
   const char *slash=findLastSlash(begin,end);
   int len=slash-begin;
   String path(begin,len);
-  if(!path.empty() && path.lastChar()=="/") path.chop();
+  if(!path.empty() && path.lastChar()=='/') path.chop();
   return path;
 }
 
