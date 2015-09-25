@@ -24,6 +24,7 @@ public:
   operator FILE*();
   long countLines();
   static BOOM::String getFilenameNoPath(const BOOM::String &filename);
+  static BOOM::String getPath(const BOOM::String &filename);
   static BOOM::String getTempFilename(const String &dir,const String &prefix);
   static bool copy(const BOOM::String &from,const BOOM::String &to);
   static bool exists(const BOOM::String &filename);

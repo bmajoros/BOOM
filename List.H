@@ -37,6 +37,12 @@ public:
   //void removeDuplicates() {unique();}
   void sortInPlace(Compare comp=Compare()) {this->sort(comp);}//sort(begin(),end(),comp);}
 
+  /* Inherited from list<T>:
+     iterator begin();
+     iterator end();
+     void erase(iterator);
+   */
+
   // *******
   // WARNING!  The following functions assume the list is already sorted:
   // *******

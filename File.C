@@ -53,6 +53,19 @@ BOOM::File::~File()
 
 
 
+static BOOM::String BOOM::File::getPath(const BOOM::String &filename)
+{
+  const char *begin=filename.c_str();
+  const char *end=findEndOfString(begin);
+  const char *slash=findLastSlash(begin,end);
+  int len=slash-begin;
+  String path(begin,len);
+  if(!path.empty() && path.lastChar()=="/") path.chop();
+  return path;
+}
+
+
+
 BOOM::String BOOM::File::getFilenameNoPath(const BOOM::String &filename)
 {
   const char *begin=filename.c_str();
