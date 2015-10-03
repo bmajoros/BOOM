@@ -440,7 +440,20 @@ void BOOM::GffTranscript::loadSequence(const BOOM::String &substrate)
 
 
 
-BOOM::String BOOM::GffTranscript::getSequence()
+BOOM::String BOOM::GffTranscript::getSequence() // CDS only!
+{
+  BOOM::String sequence;
+  int numExons=exons.size();
+  for(int i=0 ; i<numExons ; ++i) {
+    BOOM::GffExon *exon=exons[i];
+    sequence+=exon->getSequence();
+  }
+  return sequence;
+}
+
+
+
+BOOM::String BOOM::GffTranscript::getFullSequence() // CDS & UTR
 {
   BOOM::String sequence;
   int numExons=exons.size();

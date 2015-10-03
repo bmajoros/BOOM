@@ -27,6 +27,7 @@ public:
   void loadSequence(const BOOM::String &substrate);//CDS & UTR
   void loadSequence(BOOM::IndexedFasta &);//CDS & UTR
   BOOM::String getSequence(); // CDS only!
+  BOOM::String getFullSequence(); // UTR & CDS
   int getSplicedLength() const;//includes CDS and UTR
   int getCDSlength() const;//total length of all CDS
   inline int getNumExons() const { return exons.size(); }// coding only
