@@ -128,6 +128,15 @@ int BOOM::String::count(char c)
 
 
 
+BOOM::String &BOOM::String::operator+=(const String &s)
+{
+  string &self=*this;
+  self+=dynamic_cast<const string&>(s);
+  return *this;
+}
+
+
+
 BOOM::String BOOM::String::operator+(unsigned long ul) const
 {
   stringstream os;

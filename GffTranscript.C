@@ -170,7 +170,7 @@ void BOOM::GffTranscript:: printOn(ostream &os) const
      << end << "\t"
      << ".\t"
      << strand << "\t"
-     << ".\ttransscript_id=" << transcriptId
+     << ".\ttranscript_id=" << transcriptId
      << "; gene_id=" << geneId
      << "; numExons=" << getNumExons();
 }
@@ -242,18 +242,16 @@ public:
 void BOOM::GffTranscript::sortExons()
 {
   int numExons=exons.size();
-  ExonComparator comp;
-  BOOM::VectorSorter<BOOM::GffExon*> sorter(exons,comp);
+  if(exons.size()==0) return;
+  sort(exons);
   switch(strand) {
   case '+': 
-    sorter.sortAscendInPlace();
     if(UTR.size()==0) {
       begin=exons[0]->getBegin();
       end=exons[numExons-1]->getEnd();
     }
     break;
   case '-': 
-    sorter.sortDescendInPlace(); 
     if(UTR.size()==0) {
       begin=exons[numExons-1]->getBegin();
       end=exons[0]->getEnd();
@@ -265,20 +263,30 @@ void BOOM::GffTranscript::sortExons()
 
 
 
+void BOOM::GffTranscript::sort(BOOM::Vector<BOOM::GffExon*> &V)
+{
+  ExonComparator comp;
+  BOOM::VectorSorter<BOOM::GffExon*> sorter(V,comp);
+  switch(strand) {
+  case '+': sorter.sortAscendInPlace(); break;
+  case '-': sorter.sortDescendInPlace(); break;
+  default:  throw "strand is undefined in GffTranscript::sort()";
+  }
+}
+
+
+
 void BOOM::GffTranscript::sortUTR()
 {
   int numUTR=UTR.size();
   if(numUTR==0) return;
-  ExonComparator comp;
-  BOOM::VectorSorter<BOOM::GffExon*> sorter(UTR,comp);
+  sort(UTR);
   switch(strand) {
   case '+': 
-    sorter.sortAscendInPlace(); 
     begin=UTR[0]->getBegin();
     end=UTR[numUTR-1]->getEnd();
     break;
   case '-': 
-    sorter.sortDescendInPlace(); 
     begin=UTR[numUTR-1]->getBegin();
     end=UTR[0]->getEnd();
     break;
@@ -351,7 +359,7 @@ void BOOM::GffTranscript::setUTRtypes()
     for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
 	cur!=end ; ++cur) {
       GffExon *exon=*cur;
-      if(exon->getBegin()<cdsBegin) UTR5.push_back(exon);
+      if(cdsBegin<0 || exon->getBegin()<cdsBegin) UTR5.push_back(exon);
       else UTR3.push_back(exon);
     }
   }
@@ -359,22 +367,21 @@ void BOOM::GffTranscript::setUTRtypes()
     for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
 	cur!=end ; ++cur) {
       GffExon *exon=*cur;
-      if(exon->getEnd()>cdsEnd) UTR5.push_back(exon);
+      if(cdsBegin<0 || exon->getEnd()>cdsEnd) UTR5.push_back(exon);
       else UTR3.push_back(exon);
     }
   }
-
   // Assign initial/internal/final
   const int numUTR5=UTR5.size(), numUTR3=UTR3.size();
   if(numUTR5==1) UTR5[0]->changeExonType(ET_SINGLE_UTR5);
-  else {
+  else if(numUTR5>0) {
     UTR5[0]->changeExonType(ET_INITIAL_UTR5);
     UTR5[numUTR5-1]->changeExonType(ET_FINAL_UTR5);
     for(int i=1 ; i<numUTR5-1 ; ++i) 
       UTR5[i]->changeExonType(ET_INTERNAL_UTR5);
   }
   if(numUTR3==1) UTR3[0]->changeExonType(ET_SINGLE_UTR3);
-  else {
+  else if(numUTR3>0) {
     UTR3[0]->changeExonType(ET_INITIAL_UTR3);
     UTR3[numUTR3-1]->changeExonType(ET_FINAL_UTR3);
     for(int i=1 ; i<numUTR3-1 ; ++i) 
@@ -386,7 +393,7 @@ void BOOM::GffTranscript::setUTRtypes()
 
 void GffTranscript::getCDSbeginEnd(int &cdsBegin,int &cdsEnd)
 {
-  if(exons.size()==0) throw "No exons in GffTranscript::getCDSbeginEnd()";
+  if(exons.size()==0) { cdsBegin=cdsEnd=-1; return; }
   cdsBegin=exons[0]->getBegin();
   cdsEnd=exons[0]->getEnd();
   for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end()
@@ -437,11 +444,15 @@ BOOM::String BOOM::GffTranscript::getSequence()
 {
   BOOM::String sequence;
   int numExons=exons.size();
-  for(int i=0 ; i<numExons ; ++i)
-    {
-      BOOM::GffExon *exon=exons[i];
-      sequence+=exon->getSequence();
-    }
+  for(int i=0 ; i<numExons ; ++i) {
+    BOOM::GffExon *exon=exons[i];
+    sequence+=exon->getSequence();
+  }
+  int numUTR=UTR.size();
+  for(int i=0 ; i<numUTR ; ++i) {
+    BOOM::GffExon *exon=UTR[i];
+    sequence+=exon->getSequence();
+  }
   return sequence;
 }
 
@@ -473,6 +484,20 @@ void BOOM::GffTranscript::setGeneId(const BOOM::String &id)
 
 
 int BOOM::GffTranscript::getSplicedLength() const
+{
+  int L=0;
+  for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end()
+	; cur!=end ; ++cur)
+    L+=(*cur)->length();
+  for(Vector<GffExon*>::const_iterator cur=UTR.begin(), end=UTR.end()
+	; cur!=end ; ++cur)
+    L+=(*cur)->length();
+  return L;
+}
+
+
+
+int BOOM::GffTranscript::getCDSlength() const
 {
   int L=0;
   for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end()
@@ -519,6 +544,132 @@ bool TranscriptComparator::equal(BOOM::GffTranscript *&a,
   return a->getBegin()==b->getBegin();
 }
 
+
+
+int GffTranscript::getUTR5length() const
+{
+  int L=0;
+  for(Vector<GffExon*>::const_iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    if(exon->isUTR5()) L+=exon->getLength();
+  }
+  return L;
+}
+
+
+
+void GffTranscript::getUTR5(Vector<GffExon*> &utr5)
+{
+  for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    if(exon->isUTR5()) utr5.push_back(exon);
+  }
+}
+
+
+
+void GffTranscript::getUTR3(Vector<GffExon*> &utr3)
+{
+  for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    if(exon->isUTR3()) utr3.push_back(exon);
+  }
+}
+
+
+
+void GffTranscript::getUTR(Vector<GffExon*> &UTR5,Vector<GffExon*> &UTR3)
+{
+  for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    Vector<GffExon*> &V=exon->isUTR5() ? UTR5 : UTR3;
+    V.push_back(exon);
+  }
+}
+
+
+
+void GffTranscript::getRawExons(Vector<GffExon*> &into)
+{
+  into.clear();
+  for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur) {
+    GffExon *exon=new GffExon(**cur);
+    exon->changeExonType(ET_EXON);
+    exon->setFrame(0);
+    into.push_back(exon);
+  }
+  for(Vector<GffExon*>::iterator cur=exons.begin(), end=exons.end() ;
+      cur!=end ; ++cur) {
+    GffExon *exon=new GffExon(**cur);
+    exon->changeExonType(ET_EXON);
+    exon->setFrame(0);
+    into.push_back(exon);
+  }
+  sort(into);
+  int N=into.size();
+  for(int i=0 ; i<N+1 ; ++i) {
+    GffExon *exon=into[i], *next=into[i+1];
+    if(exon->getEnd()>=next->getBegin()) {
+      exon->setEnd(next->getEnd());
+      exon->getSequence()+=next->getSequence();
+      into.cut(i+1);
+      --i; --N;
+    }
+  }
+}
+
+
+
+void GffTranscript::deleteExons(Vector<GffExon*> &V)
+{
+  for(Vector<GffExon*>::iterator cur=V.begin(), end=V.end() ; cur!=end ;
+      ++cur) delete *cur;
+}
+
+
+int GffTranscript::mapToTranscriptCoords(int genomicCoord)
+{
+  Vector<GffExon*> rawExons;
+  getRawExons(rawExons);
+  int sum=0, ret=-1;
+  for(Vector<GffExon*>::iterator cur=rawExons.begin(), end=rawExons.end() ;
+      cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    if(exon->getStrand()!=FORWARD_STRAND) INTERNAL_ERROR;
+    const int exonBegin=exon->getBegin(), exonEnd=exon->getEnd(),
+      exonLen=exon->getLength();
+    if(genomicCoord<exonBegin) break;
+    if(genomicCoord<exonEnd) { ret=sum+genomicCoord-exonBegin; break; }
+    sum+=exonLen;
+  }
+  deleteExons(rawExons);
+  return ret;
+}
+
+
+
+int GffTranscript::mapToGenomicCoords(int transcriptCoord)
+{
+  Vector<GffExon*> rawExons;
+  getRawExons(rawExons);
+  int ret;
+  Vector<GffExon*>::iterator cur=rawExons.begin(), end=rawExons.end();
+  for(; cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    if(exon->getStrand()!=FORWARD_STRAND) INTERNAL_ERROR;
+    const int exonBegin=exon->getBegin(), exonLen=exon->getLength();
+    if(transcriptCoord<exonLen) { ret=exonBegin+transcriptCoord; break; }
+    transcriptCoord-=exonLen;
+  }
+  if(cur==end) INTERNAL_ERROR; // coord was past end of transcript
+  deleteExons(rawExons);
+  return ret;
+}
 
 
 

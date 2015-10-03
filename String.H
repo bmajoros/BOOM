@@ -46,6 +46,7 @@ public:
   BOOM::String operator+(const string &s) const;
   BOOM::String operator+(const BOOM::String &s) const;
   BOOM::String operator+(char c) const;
+  BOOM::String &operator+=(const String &s);
   operator float() const {return asFloat();}
   operator double() const {return asDouble();}
   operator int() const {return asInt();}

@@ -10,6 +10,12 @@
 using namespace std;
 namespace BOOM {
 
+
+
+/****************************************************************
+                             Interval
+ ****************************************************************/
+
 class Interval {
 public:
   Interval();
@@ -29,9 +35,36 @@ public:
 protected:
   int begin, end; // zero-based, half open: (inclusive,exclusive]
 };
+
+
+
+/****************************************************************
+                           FloatInterval
+ ****************************************************************/
+
+class FloatInterval {
+public:
+  FloatInterval();
+  FloatInterval(float begin,float end);
+  float getBegin() const;
+  float getEnd() const;
+  float length() const { return end-begin; }
+  void setBegin(float);
+  void setEnd(float);
+  bool isEmpty() const;
+  bool contains(float pos) const;
+  bool overlaps(const FloatInterval &) const;
+  FloatInterval intersect(const FloatInterval &) const;
+  void intersect(const FloatInterval &other,FloatInterval &into) const;
+  void printOn(ostream &) const;
+  bool operator==(const FloatInterval &) const;
+protected:
+  float begin, end;
+};
 }
 
 ostream &operator<<(ostream &,const BOOM::Interval &);
+ostream &operator<<(ostream &,const BOOM::FloatInterval &);
 
 #endif
 

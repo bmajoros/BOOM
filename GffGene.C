@@ -95,6 +95,14 @@ char GffGene::getStrand() const
 
 
 
+String GffGene::getSubstrate() const
+{
+  if(transcripts.size()==0) 
+    throw "Gene has no transcripts in GffGene::getSubstrate()";
+  return transcripts[0]->getSubstrate();
+}
+
+
 
 GffTranscript *GffGene::longestTranscript()
 {

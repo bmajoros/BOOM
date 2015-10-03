@@ -25,6 +25,7 @@ public:
   int getBegin() const;
   int getEnd() const;
   char getStrand() const;
+  String getSubstrate() const;
   const String &getID() const;
 protected:
   String id;

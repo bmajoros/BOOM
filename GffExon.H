@@ -43,8 +43,7 @@ private:
   ExonTypeInitializer();
 };
 
-class GffExon
-{
+class GffExon {
 public:
   GffExon(BOOM::GffFeature &,BOOM::GffTranscript &);
   GffExon(ExonType,int begin,int end,BOOM::GffTranscript &parent,
@@ -63,12 +62,14 @@ public:
   int getBegin();
   int getEnd();
   int length() { return end-begin; }
+  int getLength() { return length(); }
   void setBegin(int);
   void setEnd(int);
   void toGff(ostream &);
   float getScore() { return score; }
   bool hasDonor();
   bool hasAcceptor();
+  void setFrame(int f) { frame=f; }
 private:
   static BOOM::Map<BOOM::String,ExonType> exonTypeNames;
   int frame;  

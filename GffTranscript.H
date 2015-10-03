@@ -16,8 +16,7 @@
 using namespace std;
 
 namespace BOOM {
-class GffTranscript
-{
+class GffTranscript {
 public:
   GffTranscript(const BOOM::String &transcriptId,
 		const BOOM::String &substrate,
@@ -28,7 +27,8 @@ public:
   void loadSequence(const BOOM::String &substrate);//CDS & UTR
   void loadSequence(BOOM::IndexedFasta &);//CDS & UTR
   BOOM::String getSequence(); // CDS only!
-  int getSplicedLength() const;
+  int getSplicedLength() const;//includes CDS and UTR
+  int getCDSlength() const;//total length of all CDS
   inline int getNumExons() const { return exons.size(); }// coding only
   inline int numExons() const { return getNumExons(); }// coding only
   BOOM::GffExon &getIthExon(int); // coding only
@@ -57,6 +57,7 @@ public:
   void setStrand(char);
   void sortExons(); // translation order - coding only (no UTR)
   void sortUTR(); // transcription order
+  void sort(Vector<GffExon*> &);
   void setExonTypes(); // coding only (no UTR)
   void setUTRtypes();
   void toGff(ostream &);
@@ -65,6 +66,14 @@ public:
   BOOM::Vector<BOOM::GffExon*>::iterator getExonsEnd() {return exons.end();}
   BOOM::Vector<BOOM::GffExon*>::iterator getUTR() { return UTR.begin();}
   BOOM::Vector<BOOM::GffExon*>::iterator getUTRend() {return UTR.end();}
+  void getUTR5(Vector<GffExon*> &);
+  void getUTR3(Vector<GffExon*> &);
+  void getUTR(Vector<GffExon*> &UTR5,Vector<GffExon*> &UTR3);
+  int getUTR5length() const;
+  void getRawExons(Vector<GffExon*> &shouldDelete);//combines CDS and UTR
+  static void deleteExons(Vector<GffExon*> &);
+  int mapToTranscriptCoords(int genomicCoord);//UTR & CDS; -1 if not in exon
+  int mapToGenomicCoords(int transcriptCoord);//UTR & CDS
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;

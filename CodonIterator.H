@@ -20,7 +20,8 @@ using namespace BOOM;
 struct Codon {
   String codon;
   int globalCoord;  // coordinate on substrate
-  int splicedCoord; // coordinate in spliced transcript
+  int splicedCoord; // coordinate in spliced transcript (including 5'UTR)
+  int cdsCoord;     // coordinate within spliced CDS (not including UTR)
   bool valid() const;
   bool isStop() const; // human-specific: TAG/TGA/TAA
 };
@@ -35,13 +36,15 @@ public:
   CodonIterator(const GffTranscript &,const String &substrate);
   bool nextCodon(Codon &);
   bool more() const;
+  static Codon findStopCodon(const GffTranscript &,const String &substrate);
 protected:
   const GffTranscript &transcript;
   const String &substrate;
   const GffExon *currentExon;
   int currentExonIndex;
   int posWithinExon;
-  int splicedPos;
+  int splicedPos; // includes 5'UTR
+  int cdsPos; // position within CDS (spliced), not including UTR
   void reset();
 };
 

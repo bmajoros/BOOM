@@ -46,7 +46,8 @@ void CodonIterator::reset()
   currentExon=&transcript.getIthExon(currentExonIndex);
   if(currentExon->length()<1) throw "Zero-length exon found in CodonIterator";
   posWithinExon=0;
-  splicedPos=0;
+  splicedPos=transcript.getUTR5length();
+  cdsPos=0;
 }
 
 
@@ -59,13 +60,15 @@ bool CodonIterator::nextCodon(Codon &codon)
   codon.codon=""; 
   if(!currentExon) return false;
   int exonBegin=currentExon->getBegin(), exonLen=currentExon->length();
-  codon.globalCoord=exonBegin+posWithinExon; codon.splicedCoord=splicedPos;
+  codon.globalCoord=exonBegin+posWithinExon; 
+  codon.splicedCoord=splicedPos;
+  codon.cdsCoord=cdsPos;
   while(codon.codon.length()<3) {
     const int substratePos=exonBegin+posWithinExon;
     codon.codon+=substrate[substratePos];
-    //cout<<"added global coord "<<substratePos<<endl;//###
     ++posWithinExon;
     ++splicedPos;
+    ++cdsPos;
     if(posWithinExon>=exonLen) {
       ++currentExonIndex;
       if(currentExonIndex>=transcript.numExons()) { currentExon=NULL; break; }
@@ -84,10 +87,11 @@ bool CodonIterator::nextCodon(Codon &codon)
 bool CodonIterator::more() const
 {
   if(!currentExon) return false;
-  const int L=transcript.getSplicedLength();
-  const int remaining=L-splicedPos;
+  const int L=transcript.getCDSlength();
+  const int remaining=L-cdsPos;
   return remaining>=3;
 }
 
 
 
+  static Codon findStopCodon(const GffTranscript &,const String &substrate);

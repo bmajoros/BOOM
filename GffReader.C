@@ -313,7 +313,7 @@ Vector<GffGene> *GffReader::loadGenes(const String &filename)
 Map<String,Vector<GffGene> > *GffReader::genesByChrom(const String &filename)
 {
   // Load transcripts and populate genes with them
-  Vector<GffGene> genes;
+  Vector<GffGene*> genes;
   Map<String,GffGene*> byID;
   Vector<GffTranscript*> &allTrans=*loadTranscripts(filename);
   for(Vector<GffTranscript*>::iterator cur=allTrans.begin(), end=
@@ -323,20 +323,24 @@ Map<String,Vector<GffGene> > *GffReader::genesByChrom(const String &filename)
     if(!byID.isDefined(geneID)) byID[geneID]=new GffGene(geneID);
     byID[geneID]->addTranscript(trans);
   }
+  Set<String> keys;
+  byID.getKeys(keys);
+  for(Set<String>::iterator cur=keys.begin(), end=keys.end() ; cur!=end ;
+      ++cur)
+    genes.push_back(byID[*cur]);
   delete &allTrans;
 
   // Now organize genes by chromosome
   Map<String,Vector<GffGene> > &byChrom=
     *new Map<String,Vector<GffGene> >;
-  for(Vector<GffGene>::iterator cur=genes.begin(), end=genes.end() ;
+  for(Vector<GffGene*>::iterator cur=genes.begin(), end=genes.end() ;
       cur!=end ; ++cur) {
-    GffGene &gene=*cur;
-    const String &id=gene.getID();
+    GffGene *gene=*cur;
+    const String &chr=gene->getSubstrate();
     //if(!byChrom.isDefined(id)) byChrom[id]=Vector<GffGene>();
-    byChrom[id].push_back(gene);
+    byChrom[chr].push_back(*gene);
   }
   return &byChrom;
-
 }
 
 
