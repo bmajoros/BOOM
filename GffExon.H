@@ -48,6 +48,7 @@ public:
   GffExon(BOOM::GffFeature &,BOOM::GffTranscript &);
   GffExon(ExonType,int begin,int end,BOOM::GffTranscript &parent,
 	  bool hasScore,double score,bool hasFrame,int frame);
+  GffExon(const GffExon &other,GffTranscript &parent);
   void loadSequence(const BOOM::String &substrate);
   void loadSequence(BOOM::IndexedFasta &substrate);
   BOOM::String &getSequence();
@@ -84,5 +85,6 @@ private:
   static void initExonTypeNames();
 };
 }
+
 
 #endif

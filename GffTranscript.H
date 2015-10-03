@@ -22,6 +22,7 @@ public:
 		const BOOM::String &substrate,
 		char strand,const BOOM::String &source);
   GffTranscript(const GffTranscript &);
+  GffTranscript();
   virtual ~GffTranscript();
   GffTranscript &operator=(const GffTranscript &);
   void loadSequence(const BOOM::String &substrate);//CDS & UTR

@@ -73,6 +73,16 @@ BOOM::GffExon::GffExon(ExonType type,int begin,int end,
 
 
 
+GffExon::GffExon(const GffExon &other,GffTranscript &parent)
+  : frame(other.frame), begin(other.begin), end(other.end), 
+    score(other.score), hasScore(other.hasScore), hasFrame(other.hasFrame),
+    parent(parent), exonType(other.exonType), sequence(other.sequence)
+{
+  // ctor
+}
+
+
+
 ostream &BOOM::operator<<(ostream &os,ExonType t)
 {
   switch(t)

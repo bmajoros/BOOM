@@ -24,6 +24,14 @@ BOOM::GffTranscript::GffTranscript(const BOOM::String &transcriptId,
 
 
 
+BOOM::GffTranscript::GffTranscript()
+  : begin(-1), end(-1), startCodon(NULL), stopCodon(NULL), hasScore(false)
+{ 
+  // ctor
+}
+
+
+
 GffTranscript::GffTranscript(const GffTranscript &other)
   : begin(other.begin), end(other.end), score(other.score),
     strand(other.strand), hasScore(other.hasScore), 
@@ -35,10 +43,10 @@ GffTranscript::GffTranscript(const GffTranscript &other)
   if(other.stopCodon) stopCodon=new GffFeature(*other.stopCodon);
   for(Vector<GffExon*>::const_iterator cur=other.exons.begin(), end=
 	other.exons.end() ; cur!=end ; ++cur)
-    exons.push_back(new GffExon(**cur));
+    exons.push_back(new GffExon(**cur,*this));
   for(Vector<GffExon*>::const_iterator cur=other.UTR.begin(), end=
 	other.UTR.end() ; cur!=end ; ++cur)
-    UTR.push_back(new GffExon(**cur));
+    UTR.push_back(new GffExon(**cur,*this));
 }
 
 
