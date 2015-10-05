@@ -83,6 +83,7 @@ private:
   BOOM::String sequence;
   friend class ExonTypeInitializer;
   static void initExonTypeNames();
+  GffExon(const GffExon &other) {INTERNAL_ERROR;}
 };
 }
 

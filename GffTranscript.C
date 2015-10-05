@@ -53,6 +53,8 @@ GffTranscript::GffTranscript(const GffTranscript &other)
 
 GffTranscript &GffTranscript::operator=(const GffTranscript &other)
 {
+  exons.clear();
+  UTR.clear();
   begin=other.begin;
   end=other.end;
   score=other.score;
@@ -69,10 +71,10 @@ GffTranscript &GffTranscript::operator=(const GffTranscript &other)
   if(other.stopCodon) stopCodon=new GffFeature(*other.stopCodon);
   for(Vector<GffExon*>::const_iterator cur=other.exons.begin(), end=
 	other.exons.end() ; cur!=end ; ++cur)
-    exons.push_back(new GffExon(**cur));
+    exons.push_back(new GffExon(**cur,*this));
   for(Vector<GffExon*>::const_iterator cur=other.UTR.begin(), end=
 	other.UTR.end() ; cur!=end ; ++cur)
-    UTR.push_back(new GffExon(**cur));
+    UTR.push_back(new GffExon(**cur,*this));
 }
 
 
@@ -619,21 +621,21 @@ void GffTranscript::getRawExons(Vector<GffExon*> &into)
   into.clear();
   for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
       cur!=end ; ++cur) {
-    GffExon *exon=new GffExon(**cur);
+    GffExon *exon=new GffExon(**cur,*this);
     exon->changeExonType(ET_EXON);
     exon->setFrame(0);
     into.push_back(exon);
   }
   for(Vector<GffExon*>::iterator cur=exons.begin(), end=exons.end() ;
       cur!=end ; ++cur) {
-    GffExon *exon=new GffExon(**cur);
+    GffExon *exon=new GffExon(**cur,*this);
     exon->changeExonType(ET_EXON);
     exon->setFrame(0);
     into.push_back(exon);
   }
   sort(into);
   int N=into.size();
-  for(int i=0 ; i<N+1 ; ++i) {
+  for(int i=0 ; i+1<N ; ++i) {
     GffExon *exon=into[i], *next=into[i+1];
     if(exon->getEnd()>=next->getBegin()) {
       exon->setEnd(next->getEnd());
