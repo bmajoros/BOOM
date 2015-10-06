@@ -696,3 +696,17 @@ int GffTranscript::mapToGenomicCoords(int transcriptCoord)
 
 
 
+void GffTranscript::computePhases()
+{
+  sortExons();
+  int phase=0;
+  for(Vector<GffExon*>::iterator cur=exons.begin(), end=exons.end() ;
+      cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    exon->setFrame(phase);
+    phase=(phase+exon->length())%3;
+  }
+}
+
+
+

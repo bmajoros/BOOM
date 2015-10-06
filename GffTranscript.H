@@ -43,6 +43,7 @@ public:
   const BOOM::String &getSource() const;
   const BOOM::String &getSubstrate() const;
   const BOOM::String &getTranscriptId() const;
+  void setTranscriptId(const String id) { transcriptId=id; }
   const BOOM::String &getGeneId() const;
   void setGeneId(const BOOM::String &);
   double getScore() const;
@@ -76,6 +77,7 @@ public:
   static void deleteExons(Vector<GffExon*> &);
   int mapToTranscriptCoords(int genomicCoord);//UTR & CDS; -1 if not in exon
   int mapToGenomicCoords(int transcriptCoord);//UTR & CDS
+  void computePhases();
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;
