@@ -36,7 +36,6 @@ public:
   CodonIterator(const GffTranscript &,const String &substrate);
   bool nextCodon(Codon &);
   bool more() const;
-  static Codon findStopCodon(const GffTranscript &,const String &substrate);
 protected:
   const GffTranscript &transcript;
   const String &substrate;

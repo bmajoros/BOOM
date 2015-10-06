@@ -94,4 +94,3 @@ bool CodonIterator::more() const
 
 
 
-  static Codon findStopCodon(const GffTranscript &,const String &substrate);
