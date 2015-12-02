@@ -13,6 +13,7 @@ using namespace std;
 
 
 BOOM::Regex BOOM::FastaReader::deflineRegex("^\\s*>\\s*(\\S+)(.*)");
+BOOM::Regex BOOM::FastaReader::attrRegex("/(\\S+)=(\\S+)");
 
 
 
@@ -107,5 +108,21 @@ static FastaReader::load(const String &filename,String &defline,String &sequence
   FastaReader reader(filename,alphabet);
   reader.nextSequence(defline,sequence);
 }
+
+
+
+void FastaReader::parseAttributes(const String &remainder,
+				  Map<String,String> &attr)
+{
+  Vector<String> fields;
+  remainder.getFields(fields," \t");
+  const int N=fields.size();
+  for(int i=0 ; i<N ; ++i) {
+    if(attrRegex.search(fields[i]))
+      attr[attrRegex[1]]=attrRegex[2];
+  }
+}
+
+
 
 

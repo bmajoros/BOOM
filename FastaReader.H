@@ -31,6 +31,7 @@ public:
   bool nextSequence(BOOM::String &defline,BOOM::String &sequence);
   static void parseDefline(const BOOM::String &defline,BOOM::String &id,
 			   BOOM::String &remainder);
+  static void parseAttributes(const String &remainder,Map<String,String> &attr);
   static BOOM::String getId(const BOOM::String &defline);
   void close() {file.close();}
   bool eof() {return file.eof();}
@@ -39,6 +40,7 @@ private:
   BOOM::File file;
   const Alphabet &alphabet;
   static BOOM::Regex deflineRegex;
+  static BOOM::Regex attrRegex;
 
   void maskStrangeChars(BOOM::String &);
 };
