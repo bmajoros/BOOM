@@ -15,6 +15,15 @@ extern "C" {
 #include "regex.h"
 }
 
+/*
+  NOTE: In C++, slashes need to be escaped multiple times, so what in Perl
+  would normally be:
+                            ([^\/]+)\.fasta
+  in C++ needs to be:
+                         ([^\\\\/]+)\\\\.fasta
+ */
+
+
 namespace BOOM {
 class Regex {
 public:

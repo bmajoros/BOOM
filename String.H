@@ -35,6 +35,7 @@ public:
   String(char);
   String();
   virtual ~String();
+  int getLength() { return int(length()); }
   BOOM::String operator+(unsigned) const;
   BOOM::String operator+(unsigned long) const;
   BOOM::String operator+(long) const;
