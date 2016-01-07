@@ -216,8 +216,8 @@ void BOOM::GffFeature::parseLine(const BOOM::String &line)
 	setExtra(assignRegex[1],assignRegex[2]);
       else if(pairRegex.match(extraFields[i])) 
 	setExtra(pairRegex[1],pairRegex[2]);
-      if(i+1<extraFields.size() && extraFields[i].lastChar()!=';') 
-	extra+=';';
+      if(i+1<extraFields.size() && extraFields[i].lastChar()!=';') //###???
+	extra+=';';//###???
     }
   }
 }

@@ -97,7 +97,6 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
     end=transHash.end();
   for(; cur!=end ; ++cur) {
     GffTranscript *transcript=(*cur).second;
-    //cout<<"B "<<transcript->getTranscriptId()<<" "<<transcript->getNumExons()<<endl;
     transcript->sortExons();
     transcript->sortUTR();
     transcript->setExonTypes();
@@ -131,6 +130,8 @@ void GffReader::parseIDs(GffFeature *f,String &transcriptId,String &geneId)
   else if(f->isExtraDefined("Parent")) 
     transcriptId=f->lookupExtra("Parent");
 
+  //cout<<"XXX\t"<<transcriptId<<"\t"<<geneId<<endl;
+
   //cout<<"XXX "<<f->isExtraDefined("Parent")<<" "<<f->lookupExtra("Parent")<<" "<<transcriptId<<endl;
 }
 
@@ -143,14 +144,19 @@ void GffReader::parseExon(GffFeature *f,Map<String,GffTranscript*> &transHash)
   parseIDs(f,transcriptId,geneId);
 
   // Add this exon to the appropriate transcript
-  if(!transHash.isDefined(transcriptId))
-    transHash[transcriptId]=
-      new GffTranscript(transcriptId,f->getSubstrate(),
-			f->getStrand(),f->getSource());
+  if(!transHash.isDefined(transcriptId)) {
+    GffTranscript *trans=new GffTranscript(transcriptId,f->getSubstrate(),
+					   f->getStrand(),f->getSource());
+    trans->setGeneId(geneId);
+    transHash[transcriptId]=trans;
+
+  }
   GffTranscript *transcript=transHash[transcriptId];
   GffExon *exon=new GffExon(*f,*transcript);
   transcript->addExon(exon);
-  if(transcript->getGeneId()=="") transcript->setGeneId(geneId);
+  if(transcript->getGeneId()=="" || 
+     transcript->getGeneId()==transcript->getTranscriptId()) 
+    transcript->setGeneId(geneId);
 }
 
 
