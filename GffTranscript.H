@@ -42,6 +42,7 @@ public:
   char getStrand();
   const BOOM::String &getSource() const;
   const BOOM::String &getSubstrate() const;
+  void setSubstrate(const String &);
   const BOOM::String &getTranscriptId() const;
   void setTranscriptId(const String id) { transcriptId=id; }
   const BOOM::String &getGeneId() const;

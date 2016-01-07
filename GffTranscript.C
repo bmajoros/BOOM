@@ -710,3 +710,10 @@ void GffTranscript::computePhases()
 
 
 
+void GffTranscript::setSubstrate(const String &s)
+{
+  substrate=s;
+}
+
+
+
