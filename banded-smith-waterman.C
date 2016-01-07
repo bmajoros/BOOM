@@ -71,7 +71,7 @@ int Application::main(int argc,char *argv[])
       throw string(
 "\nbanded-smith-waterman <SubstitutionMatrix> <+GapOpenPenalty> \n\
                        <+GapExtendPenalty> <*.fasta> <*.fasta> \n\
-                       DNA|PROTEIN <band-width> [-q] [-w #]\n\n\
+                       DNA|PROTEIN <half-band-width> [-q] [-w #]\n\n\
 example: banded-smith-waterman blosum62 5 2 1.fasta 2.fasta DNA 5\n\n\
              -c <file> = write CIGAR string to file\n\
              -q = quiet (no alignment output)\n\
