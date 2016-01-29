@@ -94,6 +94,21 @@ ostream &BOOM::operator<<(ostream &os,ExonType t)
     case ET_SINGLE_EXON:   os<<"single-exon";     break;
 
     case ET_UTR:           os<<"UTR";             break;
+
+    case ET_INITIAL_UTR5:  
+    case ET_INTERNAL_UTR5: 
+    case ET_FINAL_UTR5:    
+    case ET_SINGLE_UTR5:   
+    case ET_UTR5:          os<<"five_prime_UTR";  break;
+
+    case ET_INITIAL_UTR3:  
+    case ET_INTERNAL_UTR3: 
+    case ET_FINAL_UTR3:    
+    case ET_SINGLE_UTR3:   
+    case ET_UTR3:          os<<"three_prime_UTR"; break;
+
+      /*
+    case ET_UTR:           os<<"UTR";             break;
     case ET_UTR5:          os<<"UTR5";            break;
     case ET_UTR3:          os<<"UTR3";            break;
     case ET_INITIAL_UTR5:  os<<"initial-UTR5";    break;
@@ -104,6 +119,7 @@ ostream &BOOM::operator<<(ostream &os,ExonType t)
     case ET_INTERNAL_UTR3: os<<"internal-UTR3";   break;
     case ET_FINAL_UTR3:    os<<"final-UTR3";      break;
     case ET_SINGLE_UTR3:   os<<"single-UTR3";     break;
+      */
     }
   return os;
 }
