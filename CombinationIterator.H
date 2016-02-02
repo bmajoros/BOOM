@@ -7,6 +7,8 @@
 #ifndef INCL_CombinationIterator_H
 #define INCL_CombinationIterator_H
 #include <iostream>
+#include "Vector.H"
+#include "Array1D.H"
 using namespace std;
 using namespace BOOM;
 
