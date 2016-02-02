@@ -299,7 +299,7 @@ template<class T>
 T BOOM::Vector<T>::shift()
 {
   T t=front();
-  pop_front();
+  erase(begin());
   return t;
 }
 

@@ -13,8 +13,7 @@
 using namespace std;
 
 namespace BOOM {
-class FastaWriter
-{
+class FastaWriter {
 public:
   FastaWriter(int width=60);
   void writeFasta(const BOOM::String &defline,const BOOM::String &sequence,
