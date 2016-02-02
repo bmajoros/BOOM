@@ -49,6 +49,7 @@ public:
   void readFrom(istream &);
   void purge();
   T pop();
+  T shift();
   void shuffle();
   BOOM::Vector<T> *uniq() const; // you should sort first...just like UNIX
   /*
@@ -289,6 +290,16 @@ T BOOM::Vector<T>::pop()
 {
   T t=back();
   pop_back();
+  return t;
+}
+
+
+
+template<class T>
+T BOOM::Vector<T>::shift()
+{
+  T t=front();
+  pop_front();
   return t;
 }
 

@@ -30,6 +30,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/CombinationIterator.o \
 	$(OBJ)/Process.o \
 	$(OBJ)/TempFilename.o \
 	$(OBJ)/HistogramArray.o \
@@ -158,6 +159,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/CombinationIterator.o \
 	$(OBJ)/TempFilename.o \
 	$(OBJ)/Process.o \
 	$(OBJ)/HistogramArray.o \
@@ -1231,4 +1233,10 @@ $(OBJ)/TempFilename.o:\
 		TempFilename.H
 	$(CC) $(CFLAGS) -o $(OBJ)/TempFilename.o -c \
 		TempFilename.C
+#---------------------------------------------------------
+$(OBJ)/CombinationIterator.o:\
+		CombinationIterator.C\
+		CombinationIterator.H
+	$(CC) $(CFLAGS) -o $(OBJ)/CombinationIterator.o -c \
+		CombinationIterator.C
 #---------------------------------------------------------
