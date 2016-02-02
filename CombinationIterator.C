@@ -35,7 +35,9 @@ void CombinationIterator::reset()
   const int n=numStates.size();
   if(current.size()!=n) current.resize(n);
   for(int i=0 ; i<n; ++i) current[i]=0;
-  more=true;
+  more=false;
+  for(int i=0 ; i<n ; ++i)
+    if(numStates[i]>0) { more=true; break; }
 }
 
 
