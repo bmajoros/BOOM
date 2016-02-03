@@ -309,3 +309,10 @@ bool GffExon::hasAcceptor()
 
 
 
+bool GffExon::contains(int coordinate)
+{
+  return coordinate>=begin && coordinate<end;
+}
+
+
+

@@ -35,6 +35,8 @@ CodonIterator::CodonIterator(const GffTranscript &transcript,
 			     const String &substrate)
   : transcript(transcript), substrate(substrate)
 {
+  if(transcript.strand()!=FORWARD_STRAND) 
+    throw "CodonIterator requires forward-strand transcripts"; // ###
   reset();
 }
 
@@ -57,7 +59,8 @@ bool CodonIterator::nextCodon(Codon &codon)
   // Invariant: if currentExon!=NULL, then character pointed to by
   // posWithinExon is a valid coding nucleotide
 
-  codon.codon=""; 
+  codon.codon="";
+  codon.exon=currentExon;
   if(!currentExon) return false;
   int exonBegin=currentExon->getBegin(), exonLen=currentExon->length();
   codon.globalCoord=exonBegin+posWithinExon; 

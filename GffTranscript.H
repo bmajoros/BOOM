@@ -37,6 +37,8 @@ public:
   void deleteIthExon(int); // coding only
   inline int numUTR() const { return UTR.size(); }
   inline GffExon &getIthUTR(int i) { return *UTR[i]; }
+  void splitUTRandCDS(int startCodon,const Set<String> &stopCodons); 
+  // ^ all exons must either be stored in UTR or exons attribute, but not both
   BOOM::GffFeature *getStartCodon();
   BOOM::GffFeature *getStopCodon();
   char getStrand();
@@ -90,6 +92,10 @@ private:
   BOOM::String substrate;    
   BOOM::String source;       
   BOOM::GffFeature *startCodon, *stopCodon;
+  void splitUTRandCDSfw(GffExon *startExon,int startExonIndex,int startCodon,
+			const Set<String> &stopCodons); 
+  void splitUTRandCDSrev(GffExon *startExon,int startExonIndex,int startCodon,
+			 const Set<String> &stopCodons); 
 };
 
 

@@ -8,6 +8,7 @@
 #include <iostream>
 #include "VectorSorter.H"
 #include "GffTranscript.H"
+#include "CodonIterator.H"
 using namespace std;
 
 
@@ -715,5 +716,96 @@ void GffTranscript::setSubstrate(const String &s)
   substrate=s;
 }
 
+
+
+void GffTranscript::splitUTRandCDS(int startCodon,Set<String> stopCodons)
+{
+  // The startCodon coordinate must be the leftmost base of the codon,
+  // regardless of strand.
+
+  // Put everything into the exons attribute, make sure UTR is empty
+  if(UTR.size()>0) {
+    if(exons.size()>0) 
+      throw "GffTranscript::splitUTRandCDS(): both UTR and CDS already exist";
+    exons=UTR;
+    UTR.clear();
+  }
+  else if(exons.size()==0)
+    throw "GffTranscript::splitUTRandCDS(): no exons found";
+  
+  // Find the exon containing the start codon
+  int numExons=exons.size();
+  GffExon *startExon=NULL;
+  int startExonIndex=-1;
+  for(int i=0 ; i<numExons ; ++i)
+    if(exons[i]->contains(startCodon)) 
+      { startExon=exons[i]; startExonIndex=i; break; }
+  if(!startExon) { UTR=exons; exons.clear(); return; }
+  if(strand==FORWARD_STRAND) 
+    splitUTRandCDSfw(startExon,startExonIndex,startCodon,stopCodons);
+  else 
+    splitUTRandCDSrev(startExon,startExonIndex,startCodon,stopCodons);
+}
+
+
+
+void GffTranscript::splitUTRandCDSfw(GffExon *startExon,int startExonIndex,
+				     int startCodon,
+				     const Set<String> &stopCodons)
+{
+  // Move all 5' exons to UTR
+  for(int i=0 ; i<startExonIndex ; ++i) {
+    GffExon *exon=exons[i];
+    exon->changeExonType(ET_UTR5);
+    UTR.push_back(exon);
+  }
+  exons.cut(i,startExonIndex);
+  if(startCodon>startExon.getBegin()) {
+    GffExon *exon=new GffExon(ET_UTR5,startExon.getBegin(),startCodon,
+			      *this,false,0.0,false,0);
+    UTR.push_back(exon);
+    startExon.setBegin(startCodon);
+  }
+  startExon.setType(ET_INITIAL_EXON);
+
+  // Find the stop codon
+  CodonIterator iter(transcript,substrate);
+  Codon codon;
+  GffExon *stopExon=NULL;
+  while(iter.nextCodon(codon))
+    if(stopCodons.isMember(codon.codon))
+      { stopExon=codon.exon; break; }
+
+  // Move all 3' exons to UTR
+  if(stopExon) {
+    GffExon *exon=new GffExon(ET_UTR3,codon.globalCoord+3,stopExon.getEnd(),
+			      *this,false,0.0,false,0);
+    UTR.push_back(exon);
+    stopExon.setEnd(codon.globalCoord+3);
+    int utr=-1;
+    int numExons=exons.size();
+    for(int i=0 ; i<numExons ; ++i) if(exons[i]==stopExon) { utr=i+1; break; }
+    if(utr<0) INTERNAL_ERROR;
+    for(int i=utr ; i<numExons ; ++i) {
+      GffExon *exon=exons[i];
+      exon->setType(ET_UTR3);
+      UTR.push_back(exon);
+    }
+    exons.cut(utr,numExons-utr);
+  }
+
+  // Set detailed exon types
+  setExonTypes();
+  setUTRtypes();
+}
+
+
+
+void GffTranscript::splitUTRandCDSrev(GffExon *startExon,int startExonIndex,
+				      int startCodon,
+				      const Set<String> &stopCodons)
+{
+  throw "GffTranscript::splitUTRandCDSrev() not implemented";
+}
 
 

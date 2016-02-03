@@ -22,8 +22,10 @@ struct Codon {
   int globalCoord;  // coordinate on substrate
   int splicedCoord; // coordinate in spliced transcript (including 5'UTR)
   int cdsCoord;     // coordinate within spliced CDS (not including UTR)
+  GffExon *exon;    // which exon it starts in (it might span an intron)
   bool valid() const;
   bool isStop() const; // human-specific: TAG/TGA/TAA
+  Codon() : exon(NULL) {}
 };
 
 
@@ -33,6 +35,7 @@ struct Codon {
  ****************************************************************/
 class CodonIterator {
 public:
+  // NOTE: this class currently only works for the forward strand!
   CodonIterator(const GffTranscript &,const String &substrate);
   bool nextCodon(Codon &);
   bool more() const;
