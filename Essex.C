@@ -54,19 +54,35 @@ void Query::parse(const String &q)
 
 
 
-Vector<Node*> *Query::search(Node *root)
+void Query::deleteResults(Vector<Node*> &results)
 {
-  Vector<Node*> &results=*new Vector<Node*>;
+  for(Vector<Node*>::iterator cur=results.begin(), end=results.end() ;
+      cur!=end ; ++cur) delete *cur;
+}
+
+
+
+void Query::search(Node *root,Vector<Node*> &results)
+{
+  if(!results.empty()) throw "Query::search(): results is not empty";
   Vector<Node*> candidates;
   root->findDescendents(tag,candidates);
   if(root->getNodeType()==COMPOSITE &&
      static_cast<CompositeNode*>(root)->getTag()==tag) 
     candidates.push_back(root);
-  Vector<Node*>::iterator cur=candidates.begin(), end=candidates.end();
-  for(; cur!=end ; ++cur) {
+  for(Vector<Node*>::iterator cur=candidates.begin(), end=candidates.end() ;
+      cur!=end ; ++cur) {
     Node *candidate=*cur;
     if(testCandidate(candidate)) results.push_back(candidate);
   }
+}
+
+
+
+Vector<Node*> *Query::search(Node *root)
+{
+  Vector<Node*> &results=*new Vector<Node*>;
+  search(root,results);
   return &results;
 }
 
@@ -259,6 +275,14 @@ CompositeNode::CompositeNode(const String &tag)
   : Node(COMPOSITE), tag(tag)
 {
   // ctor
+}
+
+
+
+CompositeNode::~CompositeNode()
+{
+  for(Vector<Node*>::iterator cur=childen.begin(), end=children.end() ;
+      cur!=end ; ++cur) delete *cur;
 }
 
 

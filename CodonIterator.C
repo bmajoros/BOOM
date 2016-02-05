@@ -35,7 +35,7 @@ CodonIterator::CodonIterator(const GffTranscript &transcript,
 			     const String &substrate)
   : transcript(transcript), substrate(substrate)
 {
-  if(transcript.strand()!=FORWARD_STRAND) 
+  if(transcript.getStrand()!=FORWARD_STRAND) 
     throw "CodonIterator requires forward-strand transcripts"; // ###
   reset();
 }

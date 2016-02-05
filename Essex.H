@@ -145,6 +145,7 @@ class CompositeNode : public Node {
   void printRecursive(ostream &,int depth);
 public:
   CompositeNode(const String &tag);
+  virtual ~CompositeNode();
   const String &getTag() const;
   String &getTag();
   int getNumChildren();
@@ -188,6 +189,8 @@ class Query
 public:
   Query(const String &);
   Vector<Node*> *search(Node *);
+  void search(Node *root,Vector<Node*> &into);
+  void deleteResults(Vector<Node*> &results);
 };
 
 

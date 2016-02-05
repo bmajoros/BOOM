@@ -718,7 +718,8 @@ void GffTranscript::setSubstrate(const String &s)
 
 
 
-void GffTranscript::splitUTRandCDS(int startCodon,Set<String> stopCodons)
+void GffTranscript::splitUTRandCDS(int startCodon,
+				   const Set<String> &stopCodons)
 {
   // The startCodon coordinate must be the leftmost base of the codon,
   // regardless of strand.
@@ -760,16 +761,16 @@ void GffTranscript::splitUTRandCDSfw(GffExon *startExon,int startExonIndex,
     UTR.push_back(exon);
   }
   exons.cut(i,startExonIndex);
-  if(startCodon>startExon.getBegin()) {
-    GffExon *exon=new GffExon(ET_UTR5,startExon.getBegin(),startCodon,
+  if(startCodon>startExon->getBegin()) {
+    GffExon *exon=new GffExon(ET_UTR5,startExon->getBegin(),startCodon,
 			      *this,false,0.0,false,0);
     UTR.push_back(exon);
-    startExon.setBegin(startCodon);
+    startExon->setBegin(startCodon);
   }
-  startExon.setType(ET_INITIAL_EXON);
+  startExon->changeExonType(ET_INITIAL_EXON);
 
   // Find the stop codon
-  CodonIterator iter(transcript,substrate);
+  CodonIterator iter(*this,substrate);
   Codon codon;
   GffExon *stopExon=NULL;
   while(iter.nextCodon(codon))
@@ -778,17 +779,17 @@ void GffTranscript::splitUTRandCDSfw(GffExon *startExon,int startExonIndex,
 
   // Move all 3' exons to UTR
   if(stopExon) {
-    GffExon *exon=new GffExon(ET_UTR3,codon.globalCoord+3,stopExon.getEnd(),
+    GffExon *exon=new GffExon(ET_UTR3,codon.globalCoord+3,stopExon->getEnd(),
 			      *this,false,0.0,false,0);
     UTR.push_back(exon);
-    stopExon.setEnd(codon.globalCoord+3);
+    stopExon->setEnd(codon.globalCoord+3);
     int utr=-1;
     int numExons=exons.size();
     for(int i=0 ; i<numExons ; ++i) if(exons[i]==stopExon) { utr=i+1; break; }
     if(utr<0) INTERNAL_ERROR;
     for(int i=utr ; i<numExons ; ++i) {
       GffExon *exon=exons[i];
-      exon->setType(ET_UTR3);
+      exon->changeExonType(ET_UTR3);
       UTR.push_back(exon);
     }
     exons.cut(utr,numExons-utr);
