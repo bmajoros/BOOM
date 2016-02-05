@@ -116,8 +116,7 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
 
 void GffReader::parseIDs(GffFeature *f,String &transcriptId,String &geneId)
 {
-  if(f->isExtraDefined("gene")) geneId=f->lookupExtra("gene");
-  else if(f->isExtraDefined("gene_id")) geneId=f->lookupExtra("gene_id");
+  if(f->isExtraDefined("gene_id")) geneId=f->lookupExtra("gene_id");
 
   if(f->isExtraDefined("transcript_id")) 
     transcriptId=f->lookupExtra("transcript_id");
@@ -129,10 +128,6 @@ void GffReader::parseIDs(GffFeature *f,String &transcriptId,String &geneId)
     transcriptId=f->lookupExtra("parent");
   else if(f->isExtraDefined("Parent")) 
     transcriptId=f->lookupExtra("Parent");
-
-  //cout<<"XXX\t"<<transcriptId<<"\t"<<geneId<<endl;
-
-  //cout<<"XXX "<<f->isExtraDefined("Parent")<<" "<<f->lookupExtra("Parent")<<" "<<transcriptId<<endl;
 }
 
 

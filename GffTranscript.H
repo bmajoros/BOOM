@@ -34,6 +34,7 @@ public:
   inline int getNumExons() const { return exons.size(); }// coding only
   inline int numExons() const { return getNumExons(); }// coding only
   BOOM::GffExon &getIthExon(int); // coding only
+  bool isCoding() const;
   void deleteIthExon(int); // coding only
   inline int numUTR() const { return UTR.size(); }
   inline GffExon &getIthUTR(int i) { return *UTR[i]; }

@@ -116,6 +116,13 @@ BOOM::GffFeature *BOOM::GffTranscript::getStartCodon()
 
 
 
+bool GffTranscript::isCoding() const
+{
+  return exons.size()>0;
+}
+
+
+
 BOOM::GffFeature *BOOM::GffTranscript::getStopCodon()
 {
   return stopCodon;
@@ -484,7 +491,8 @@ BOOM::String BOOM::GffTranscript::getFullSequence() // CDS & UTR
 
 const BOOM::String &BOOM::GffTranscript::getGeneId() const
 {
-  return geneId.isEmpty() ? transcriptId : geneId;
+  //return geneId.isEmpty() ? transcriptId : geneId;
+  return geneId;
 }
 
 

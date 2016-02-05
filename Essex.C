@@ -281,7 +281,7 @@ CompositeNode::CompositeNode(const String &tag)
 
 CompositeNode::~CompositeNode()
 {
-  for(Vector<Node*>::iterator cur=childen.begin(), end=children.end() ;
+  for(Vector<Node*>::iterator cur=children.begin(), end=children.end() ;
       cur!=end ; ++cur) delete *cur;
 }
 
