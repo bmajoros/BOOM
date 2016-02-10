@@ -9,6 +9,7 @@
 #include "VectorSorter.H"
 #include "GffTranscript.H"
 #include "CodonIterator.H"
+#include "ProteinTrans.H"
 using namespace std;
 
 
@@ -816,5 +817,52 @@ void GffTranscript::splitUTRandCDSrev(GffExon *startExon,int startExonIndex,
 {
   throw "GffTranscript::splitUTRandCDSrev() not implemented";
 }
+
+
+
+Essex::CompositeNode *GffTranscript::toEssex() const
+{
+  Essex::CompositeNode *root=new Essex::CompositeNode("transcript");
+  root->append("ID",transcriptId);
+  root->append("gene",geneId);
+  root->append("type",isCoding() ? "protein-coding" : "noncoding");
+  root->append("substrate",substrate);
+  root->append("source",source);
+  root->append("begin",begin);
+  root->append("end",end);
+  if(hasScore) root->append("score",float(score));
+  else root->append("score",".");
+  Essex::CompositeNode *exonsNode=new Essex::CompositeNode("exons");
+  appendExons(exons,exonsNode);
+  root->append(exonsNode);
+  Essex::CompositeNode *utrNode=new Essex::CompositeNode("UTRs");
+  appendExons(UTR,utrNode);
+  root->append(utrNode);
+  String protein=ProteinTrans::translate(getSequence());
+  root->append("protein",protein);
+  return root;
+}
+
+
+
+void GffTranscript::appendExons(const Vector<GffExon*> &exons,
+				Essex::CompositeNode *root) const
+{
+  for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end() ;
+      cur!=end ; ++cur) {
+    const GffExon *exon=*cur;
+    const char *type=toString(exon->getExonType());
+    Essex::CompositeNode *node=new Essex::CompositeNode(type);
+    root->append(node);
+    node->append(exon->getBegin());
+    node->append(exon->getEnd());
+    node->append(exon->getScore());
+    node->append(exon->getStrand()==FORWARD_STRAND ? "+" : "-");
+    node->append(exon->getFrame());
+  }
+}
+
+
+
 
 

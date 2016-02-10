@@ -13,6 +13,8 @@
 #include "GffExon.H"
 #include "IndexedFasta.H"
 #include "Strand.H"
+#include "Essex.H"
+#include "ProteinTrans.H"
 using namespace std;
 
 namespace BOOM {
@@ -82,6 +84,8 @@ public:
   int mapToTranscriptCoords(int genomicCoord);//UTR & CDS; -1 if not in exon
   int mapToGenomicCoords(int transcriptCoord);//UTR & CDS
   void computePhases();
+  String getProtein() { return ProteinTrans::translate(getSequence()); }
+  Essex::CompositeNode *toEssex() const;
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;
@@ -97,6 +101,7 @@ private:
 			const Set<String> &stopCodons); 
   void splitUTRandCDSrev(GffExon *startExon,int startExonIndex,int startCodon,
 			 const Set<String> &stopCodons); 
+  void appendExons(const Vector<GffExon*> &,Essex::CompositeNode *) const;
 };
 
 

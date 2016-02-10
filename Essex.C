@@ -13,6 +13,7 @@ using namespace BOOM;
 //using namespace Essex;
 namespace Essex {
 
+int TAB_SIZE=3;
 Regex Query::R("(\\S+)([<>=!~]+)(\\S+)");
 
 // **************************************************
@@ -224,6 +225,13 @@ void NumericNode::printOn(ostream &os) const
 
 
 
+void NumericNode::printXML(ostream &os) const
+{
+  printOn(os);
+}
+
+
+
 StringNode::StringNode(const String &value)
   : Node(STRING), value(value)
 {
@@ -253,9 +261,20 @@ void StringNode::acceptVisitor(NodeVisitor &v)
 
 
 
+void StringNode::printXML(ostream &os) const
+{
+  String escaped=value.substitute("&","&amp;");
+  escaped=escaped.substitute("\"","&quot;");
+  escaped=escaped.substitute("'","&apos;");
+  escaped=escaped.substitute("<","&lt;");
+  escaped=escaped.substitute(">","&gt;");
+  os<<escaped;
+}
+
+
+
 void StringNode::printOn(ostream &os) const
 {
-
   String escaped=value.substitute("\"","\\\"");
   bool needsQuotes=false;
   const char *cstr=value.c_str();
@@ -290,6 +309,70 @@ CompositeNode::~CompositeNode()
 void CompositeNode::appendChild(Node *child)
 {
   children.push_back(child);
+}
+
+
+
+void CompositeNode::append(int x)
+{
+  appendChild(new NumericNode(float(x)));
+}
+
+
+
+void CompositeNode::append(float x)
+{
+  appendChild(new NumericNode(x));
+}
+
+
+
+void CompositeNode::append(const String &s)
+{
+  appendChild(new StringNode(s));
+}
+
+
+
+void CompositeNode::prepend(const String &s)
+{
+  children.push_front(new StringNode(s));
+}
+
+
+
+void CompositeNode::append(const String &tag,int value)
+{
+  CompositeNode *node=new CompositeNode(tag);
+  node->append(value);
+  children.push_back(node);
+}
+
+
+
+void CompositeNode::append(const String &tag,float value)
+{
+  CompositeNode *node=new CompositeNode(tag);
+  node->append(value);
+  children.push_back(node);
+}
+
+
+
+void CompositeNode::append(const String &tag,const String &value)
+{
+  CompositeNode *node=new CompositeNode(tag);
+  node->append(value);
+  children.push_back(node);
+}
+
+
+
+void CompositeNode::append(const String &tag,const char *value)
+{
+  CompositeNode *node=new CompositeNode(tag);
+  node->append(value);
+  children.push_back(node);
 }
 
 
@@ -403,6 +486,13 @@ String CompositeNode::getAttribute(const String &tag)
 
 
 
+void CompositeNode::printXML(ostream &os) const
+{
+  printXMLrecursive(os,0);
+}
+
+
+
 void CompositeNode::printOn(ostream &os) const
 {
   printRecursive(os,0);
@@ -410,32 +500,72 @@ void CompositeNode::printOn(ostream &os) const
 
 
 
+bool CompositeNode::hasCompositeChildren() const
+{
+  for(Vector<Node*>::const_iterator cur=children.begin(), end=children.end() ;
+      cur!=end ; ++cur) 
+    if((*cur)->getNodeType()==COMPOSITE) return true;
+  return false;
+}
+
+
+
 void CompositeNode::printRecursive(ostream &os,int depth)
 {
   String tab;
-  tab.padOrTruncate(4*depth);
+  tab.padOrTruncate(TAB_SIZE*depth);
   os<<tab<<'('<<tag;
   int n=getNumChildren();
-  if(n==0) {
-    os<<')'<<endl;
-    return;
+  if(hasCompositeChildren()) {
+    //os<<endl;
+    for(int i=0 ; i<n ; ++i) {
+      Node *child=getIthChild(i);
+      if(child->getNodeType()==COMPOSITE) {
+	os<<"\n";
+	static_cast<CompositeNode*>(child)->printRecursive(os,depth+1);
+      }
+      else {
+	String tab;
+	tab.padOrTruncate(TAB_SIZE*(depth+1));
+	//os<<tab<<*child<<endl;
+	os<<"\n"<<tab<<*child;
+      }
+    }
+    //os<<tab;
   }
-  if(n==1 && getIthChild(0)->getNodeType()!=COMPOSITE) {
-    os<<' '<<*getIthChild(0)<<')'<<endl;
-    return;
+  else for(int i=0 ; i<n ; ++i) os<<" "<<*getIthChild(i);
+os<<')';//<<endl;
+}
+
+
+
+void CompositeNode::printXMLrecursive(ostream &os,int depth)
+{
+  String tab;
+  tab.padOrTruncate(TAB_SIZE*depth);
+  os<<tab<<'<'<<tag<<'>';
+  int n=getNumChildren();
+  if(hasCompositeChildren()) {
+    os<<endl;
+    for(int i=0 ; i<n ; ++i) {
+      Node *child=getIthChild(i);
+      if(child->getNodeType()==COMPOSITE) 
+	static_cast<CompositeNode*>(child)->printXMLrecursive(os,depth+1);
+      else {
+	String tab;
+	tab.padOrTruncate(TAB_SIZE*(depth+1));
+	os<<tab; child->printXML(os); os<<endl;
+      }
+    }
+    os<<tab;
   }
-  os<<endl;
-  for(int i=0 ; i<n ; ++i) {
-    Node *child=getIthChild(i);
-    if(child->getNodeType()==COMPOSITE) 
-      static_cast<CompositeNode*>(child)->printRecursive(os,depth+1);
-    else {
-      String tab;
-      tab.padOrTruncate(4*(depth+1));
-      os<<tab<<*child<<endl;
+  else {
+    for(int i=0 ; i<n ; ++i) {
+      getIthChild(i)->printXML(os);
+      if(i+1<n) os<<" ";
     }
   }
-  os<<tab<<')'<<endl;
+  os<<"</"<<tag<<'>'<<endl;
 }
 
 

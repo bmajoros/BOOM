@@ -34,6 +34,7 @@ enum ExonType {
 };
 class GffTranscript;
 ostream &operator<<(ostream &,ExonType);
+const char *toString(ExonType);
 bool isUTR5(ExonType);
 bool isUTR3(ExonType);
 
@@ -71,6 +72,7 @@ public:
   float getScore() { return score; }
   bool hasDonor();
   bool hasAcceptor();
+  int getFrame() { return frame; }
   void setFrame(int f) { frame=f; }
 private:
   static BOOM::Map<BOOM::String,ExonType> exonTypeNames;

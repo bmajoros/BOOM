@@ -126,6 +126,35 @@ ostream &BOOM::operator<<(ostream &os,ExonType t)
 
 
 
+const char *BOOM::toString(ExonType t)
+{
+  switch(t)
+    {
+    case ET_EXON:          return "exon";            
+    case ET_INITIAL_EXON:  return "initial-exon";    
+    case ET_INTERNAL_EXON: return "internal-exon";   
+    case ET_FINAL_EXON:    return "final-exon";      
+    case ET_SINGLE_EXON:   return "single-exon";     
+
+    case ET_UTR:           return "UTR";            
+
+    case ET_INITIAL_UTR5:  
+    case ET_INTERNAL_UTR5: 
+    case ET_FINAL_UTR5:    
+    case ET_SINGLE_UTR5:   
+    case ET_UTR5:          return "five_prime_UTR";
+
+    case ET_INITIAL_UTR3:  
+    case ET_INTERNAL_UTR3: 
+    case ET_FINAL_UTR3:    
+    case ET_SINGLE_UTR3:   
+    case ET_UTR3:          return "three_prime_UTR";
+    }
+  INTERNAL_ERROR;
+}
+
+
+
 ExonType BOOM::GffExon::getExonType() const
 {
   return exonType;

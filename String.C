@@ -212,20 +212,17 @@ BOOM::String BOOM::String::substitute(const BOOM::String &from,
   int patternLen=from.length();
   const char *ptr=c_str();
   const char *last=ptr+length()-patternLen;
-  while(ptr<=last)
-    {
-      if(localMatch(ptr,pattern,patternLen))
-	{
-	  ptr+=patternLen;
-	  rval+=to;
-	}
-      else
-	{
-	  rval+=*ptr;
-	  ptr++;
-	}
+  while(ptr<=last) {
+    if(localMatch(ptr,pattern,patternLen)) {
+      ptr+=patternLen;
+      rval+=to;
     }
-  int extra=patternLen-1;
+    else {
+      rval+=*ptr;
+      ptr++;
+    }
+  }
+  //int extra=patternLen-1;
   //for(int i=0 ; i<extra ; ++i) rval+=*ptr++;
   for(; *ptr ; ++ptr) rval+=*ptr;
   return rval;

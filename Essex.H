@@ -116,6 +116,7 @@ public:
   virtual void findDescendents(const String &tag,Vector<Node*> &);
   virtual String getAttribute(const String &tag);
   virtual void printOn(ostream &) const=0;
+  virtual void printXML(ostream &) const=0;
 };
 
 ostream &operator<<(ostream &,const Node &);
@@ -127,6 +128,7 @@ public:
   float getValue() const;
   virtual void acceptVisitor(NodeVisitor &);
   virtual void printOn(ostream &) const;
+  virtual void printXML(ostream &) const;
 };
 
 class StringNode : public Node {
@@ -137,12 +139,14 @@ public:
   String &getValue();
   virtual void acceptVisitor(NodeVisitor &);
   virtual void printOn(ostream &) const;
+  virtual void printXML(ostream &) const;
 };
 
 class CompositeNode : public Node {
   String tag;
   Vector<Node*> children;
   void printRecursive(ostream &,int depth);
+  void printXMLrecursive(ostream &,int depth);
 public:
   CompositeNode(const String &tag);
   virtual ~CompositeNode();
@@ -152,12 +156,23 @@ public:
   Node *getIthChild(int);
   void setIthChild(int,Node *);
   void appendChild(Node *);
+  void prepend(const String &);
+  void append(Node *node) { appendChild(node); }
+  void append(int);
+  void append(float);
+  void append(const String &);
+  void append(const String &tag,int value);
+  void append(const String &tag,float value);
+  void append(const String &tag,const String & value);
+  void append(const String &tag,const char *value);
   virtual void acceptVisitor(NodeVisitor &);
   virtual Node *findChild(const String &tag);
   virtual void findChildren(const String &tag,Vector<Node*> &);
   virtual void findDescendents(const String &tag,Vector<Node*> &);
   virtual String getAttribute(const String &tag);
   virtual void printOn(ostream &) const;
+  virtual void printXML(ostream &) const;
+  bool hasCompositeChildren() const;
 };
 
 
