@@ -864,5 +864,27 @@ void GffTranscript::appendExons(const Vector<GffExon*> &exons,
 
 
 
+bool GffTranscript::identical(const GffTranscript &other) const
+{
+  if(begin!=other.begin ||
+     end!=other.end ||
+     strand!=other.strand ||
+     substrate!=other.substrate) return false;
+  const int numExons=exons.size();
+  if(numExons!=other.exons.size()) return false;
+  const int numUTR=UTR.size();
+  if(numUTR!=other.UTR.size()) return false;
+  for(int i=0 ; i<numExons ; ++i) 
+    if(!exons[i]->identical(*other.exons[i])) return false;
+  for(int i=0 ; i<numUTR ; ++i) 
+    if(!UTR[i]->identical(*other.UTR[i])) return false;
+  return true;
+}
+
+
+
+
+
+
 
 

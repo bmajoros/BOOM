@@ -345,3 +345,12 @@ bool GffExon::contains(int coordinate)
 
 
 
+bool GffExon::identical(const GffExon &other) const
+{
+  return begin==other.begin && end==other.end;
+}
+
+
+
+
+

@@ -86,6 +86,8 @@ public:
   void computePhases();
   String getProtein() { return ProteinTrans::translate(getSequence()); }
   Essex::CompositeNode *toEssex() const;
+  bool identical(const GffTranscript &) const; 
+  // ^ you MUST call sortExons() & sortUTR() first!!!
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;
