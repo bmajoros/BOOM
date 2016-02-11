@@ -54,6 +54,7 @@ public:
   Vector<CigarOp> &asVector();
   void printOn(ostream &) const;
   CigarString *unrollMatches() const;
+  void reverse() { ops.reverse(); }
 private:
   static Regex re;
   Vector<CigarOp> ops;

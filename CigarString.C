@@ -18,9 +18,9 @@ ostream &BOOM::operator<<(ostream &os,const CigarOpType &t)
 {
   switch(t)
     {
-    case CIGAR_MATCH: os<<"M";
-    case CIGAR_INSERT:os<<"I";
-    case CIGAR_DELETE:os<<"D";
+    case CIGAR_MATCH: os<<"M"; break;
+    case CIGAR_INSERT:os<<"I"; break;
+    case CIGAR_DELETE:os<<"D"; break;
     default: INTERNAL_ERROR;
     }
   return os;
@@ -37,7 +37,7 @@ ostream &BOOM::operator<<(ostream &os,const CigarOp &op)
 
 
 
-ostream &operator<<(ostream &os,const CigarString &S)
+ostream &BOOM::operator<<(ostream &os,const CigarString &S)
 {
   S.printOn(os);
   return os;

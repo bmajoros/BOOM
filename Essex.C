@@ -737,13 +737,19 @@ void Scanner::skipWhiteSpace()
   
   int ic;
   char c=' ';
-  while(isspace(c))
-    {
-      ic=is.get();
-      if(isEofChar(ic)) return;
-      c=char(ic);
-      if(c=='\r' || c=='\n') ++lineNum;
+  while(isspace(c)) {
+    ic=is.get();
+    if(isEofChar(ic)) return;
+    c=char(ic);
+    if(c=='#') {
+      do {
+	ic=is.get();
+	if(isEofChar(ic)) return;
+	c=char(ic);
+      } while(c!='\r' && c!='\n');
     }
+    if(c=='\r' || c=='\n') ++lineNum;
+  }
   is.putback(c);
 }
 

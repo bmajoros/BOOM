@@ -832,14 +832,19 @@ Essex::CompositeNode *GffTranscript::toEssex() const
   root->append("end",end);
   if(hasScore) root->append("score",float(score));
   else root->append("score",".");
-  Essex::CompositeNode *exonsNode=new Essex::CompositeNode("exons");
-  appendExons(exons,exonsNode);
-  root->append(exonsNode);
-  Essex::CompositeNode *utrNode=new Essex::CompositeNode("UTRs");
-  appendExons(UTR,utrNode);
-  root->append(utrNode);
-  String protein=ProteinTrans::translate(getSequence());
-  root->append("protein",protein);
+  root->append("strand",strand==FORWARD_STRAND ? "+" : "-");
+  if(exons.size()>0) {
+    Essex::CompositeNode *exonsNode=new Essex::CompositeNode("exons");
+    appendExons(exons,exonsNode);
+    root->append(exonsNode);
+  }
+  if(UTR.size()>0) {
+    Essex::CompositeNode *utrNode=new Essex::CompositeNode("UTR");
+    appendExons(UTR,utrNode);
+    root->append(utrNode);
+  }
+  if(isCoding()) 
+    root->append("protein",ProteinTrans::translate(getSequence()));
   return root;
 }
 
