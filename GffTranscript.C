@@ -769,7 +769,7 @@ void GffTranscript::splitUTRandCDSfw(GffExon *startExon,int startExonIndex,
     exon->changeExonType(ET_UTR5);
     UTR.push_back(exon);
   }
-  exons.cut(i,startExonIndex);
+  exons.cut(0,startExonIndex);
   if(startCodon>startExon->getBegin()) {
     GffExon *exon=new GffExon(ET_UTR5,startExon->getBegin(),startCodon,
 			      *this,false,0.0,false,0);
