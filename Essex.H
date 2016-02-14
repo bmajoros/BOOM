@@ -157,6 +157,7 @@ public:
   void setIthChild(int,Node *);
   void appendChild(Node *);
   void prepend(const String &);
+  void prepend(Node *node) { children.push_front(node); }
   void append(Node *node) { appendChild(node); }
   void append(int);
   void append(float);

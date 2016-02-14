@@ -727,7 +727,7 @@ void GffTranscript::setSubstrate(const String &s)
 
 
 
-void GffTranscript::splitUTRandCDS(int startCodon,
+void GffTranscript::splitUTRandCDS(const String &genome,int startCodon,
 				   const Set<String> &stopCodons)
 {
   // The startCodon coordinate must be the leftmost base of the codon,
@@ -752,15 +752,15 @@ void GffTranscript::splitUTRandCDS(int startCodon,
       { startExon=exons[i]; startExonIndex=i; break; }
   if(!startExon) { UTR=exons; exons.clear(); return; }
   if(strand==FORWARD_STRAND) 
-    splitUTRandCDSfw(startExon,startExonIndex,startCodon,stopCodons);
+    splitUTRandCDSfw(genome,startExon,startExonIndex,startCodon,stopCodons);
   else 
-    splitUTRandCDSrev(startExon,startExonIndex,startCodon,stopCodons);
+    splitUTRandCDSrev(genome,startExon,startExonIndex,startCodon,stopCodons);
 }
 
 
 
-void GffTranscript::splitUTRandCDSfw(GffExon *startExon,int startExonIndex,
-				     int startCodon,
+void GffTranscript::splitUTRandCDSfw(const String &genome,GffExon *startExon,
+				     int startExonIndex,int startCodon,
 				     const Set<String> &stopCodons)
 {
   // Move all 5' exons to UTR
@@ -779,12 +779,17 @@ void GffTranscript::splitUTRandCDSfw(GffExon *startExon,int startExonIndex,
   startExon->changeExonType(ET_INITIAL_EXON);
 
   // Find the stop codon
-  CodonIterator iter(*this,substrate);
+  CodonIterator iter(*this,genome);
   Codon codon;
   GffExon *stopExon=NULL;
-  while(iter.nextCodon(codon))
-    if(stopCodons.isMember(codon.codon))
-      { stopExon=codon.exon; break; }
+  //cout<<"first exon sequence: "<<exons[0]->getSequence()<<endl;
+  while(iter.nextCodon(codon)) {
+    //cout<<codon.codon<<endl;
+    if(stopCodons.isMember(codon.codon)) {
+      //cout<<"found stop codon "<<codon.codon<<" in exon ";codon.exon->toGff(cout);cout<<endl;
+      stopExon=codon.exon; break;
+    }
+  }
 
   // Move all 3' exons to UTR
   if(stopExon) {
@@ -811,8 +816,8 @@ void GffTranscript::splitUTRandCDSfw(GffExon *startExon,int startExonIndex,
 
 
 
-void GffTranscript::splitUTRandCDSrev(GffExon *startExon,int startExonIndex,
-				      int startCodon,
+void GffTranscript::splitUTRandCDSrev(const String &genome,GffExon *startExon,
+				      int startExonIndex,int startCodon,
 				      const Set<String> &stopCodons)
 {
   throw "GffTranscript::splitUTRandCDSrev() not implemented";
