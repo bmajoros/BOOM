@@ -894,7 +894,8 @@ bool GffTranscript::identical(const GffTranscript &other) const
 int GffTranscript::genomicToSplicedCoords(int genomicCoord,
 			   const Vector<GffExon*> &rawExons)
 {
-  if(strand!=FORWARD_STRAND) throw "GffTranscript::splicedToGenomicCoords() requires forward-strand features";
+  if(rawExons.size()>0 && rawExons[0]->getStrand()!=FORWARD_STRAND) 
+    throw "GffTranscript::genomicToSplicedCoords() requires forward-strand features";
   int leftSum=0;
   for(Vector<GffExon*>::const_iterator cur=rawExons.begin(), end=
 	rawExons.end() ; cur!=end ; ++cur) {
@@ -911,7 +912,8 @@ int GffTranscript::genomicToSplicedCoords(int genomicCoord,
 int GffTranscript::splicedToGenomicCoords(int splicedCoord,
 			   const Vector<GffExon*> &rawExons)
 {
-  if(strand!=FORWARD_STRAND) throw "GffTranscript::splicedToGenomicCoords() requires forward-strand features";
+  if(rawExons.size()>0 && rawExons[0]->getStrand()!=FORWARD_STRAND) 
+    throw "GffTranscript::splicedToGenomicCoords() requires forward-strand features";
   int splicedExonBegin=0;
   for(Vector<GffExon*>::const_iterator cur=rawExons.begin(), end=
 	rawExons.end() ; cur!=end ; ++cur) {

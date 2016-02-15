@@ -89,9 +89,9 @@ public:
   Essex::CompositeNode *toEssex() const;
   bool identical(const GffTranscript &) const; 
   // ^ you MUST call sortExons() & sortUTR() first!!!
-  int genomicToSplicedCoords(int genomicCoord,
+  static int genomicToSplicedCoords(int genomicCoord,
 			     const Vector<GffExon*> &rawExons);//-1 = not found
-  int splicedToGenomicCoords(int splicedCoord,
+  static int splicedToGenomicCoords(int splicedCoord,
 			     const Vector<GffExon*> &rawExons);
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
