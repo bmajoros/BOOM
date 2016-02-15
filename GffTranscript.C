@@ -849,7 +849,7 @@ Essex::CompositeNode *GffTranscript::toEssex() const
     root->append(utrNode);
   }
   if(isCoding()) 
-    root->append("protein",ProteinTrans::translate(getSequence()));
+    root->append("translation",ProteinTrans::translate(getSequence()));
   return root;
 }
 
