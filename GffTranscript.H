@@ -93,6 +93,8 @@ public:
 			     const Vector<GffExon*> &rawExons);//-1 = not found
   static int splicedToGenomicCoords(int splicedCoord,
 			     const Vector<GffExon*> &rawExons);
+  const Vector<GffExon*> &peekUTR() const { return UTR; }
+  const Vector<GffExon*> &peekExons() const { return exons; }
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;

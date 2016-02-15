@@ -900,6 +900,8 @@ int GffTranscript::genomicToSplicedCoords(int genomicCoord,
   for(Vector<GffExon*>::const_iterator cur=rawExons.begin(), end=
 	rawExons.end() ; cur!=end ; ++cur) {
     GffExon *exon=*cur;
+    if(exon->getBegin()>genomicCoord) // it was in the preceding intron
+      return leftSum; // an approximation
     if(exon->contains(genomicCoord))
       return leftSum+genomicCoord-exon->getBegin();
     else leftSum+=exon->length();
