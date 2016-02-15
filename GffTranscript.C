@@ -474,17 +474,15 @@ BOOM::String BOOM::GffTranscript::getSequence() // CDS only!
 
 BOOM::String BOOM::GffTranscript::getFullSequence() // CDS & UTR
 {
+  setUTRtypes();
   BOOM::String sequence;
-  int numExons=exons.size();
-  for(int i=0 ; i<numExons ; ++i) {
-    BOOM::GffExon *exon=exons[i];
-    sequence+=exon->getSequence();
-  }
-  int numUTR=UTR.size();
-  for(int i=0 ; i<numUTR ; ++i) {
-    BOOM::GffExon *exon=UTR[i];
-    sequence+=exon->getSequence();
-  }
+  int numExons=exons.size(), numUTR=UTR.size(), u;
+  for(u=0 ; u<numUTR ; ++u) {
+    BOOM::GffExon *exon=UTR[u];
+    if(exon->isUTR5()) sequence+=exon->getSequence();
+    else break; }
+  for(int i=0 ; i<numExons ; ++i) sequence+=exons[i]->getSequence();
+  for( ; u<numUTR ; ++u) sequence+=UTR[u]->getSequence();
   return sequence;
 }
 
@@ -893,6 +891,39 @@ bool GffTranscript::identical(const GffTranscript &other) const
 
 
 
+int GffTranscript::genomicToSplicedCoords(int genomicCoord,
+			   const Vector<GffExon*> &rawExons)
+{
+  if(strand!=FORWARD_STRAND) throw "GffTranscript::splicedToGenomicCoords() requires forward-strand features";
+  int leftSum=0;
+  for(Vector<GffExon*>::const_iterator cur=rawExons.begin(), end=
+	rawExons.end() ; cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    if(exon->contains(genomicCoord))
+      return leftSum+genomicCoord-exon->getBegin();
+    else leftSum+=exon->length();
+  }
+  return -1;
+}
+
+
+
+int GffTranscript::splicedToGenomicCoords(int splicedCoord,
+			   const Vector<GffExon*> &rawExons)
+{
+  if(strand!=FORWARD_STRAND) throw "GffTranscript::splicedToGenomicCoords() requires forward-strand features";
+  int splicedExonBegin=0;
+  for(Vector<GffExon*>::const_iterator cur=rawExons.begin(), end=
+	rawExons.end() ; cur!=end ; ++cur) {
+    GffExon *exon=*cur;
+    const int exonLength=exon->length();
+    const int splicedExonEnd=splicedExonBegin+exonLength;
+    if(splicedExonEnd>splicedCoord)
+      return exon->getBegin()+splicedCoord-splicedExonBegin;
+    else splicedExonBegin+=exonLength;
+  }
+  INTERNAL_ERROR;
+}
 
 
 

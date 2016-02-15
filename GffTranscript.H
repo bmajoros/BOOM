@@ -89,6 +89,10 @@ public:
   Essex::CompositeNode *toEssex() const;
   bool identical(const GffTranscript &) const; 
   // ^ you MUST call sortExons() & sortUTR() first!!!
+  int genomicToSplicedCoords(int genomicCoord,
+			     const Vector<GffExon*> &rawExons);//-1 = not found
+  int splicedToGenomicCoords(int splicedCoord,
+			     const Vector<GffExon*> &rawExons);
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;
@@ -99,7 +103,7 @@ private:
   BOOM::String transcriptId, geneId;
   BOOM::String substrate;    
   BOOM::String source;       
-  BOOM::GffFeature *startCodon, *stopCodon;
+  BOOM::GffFeature *startCodon, *stopCodon; // ### not used!!
   void splitUTRandCDSfw(const String &genome,GffExon *startExon,
 			int startExonIndex,int startCodon,
 			const Set<String> &stopCodons); 
