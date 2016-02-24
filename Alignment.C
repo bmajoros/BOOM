@@ -14,8 +14,8 @@ int Alignment::MAX_WIDTH=60;
 
 
 
-Alignment::Alignment(const Sequence &s1,const Sequence &s2,Alphabet &alpha,
-		     double score)
+Alignment::Alignment(const Sequence &s1,const Sequence &s2,
+		     const Alphabet &alpha,double score)
   : s1(s1), s2(s2), alphabet(alpha), score(score)
 {
 }
@@ -124,6 +124,28 @@ ostream &BOOM::operator<<(ostream &os,BOOM::Alignment const &alignment)
 double Alignment::getScore() const
 {
   return score;
+}
+
+
+
+int Alignment::countMatches() const
+{
+  int matches=0;
+  Vector<MatchType>::const_iterator cur=matchData.begin(), 
+    end=matchData.end();
+  int index1=0, index2=0;
+  for(; cur!=end ; ++cur)
+    switch(*cur) {
+    case MATCH: {
+      Symbol symbol1=s1[index1], symbol2=s2[index2];
+      if(symbol1==symbol2) ++matches;
+      ++index1;
+      ++index2; }
+      break;
+    case FIRST_UNMATCHED: ++index1; break;
+    case SECOND_UNMATCHED: ++index2; break;
+    }
+  return matches;
 }
 
 

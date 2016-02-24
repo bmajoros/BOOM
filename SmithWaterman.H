@@ -22,7 +22,7 @@ template<class FLT_TYP>
 class SmithWaterman
 {
 public:
-  SmithWaterman(Alphabet &,const Sequence &,const Sequence &,
+  SmithWaterman(const Alphabet &,const Sequence &,const Sequence &,
 		const SubstitutionMatrix<FLT_TYP> &,
 		FLT_TYP gapOpenPenalty,FLT_TYP gapExtendPenalty);
   Alignment *fullAlignment();
@@ -36,7 +36,7 @@ private:
     Direction links[3];
     Direction bestDir();
   };
-  Alphabet &alphabet;
+  const Alphabet &alphabet;
   const Sequence &s1, &s2;
   Array2D<Cell> alignmentMatrix; // index like this: M[column][row]
   const SubstitutionMatrix<FLT_TYP> &substitutionMatrix;
@@ -61,7 +61,7 @@ using namespace BOOM;
 
 
 template<class FLT_TYP>
-SmithWaterman<FLT_TYP>::SmithWaterman(Alphabet &alphabet,
+SmithWaterman<FLT_TYP>::SmithWaterman(const Alphabet &alphabet,
 				      const Sequence &s1,
 				      const Sequence &s2,
 			      const SubstitutionMatrix<FLT_TYP> &subst,

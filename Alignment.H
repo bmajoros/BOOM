@@ -31,13 +31,14 @@ class Alignment
 {
 public:
   static int MAX_WIDTH;
-  Alignment(const Sequence &,const Sequence &,Alphabet &,double score=0);
+  Alignment(const Sequence &,const Sequence &,const Alphabet &,double score=0);
   const Sequence &getFirstSequence() const;
   const Sequence &getSecondSequence() const;
   int getAlignmentLength() const;
   MatchType operator[](int position) const;
   Alignment &operator+=(MatchType);
   double getScore() const;
+  int countMatches() const;
   void countMismatches(int &mismatches,int &insertions) const;
   int countNearMatches(SubstitutionMatrix<float> &);
   int countNearMatches(SubstitutionMatrix<double> &);
@@ -49,7 +50,7 @@ private:
   const Sequence &s1, &s2;
   Vector<MatchType> matchData;
   double score;
-  Alphabet &alphabet;
+  const Alphabet &alphabet;
   friend ostream &operator<<(ostream &,const Alignment &);
 };
   ostream &operator<<(ostream &,BOOM::Alignment const &);
