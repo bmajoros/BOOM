@@ -1239,4 +1239,15 @@ $(OBJ)/CombinationIterator.o:\
 		CombinationIterator.H
 	$(CC) $(CFLAGS) -o $(OBJ)/CombinationIterator.o -c \
 		CombinationIterator.C
+#--------------------------------------------------------
+$(OBJ)/chi-square.o:\
+		chi-square.C
+	$(CC) $(CFLAGS) -o $(OBJ)/chi-square.o -c \
+		chi-square.C
 #---------------------------------------------------------
+chi-square: \
+		$(OBJ)/chi-square.o
+	$(CC) $(LDFLAGS) -o chi-square \
+		$(OBJ)/chi-square.o \
+		-L. -lBOOM
+#---------------------------------------------
