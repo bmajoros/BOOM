@@ -37,12 +37,15 @@ class CodonIterator {
 public:
   // NOTE: this class currently only works for the forward strand!
   CodonIterator(const GffTranscript &,const String &substrate);
-  bool nextCodon(Codon &);
-  bool more() const;
+  CodonIterator(const GffTranscript &,const Vector<GffExon*> &rawExons,
+		const String &substrate);
+  bool nextCodon(Codon &); // return false if no more
 protected:
   const GffTranscript &transcript;
   const String &substrate;
   const GffExon *currentExon;
+  const Vector<GffExon*> &exons;
+  int atgExon, atgPosInExon, utr5len;
   int currentExonIndex;
   int posWithinExon;
   int splicedPos; // includes 5'UTR

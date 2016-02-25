@@ -75,6 +75,7 @@ public:
   int getFrame() { return frame; }
   void setFrame(int f) { frame=f; }
   bool identical(const GffExon &) const;
+  bool overlaps(const GffExon &) const;
 private:
   static BOOM::Map<BOOM::String,ExonType> exonTypeNames;
   int frame;  

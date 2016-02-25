@@ -19,7 +19,7 @@ template<class FLT_TYP>
 class BandedSmithWaterman
 {
 public:
-  BandedSmithWaterman(Alphabet &,const Sequence &,const Sequence &,
+  BandedSmithWaterman(const Alphabet &,const Sequence &,const Sequence &,
 		      const SubstitutionMatrix<FLT_TYP> &,
 		      FLT_TYP gapOpenPenalty,FLT_TYP gapExtendPenalty,
 		      int bandWidth);
@@ -33,7 +33,7 @@ private:
     Direction links[3];
     Direction bestDir();
   };
-  Alphabet &alphabet;
+  const Alphabet &alphabet;
   const Sequence &s1, &s2;
   BandedAlignmentMatrix<Cell> alignmentMatrix; // M[column][row]
   const SubstitutionMatrix<FLT_TYP> &substitutionMatrix;
@@ -58,7 +58,7 @@ ostream &operator<<(ostream &,
 
 
 template<class FLT_TYP>
-BandedSmithWaterman<FLT_TYP>::BandedSmithWaterman(Alphabet &alphabet,
+BandedSmithWaterman<FLT_TYP>::BandedSmithWaterman(const Alphabet &alphabet,
 						  const Sequence &s1,
 						  const Sequence &s2,
 			    const SubstitutionMatrix<FLT_TYP> &subst,

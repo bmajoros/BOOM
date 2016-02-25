@@ -352,5 +352,11 @@ bool GffExon::identical(const GffExon &other) const
 
 
 
+bool GffExon::overlaps(const GffExon &other) const
+{
+  return begin<other.end && other.begin<end;
+}
+
+
 
 
