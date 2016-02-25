@@ -931,5 +931,22 @@ int GffTranscript::splicedToGenomicCoords(int splicedCoord,
 
 
 
+bool GffTranscript::hasUTR5() const
+{
+  for(Vector<GffExon*>::const_iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur)
+    if((*cur)->isUTR5()) return true;
+  return false;
+}
+
+
+
+bool GffTranscript::hasUTR3() const
+{
+  for(Vector<GffExon*>::const_iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur)
+    if((*cur)->isUTR3()) return true;
+  return false;
+}
 
 

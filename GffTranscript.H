@@ -95,6 +95,8 @@ public:
 			     const Vector<GffExon*> &rawExons);
   const Vector<GffExon*> &peekUTR() const { return UTR; }
   const Vector<GffExon*> &peekExons() const { return exons; }
+  bool hasUTR5() const;
+  bool hasUTR3() const;
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;
