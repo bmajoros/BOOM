@@ -364,7 +364,7 @@ void BOOM::GffTranscript::setUTRtypes()
   // First, handle the case of a single UTR (no coding segment)
   int numUTR=UTR.size();
   if(numUTR==0) return;
-  if(numUTR==1) {
+  if(numUTR==1 && exons.size()==0) {
     UTR[0]->changeExonType(ET_SINGLE_UTR5);
     return;
   }
@@ -780,13 +780,9 @@ void GffTranscript::splitUTRandCDSfw(const String &genome,GffExon *startExon,
   CodonIterator iter(*this,genome);
   Codon codon;
   GffExon *stopExon=NULL;
-  //cout<<"first exon sequence: "<<exons[0]->getSequence()<<endl;
   while(iter.nextCodon(codon)) {
-    //cout<<codon.codon<<endl;
-    if(stopCodons.isMember(codon.codon)) {
-      //cout<<"found stop codon "<<codon.codon<<" in exon ";codon.exon->toGff(cout);cout<<endl;
+    if(stopCodons.isMember(codon.codon))
       stopExon=codon.exon; break;
-    }
   }
 
   // Move all 3' exons to UTR
@@ -804,7 +800,7 @@ void GffTranscript::splitUTRandCDSfw(const String &genome,GffExon *startExon,
       exon->changeExonType(ET_UTR3);
       UTR.push_back(exon);
     }
-    exons.cut(utr,numExons-utr);
+    if(numExons>utr) exons.cut(utr,numExons-utr);
   }
 
   // Set detailed exon types
