@@ -101,6 +101,7 @@ public:
   T &lookup(const String &);
   bool isDefined(const char *,int index,int len);
   bool isDefined(const char *,int len);
+  bool isDefined(const String &);
   int size();
   iterator begin();
   iterator end();
@@ -388,6 +389,14 @@ template<class T>
 bool BOOM::StringMap<T>::isDefined(const char *p,int len)
 {
   return isDefined(p,0,len);
+}
+
+
+
+template<class T>
+bool BOOM::StringMap<T>::isDefined(const String &s)
+{
+  return isDefined(s.c_str(),0,s.length());
 }
 
 
