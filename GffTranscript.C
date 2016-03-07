@@ -740,7 +740,7 @@ void GffTranscript::splitUTRandCDS(const String &genome,int startCodon,
   }
   else if(exons.size()==0)
     throw "GffTranscript::splitUTRandCDS(): no exons found";
-  
+
   // Find the exon containing the start codon
   int numExons=exons.size();
   GffExon *startExon=NULL;
@@ -780,10 +780,9 @@ void GffTranscript::splitUTRandCDSfw(const String &genome,GffExon *startExon,
   CodonIterator iter(*this,genome);
   Codon codon;
   GffExon *stopExon=NULL;
-  while(iter.nextCodon(codon)) {
+  while(iter.nextCodon(codon))
     if(stopCodons.isMember(codon.codon))
-      stopExon=codon.exon; break;
-  }
+      {stopExon=codon.exon; break;}
 
   // Move all 3' exons to UTR
   if(stopExon) {
