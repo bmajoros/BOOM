@@ -114,7 +114,8 @@ private:
   void splitUTRandCDSrev(const String &genome,GffExon *startExon,
 			 int startExonIndex,int startCodon,
 			 const Set<String> &stopCodons); 
-  void appendExons(const Vector<GffExon*> &,Essex::CompositeNode *) const;
+  void appendExons(const Vector<GffExon*> &,Essex::CompositeNode *,
+		   bool hasPhase) const;
 };
 
 

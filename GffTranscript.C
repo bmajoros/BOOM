@@ -833,12 +833,12 @@ Essex::CompositeNode *GffTranscript::toEssex() const
   root->append("strand",strand==FORWARD_STRAND ? "+" : "-");
   if(exons.size()>0) {
     Essex::CompositeNode *exonsNode=new Essex::CompositeNode("exons");
-    appendExons(exons,exonsNode);
+    appendExons(exons,exonsNode,true);
     root->append(exonsNode);
   }
   if(UTR.size()>0) {
     Essex::CompositeNode *utrNode=new Essex::CompositeNode("UTR");
-    appendExons(UTR,utrNode);
+    appendExons(UTR,utrNode,false);
     root->append(utrNode);
   }
   if(isCoding()) 
@@ -849,7 +849,8 @@ Essex::CompositeNode *GffTranscript::toEssex() const
 
 
 void GffTranscript::appendExons(const Vector<GffExon*> &exons,
-				Essex::CompositeNode *root) const
+				Essex::CompositeNode *root,
+				bool hasPhase) const
 {
   for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end() ;
       cur!=end ; ++cur) {
@@ -861,7 +862,8 @@ void GffTranscript::appendExons(const Vector<GffExon*> &exons,
     node->append(exon->getEnd());
     node->append(exon->getScore());
     node->append(exon->getStrand()==FORWARD_STRAND ? "+" : "-");
-    node->append(exon->getFrame());
+    if(hasPhase) node->append(exon->getFrame());
+    else node->append(".");
   }
 }
 
