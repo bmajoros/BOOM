@@ -960,6 +960,7 @@ void GffTranscript::getIntrons(Vector<Interval> &into) const
     else
       into.push_back(Interval(next->getEnd(),exon->getBegin()));
   }
+  deleteExons(rawExons);
 }
 
 
