@@ -15,6 +15,7 @@
 #include "Strand.H"
 #include "Essex.H"
 #include "ProteinTrans.H"
+#include "Interval.H"
 using namespace std;
 
 namespace BOOM {
@@ -80,6 +81,7 @@ public:
   void getUTR3(Vector<GffExon*> &);
   void getUTR(Vector<GffExon*> &UTR5,Vector<GffExon*> &UTR3);
   int getUTR5length() const;
+  void getIntrons(Vector<Interval> &into) const;
   void getRawExons(Vector<GffExon*> &shouldDelete);//combines CDS and UTR
   static void deleteExons(Vector<GffExon*> &);
   int mapToTranscriptCoords(int genomicCoord);//UTR & CDS; -1 if not in exon

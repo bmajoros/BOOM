@@ -947,3 +947,22 @@ bool GffTranscript::hasUTR3() const
 }
 
 
+
+void GffTranscript::getIntrons(Vector<Interval> &into) const
+{
+  Vector<GffExon*> rawExons;
+  getRawExons(rawExons);
+  const int n=rawExons.size();
+  for(int i=0 ; i<n-1 ; ++i) {
+    GffExon *exon=rawExons[i], *next=rawExons[i+1];
+    if(strand==FORWARD_STRAND)
+      into.push_back(Interval(exon->getEnd(),next->getBegin()));
+    else
+      into.push_back(Interval(next->getEnd(),exon->getBegin()));
+  }
+}
+
+
+
+
+
