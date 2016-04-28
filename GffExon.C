@@ -359,4 +359,8 @@ bool GffExon::overlaps(const GffExon &other) const
 
 
 
+bool GffExon::overlaps(const Interval &other) const
+{
+  return begin<other.getEnd() && other.getBegin()<end;
+}
 

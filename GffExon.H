@@ -11,6 +11,7 @@
 #include "GffFeature.H"
 #include "IndexedFasta.H"
 #include "Strand.H"
+#include "Interval.H"
 using namespace std;
 
 namespace BOOM {
@@ -76,6 +77,7 @@ public:
   void setFrame(int f) { frame=f; }
   bool identical(const GffExon &) const;
   bool overlaps(const GffExon &) const;
+  bool overlaps(const Interval &) const;
 private:
   static BOOM::Map<BOOM::String,ExonType> exonTypeNames;
   int frame;  
