@@ -965,5 +965,24 @@ void GffTranscript::getIntrons(Vector<Interval> &into) const
 
 
 
+void GffTranscript::reverseComplement(const int L)
+{
+  /*
+  BOOM::Vector<BOOM::GffExon*> exons; // actually CDS portions of exons
+  BOOM::Vector<BOOM::GffExon*> UTR;
+   */
+
+  begin=L-begin-1;
+  end=L-end-1;
+  strand=complement(strand);
+  for(Vector<GffExon*>::iterator cur=exons.begin(), end=exons.end() ;
+      cur!=end ; ++cur) 
+    (*cur)->reverseComplement(L);
+  for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+      cur!=end ; ++cur) 
+    (*cur)->reverseComplement(L);
+}
+
+
 
 

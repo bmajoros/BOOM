@@ -78,6 +78,7 @@ public:
   bool identical(const GffExon &) const;
   bool overlaps(const GffExon &) const;
   bool overlaps(const Interval &) const;
+  void reverseComplement(const int chromLen);
 private:
   static BOOM::Map<BOOM::String,ExonType> exonTypeNames;
   int frame;  
