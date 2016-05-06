@@ -84,6 +84,7 @@ public:
   void getIntrons(Vector<Interval> &into) const;
   void getRawExons(Vector<GffExon*> &shouldDelete);//combines CDS and UTR
   static void deleteExons(Vector<GffExon*> &);
+  void forgetCDS();
   int mapToTranscriptCoords(int genomicCoord);//UTR & CDS; -1 if not in exon
   int mapToGenomicCoords(int transcriptCoord);//UTR & CDS
   void computePhases();

@@ -624,6 +624,17 @@ void GffTranscript::getUTR(Vector<GffExon*> &UTR5,Vector<GffExon*> &UTR3)
 
 
 
+void GffTranscript::forgetCDS()
+{
+  Vector<GffExon*> raw;
+  getRawExons(raw);
+  deleteExons(exons);
+  deleteExons(UTR);
+  exons=raw;
+}
+
+
+
 void GffTranscript::getRawExons(Vector<GffExon*> &into)
 {
   into.clear();
