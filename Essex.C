@@ -570,6 +570,21 @@ void CompositeNode::printXMLrecursive(ostream &os,int depth)
 
 
 
+void CompositeNode::deleteChild(const String &tag)
+{
+  int n=getNumChildren();
+  for(int i=0 ; i<n ; ++i) {
+    Node *child=getIthChild(i);
+    if(child->getNodeType()==COMPOSITE &&
+       static_cast<CompositeNode*>(child)->getTag()==tag) {
+      children.cut(i);
+      delete child;
+    }
+  }
+}
+
+
+
 // **************************************************
 //                   Token methods
 // **************************************************

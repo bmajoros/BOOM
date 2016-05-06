@@ -174,6 +174,7 @@ public:
   virtual void printOn(ostream &) const;
   virtual void printXML(ostream &) const;
   bool hasCompositeChildren() const;
+  void deleteChild(const String &tag);
 };
 
 
