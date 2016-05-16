@@ -503,7 +503,7 @@ void CompositeNode::printOn(ostream &os) const
 bool CompositeNode::hasCompositeChildren() const
 {
   for(Vector<Node*>::const_iterator cur=children.begin(), end=children.end() ;
-      cur!=end ; ++cur) 
+      cur!=end ; ++cur)
     if((*cur)->getNodeType()==COMPOSITE) return true;
   return false;
 }
@@ -517,7 +517,6 @@ void CompositeNode::printRecursive(ostream &os,int depth)
   os<<tab<<'('<<tag;
   int n=getNumChildren();
   if(hasCompositeChildren()) {
-    //os<<endl;
     for(int i=0 ; i<n ; ++i) {
       Node *child=getIthChild(i);
       if(child->getNodeType()==COMPOSITE) {
@@ -527,14 +526,12 @@ void CompositeNode::printRecursive(ostream &os,int depth)
       else {
 	String tab;
 	tab.padOrTruncate(TAB_SIZE*(depth+1));
-	//os<<tab<<*child<<endl;
 	os<<"\n"<<tab<<*child;
       }
     }
-    //os<<tab;
   }
   else for(int i=0 ; i<n ; ++i) os<<" "<<*getIthChild(i);
-os<<')';//<<endl;
+  os<<')';//<<endl;
 }
 
 
