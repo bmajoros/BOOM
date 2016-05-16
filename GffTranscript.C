@@ -829,7 +829,8 @@ void GffTranscript::splitUTRandCDSrev(const String &genome,GffExon *startExon,
 
 
 
-Essex::CompositeNode *GffTranscript::toEssex() const
+Essex::CompositeNode *GffTranscript::toEssex(bool reverseStrand,
+					     int substrateLen) const
 {
   Essex::CompositeNode *root=new Essex::CompositeNode("transcript");
   root->append("ID",transcriptId);
@@ -837,19 +838,19 @@ Essex::CompositeNode *GffTranscript::toEssex() const
   root->append("type",isCoding() ? "protein-coding" : "noncoding");
   root->append("substrate",substrate);
   root->append("source",source);
-  root->append("begin",begin);
-  root->append("end",end);
+  root->append("begin",reverseStrand ? substrateLen-begin+1 : begin);
+  root->append("end",reverseStrand ? substrateLen-end+1 : end);
   if(hasScore) root->append("score",float(score));
   else root->append("score",".");
   root->append("strand",strand==FORWARD_STRAND ? "+" : "-");
   if(exons.size()>0) {
     Essex::CompositeNode *exonsNode=new Essex::CompositeNode("exons");
-    appendExons(exons,exonsNode,true);
+    appendExons(exons,exonsNode,true,reverseStrand,substrateLen);
     root->append(exonsNode);
   }
   if(UTR.size()>0) {
     Essex::CompositeNode *utrNode=new Essex::CompositeNode("UTR");
-    appendExons(UTR,utrNode,false);
+    appendExons(UTR,utrNode,false,reverseStrand,substrateLen);
     root->append(utrNode);
   }
   if(isCoding()) 
@@ -861,7 +862,7 @@ Essex::CompositeNode *GffTranscript::toEssex() const
 
 void GffTranscript::appendExons(const Vector<GffExon*> &exons,
 				Essex::CompositeNode *root,
-				bool hasPhase) const
+				bool hasPhase,bool revComp,int L) const
 {
   for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end() ;
       cur!=end ; ++cur) {
@@ -869,8 +870,8 @@ void GffTranscript::appendExons(const Vector<GffExon*> &exons,
     const char *type=toString(exon->getExonType());
     Essex::CompositeNode *node=new Essex::CompositeNode(type);
     root->append(node);
-    node->append(exon->getBegin());
-    node->append(exon->getEnd());
+    node->append(revComp ? L-exon->getBegin()+1 : exon->getBegin());
+    node->append(revComp ? L-exon->getEnd()+1 : exon->getEnd());
     node->append(exon->getScore());
     node->append(exon->getStrand()==FORWARD_STRAND ? "+" : "-");
     if(hasPhase) node->append(exon->getFrame());

@@ -89,7 +89,8 @@ public:
   int mapToGenomicCoords(int transcriptCoord);//UTR & CDS
   void computePhases();
   String getProtein() { return ProteinTrans::translate(getSequence()); }
-  Essex::CompositeNode *toEssex() const;
+  Essex::CompositeNode *toEssex(bool reverseStrand=false,
+				int subtrateLength=0) const;
   bool identical(const GffTranscript &) const; 
   // ^ you MUST call sortExons() & sortUTR() first!!!
   static int genomicToSplicedCoords(int genomicCoord,
@@ -119,7 +120,7 @@ private:
 			 int startExonIndex,int startCodon,
 			 const Set<String> &stopCodons); 
   void appendExons(const Vector<GffExon*> &,Essex::CompositeNode *,
-		   bool hasPhase) const;
+		   bool hasPhase,bool reverseComp,int substrateLen) const;
 };
 
 
