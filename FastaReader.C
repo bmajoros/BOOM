@@ -13,7 +13,7 @@ using namespace std;
 
 
 BOOM::Regex BOOM::FastaReader::deflineRegex("^\\s*>\\s*(\\S+)(.*)");
-BOOM::Regex BOOM::FastaReader::attrRegex("/(\\S+)=(\\S+)");
+//BOOM::Regex BOOM::FastaReader::attrRegex("/(\\S+)=(\\S+)");
 
 
 
@@ -118,8 +118,27 @@ void FastaReader::parseAttributes(const String &remainder,
   remainder.getFields(fields," \t");
   const int N=fields.size();
   for(int i=0 ; i<N ; ++i) {
-    if(attrRegex.search(fields[i]))
+    /*if(attrRegex.search(fields[i])) {
+      cout<<attrRegex[1]<<" => "<<attrRegex[2]<<endl;
       attr[attrRegex[1]]=attrRegex[2];
+      }*/
+    /*if(attrRegex.search(fields[i]))
+      cout<<attrRegex[1]<<endl;
+    else cout<<"not found: "<<fields[i]<<endl;
+    */
+    const String sField=fields[i];
+    const int fieldLen=sField.length();
+    const char *field=sField.c_str();
+    const char *p=field;
+    if(*p=='/') {
+      while(*p && *p!='=') ++p;
+      if(*p=='=') {
+	int keyLen=p-field-1;
+	String key(field+1,keyLen);
+	String value(p+1,fieldLen-keyLen-2);
+	attr[key]=value;
+      }
+    }
   }
 }
 

@@ -40,7 +40,7 @@ private:
   BOOM::File file;
   const Alphabet &alphabet;
   static BOOM::Regex deflineRegex;
-  static BOOM::Regex attrRegex;
+  //static BOOM::Regex attrRegex;
 
   void maskStrangeChars(BOOM::String &);
 };
