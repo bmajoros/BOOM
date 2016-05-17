@@ -308,7 +308,7 @@ CompositeNode::~CompositeNode()
 
 void CompositeNode::appendChild(Node *child)
 {
-  children.push_back(child);
+  if(child) children.push_back(child);
 }
 
 

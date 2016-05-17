@@ -16,6 +16,14 @@ extern "C" {
 }
 
 /*
+               NOTE: THE GNU REGEX LIBRARY HAS AN UNDOCUMENTED LIMIT
+                     ON MATCH LENGTHS.  USE THIS LIBRARY ONLY WHEN YOU
+                     ARE CERTAIN THE MATCHED PARTS WILL BE REASONABLY
+		     SHORT -- MATCHES OF LENGTH 2916 OR LONGER HAVE BEEN 
+		     FOUND TO FAIL.
+ */
+
+/*
   NOTE: In C++, slashes need to be escaped multiple times, so what in Perl
   would normally be:
                             ([^\/]+)\.fasta
