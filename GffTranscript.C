@@ -838,11 +838,15 @@ Essex::CompositeNode *GffTranscript::toEssex(bool reverseStrand,
   root->append("type",isCoding() ? "protein-coding" : "noncoding");
   root->append("substrate",substrate);
   root->append("source",source);
-  root->append("begin",reverseStrand ? substrateLen-begin+1 : begin);
-  root->append("end",reverseStrand ? substrateLen-end+1 : end);
+  int b=reverseStrand ? substrateLen-begin+1 : begin;
+  int e=reverseStrand ? substrateLen-end+1 : end;
+  if(b>e) { int t=b; b=e; e=t; }
+  root->append("begin",b);
+  root->append("end",e);
   if(hasScore) root->append("score",float(score));
   else root->append("score",".");
-  root->append("strand",strand==FORWARD_STRAND ? "+" : "-");
+  Strand s=reverseStrand ? complement(strand) : strand;
+  root->append("strand",s==FORWARD_STRAND ? "+" : "-");
   if(exons.size()>0) {
     Essex::CompositeNode *exonsNode=new Essex::CompositeNode("exons");
     appendExons(exons,exonsNode,true,reverseStrand,substrateLen);
@@ -870,10 +874,15 @@ void GffTranscript::appendExons(const Vector<GffExon*> &exons,
     const char *type=toString(exon->getExonType());
     Essex::CompositeNode *node=new Essex::CompositeNode(type);
     root->append(node);
-    node->append(revComp ? L-exon->getBegin()+1 : exon->getBegin());
-    node->append(revComp ? L-exon->getEnd()+1 : exon->getEnd());
+    int b=revComp ? L-exon->getBegin()+1 : exon->getBegin();
+    int e=revComp ? L-exon->getEnd()+1 : exon->getEnd();
+    if(b>e) { int t=b; b=e; e=t; }
+    node->append(b);
+    node->append(e);
     node->append(exon->getScore());
-    node->append(exon->getStrand()==FORWARD_STRAND ? "+" : "-");
+    Strand strand=exon->getStrand();
+    Strand s=revComp ? complement(strand) : strand;
+    node->append(s==FORWARD_STRAND ? "+" : "-");
     if(hasPhase) node->append(exon->getFrame());
     else node->append(".");
   }
