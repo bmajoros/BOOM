@@ -39,6 +39,7 @@ public:
   BOOM::Array1D<T> &operator=(const BOOM::Array1D<T> &);
   BOOM::Array1D<T> &operator=(const BOOM::Vector<T> &);
   T *getRawArray() {return array;}
+  void cut(int index);
 private:
   int n;
   T *array;
@@ -272,6 +273,17 @@ BOOM::Array1D<T> &BOOM::Array1D<T>::operator=(const BOOM::Vector<T> &V)
 }
 
 
+
+template<class T>
+void BOOM::Array1D<T>::cut(int index)
+{
+  T *newArray=new T[n-1];
+  for(int from=0, to=0 ; from<n ; ++from)
+    if(from!=index) newArray[to++]=array[from];
+  delete [] array;
+  array=newArray;
+  --n;
+}
 
 
 #endif
