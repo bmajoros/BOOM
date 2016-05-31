@@ -28,7 +28,7 @@ public:
   static BOOM::String getTempFilename(const String &dir,const String &prefix);
   static bool copy(const BOOM::String &from,const BOOM::String &to);
   static bool exists(const BOOM::String &filename);
-  BOOM::String getline();  // newlines is stripped from end
+  BOOM::String getline();  // newline is stripped from end
   static void mkdir(const String &path); // implemented as: system("mkdir -p path")
   inline BOOM::String readLine() { return getline(); }
   bool eof();

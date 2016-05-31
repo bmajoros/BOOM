@@ -118,14 +118,8 @@ void FastaReader::parseAttributes(const String &remainder,
   remainder.getFields(fields," \t");
   const int N=fields.size();
   for(int i=0 ; i<N ; ++i) {
-    /*if(attrRegex.search(fields[i])) {
-      cout<<attrRegex[1]<<" => "<<attrRegex[2]<<endl;
-      attr[attrRegex[1]]=attrRegex[2];
-      }*/
-    /*if(attrRegex.search(fields[i]))
-      cout<<attrRegex[1]<<endl;
-    else cout<<"not found: "<<fields[i]<<endl;
-    */
+    // NOTE: Can't use GNU Regex here because that code has a hard limit on
+    // match lengths!
     const String sField=fields[i];
     const int fieldLen=sField.length();
     const char *field=sField.c_str();
