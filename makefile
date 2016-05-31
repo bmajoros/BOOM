@@ -1251,3 +1251,11 @@ chi-square: \
 		$(OBJ)/chi-square.o \
 		-L. -lBOOM
 #---------------------------------------------
+
+#--------------------------------------------------------
+$(OBJ)/FixedSizeQueue.o:\
+		FixedSizeQueue.C\
+		FixedSizeQueue.H
+	$(CC) $(CFLAGS) -o $(OBJ)/FixedSizeQueue.o -c \
+		FixedSizeQueue.C
+#---------------------------------------------------------
