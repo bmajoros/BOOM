@@ -17,10 +17,11 @@ class FixedSizeQueue {
 public:
   FixedSizeQueue(int maxSize);
   void enqueue(T);
-  List<T>::iterator begin();
-  List<T>::iterator end();
+  typename List<T>::iterator begin();
+  typename List<T>::iterator end();
   bool isFull() const;
   bool isEmpty() const;
+  int numElements() const { return q.size(); }
 private:
   List<T> q;
   int maxSize;
@@ -28,44 +29,52 @@ private:
 }
 
 
+
 template<class T>
-FixedSizeQueue::FixedSizeQueue(int maxSize)
+FixedSizeQueue<T>::FixedSizeQueue(int maxSize)
+  : maxSize(maxSize)
 {
 }
 
 
 
 template<class T>
-void FixedSizeQueue::enqueue(T)
+void FixedSizeQueue<T>::enqueue(T t)
 {
+  q.append(t);
+  if(q.size()>maxSize) q.removeFirstElem();
 }
 
 
 
 template<class T>
-List<T>::iterator FixedSizeQueue::begin()
+typename List<T>::iterator FixedSizeQueue<T>::begin()
 {
+  return q.begin();
 }
 
 
 
 template<class T>
-List<T>::iterator FixedSizeQueue::end()
+typename List<T>::iterator FixedSizeQueue<T>::end()
 {
+  return q.end();
 }
 
 
 
 template<class T>
-bool FixedSizeQueue::isFull() const
+bool FixedSizeQueue<T>::isFull() const
 {
+  return q.size()>=maxSize;
 }
 
 
 
 template<class T>
-bool FixedSizeQueue::isEmpty() const
+bool FixedSizeQueue<T>::isEmpty() const
 {
+  return q.isEmpty();
 }
 
 
