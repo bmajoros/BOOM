@@ -93,8 +93,8 @@ int Genotype::getAllele(int i)
  ****************************************************************/
 
 VcfReader::VcfReader(const String &filename)
+  : file(filename)
 {
-  file(filename);
   advance();
 }
 
@@ -109,16 +109,80 @@ const Vector<String> &VcfReader::getSampleIDs() const
 
 void VcfReader::advance()
 {
+  genotypes.clear();
   while(!file.eof()) {
     String line=file.getline();
-    
+    if(line.empty() && file.eof()) break;
+    line.getFields(fields);
+    if(fields.size()<1) continue;
+    String firstField=fields[0];
+    firstField.trimWhitespace();
+    if(firstField=="#CHROM") parseChromLine();
+    else if(firstField.length()>0 && firstField[0]=='#') continue;
+    else { parseVariant(); break; }
   }
 }
 
 
 
-bool VcfReader::nextVariant(Variant &,Vector<Genotype> &)
+void VcfReader::parseChromLine()
 {
+  // #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  200848168@1097100704
+  const int numFields=fields.size();
+  if(numFields<10 || fields[8]!="FORMAT") 
+    throw "Error parsing #CHROM line in VCF file";
+  for(int i=9 ; i<numFields ; ++i) sampleIDs.push_back(fields[i]);
+}
+
+
+
+void VcfReader::parseVariant()
+{
+  const int numFields=fields.size();
+  if(numFields<10 || fields[6]!="PASS" || fields[8]!="GT") return;
+
+  // Parse the variant
+  const String chr=fields[0];
+  const int pos=fields[1].asInt();
+  const String id=fields[2];
+  if(id==".") id=chr+"@"+pos;
+  const String ref=fields[3];
+  const String alt=fields[4];
+  Variant v(id,chr,pos);
+  v.addAllele(ref);
+  Vector<String> alleles; alt.getFields(alleles,",");
+  for(int i=0 ; i<alleles.size() ; ++i) v.addAllele(alleles[i]);
+  variant=v;
+
+  // Parse the genotypes
+  genotypes.clear();
+  for(int i=9 ; i<numFields ; ++i) {
+    Genotype g;
+    parseGenotype(fields[i],g);
+    genotypes.push_back(g);
+  }
+}
+
+
+
+void VcfReader::parseGenotype(const String &s,Genotype &genotype)
+{
+  Vector<String> fields;
+  s.getFields(fields,"|/");
+  const int n=fields.size();
+  for(int i=0 ; i<n ; ++i)
+    genotype.addAllele(fields[i].asInt());
+}
+
+
+
+bool VcfReader::nextVariant(Variant &v,Vector<Genotype> &g)
+{
+  if(genotypes.size()==0) return false;
+  v=variant;
+  g=genotypes;
+  advance();
+  return true;
 }
 
 

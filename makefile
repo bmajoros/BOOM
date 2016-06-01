@@ -30,6 +30,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/VcfReader.o \
 	$(OBJ)/CombinationIterator.o \
 	$(OBJ)/Process.o \
 	$(OBJ)/TempFilename.o \
@@ -159,6 +160,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/VcfReader.o \
 	$(OBJ)/CombinationIterator.o \
 	$(OBJ)/TempFilename.o \
 	$(OBJ)/Process.o \
@@ -1250,8 +1252,6 @@ chi-square: \
 	$(CC) $(LDFLAGS) -o chi-square \
 		$(OBJ)/chi-square.o \
 		-L. -lBOOM
-#---------------------------------------------
-
 #--------------------------------------------------------
 $(OBJ)/FixedSizeQueue.o:\
 		FixedSizeQueue.C\
@@ -1259,8 +1259,6 @@ $(OBJ)/FixedSizeQueue.o:\
 	$(CC) $(CFLAGS) -o $(OBJ)/FixedSizeQueue.o -c \
 		FixedSizeQueue.C
 #---------------------------------------------------------
-
-#--------------------------------------------------------
 $(OBJ)/VcfReader.o:\
 		VcfReader.C\
 		VcfReader.H

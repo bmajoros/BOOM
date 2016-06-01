@@ -9,6 +9,7 @@
 #include <iostream>
 #include "File.H"
 #include "String.H"
+#include "Vector.H"
 using namespace std;
 using namespace BOOM;
 
@@ -57,7 +58,13 @@ public:
 private:
   Vector<String> sampleIDs;
   File file;
+  Vector<String> fields;
+  Variant variant;
+  Vector<Genotype> genotypes;
   void advance();
+  void parseChromLine();
+  void parseVariant();
+  void parseGenotype(const String &,Genotype &into);
 };
 
 }
