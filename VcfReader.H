@@ -68,7 +68,6 @@ public:
   const Vector<String> &getHeaderLines() const;
   const String &getChromLine() const;
   bool nextVariant(Variant &,Vector<Genotype> &);
-  void rewind();
   void close();
 private:
   Vector<String> sampleIDs;

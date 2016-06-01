@@ -297,9 +297,5 @@ void VcfReader::close()
 
 
 
-void VcfReader::rewind()
-{
-  file->rewind();
-}
 
 
