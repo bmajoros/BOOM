@@ -6,6 +6,7 @@
  ****************************************************************/
 #include <iostream>
 #include "VcfReader.H"
+#include "Pipe.H"
 using namespace std;
 using namespace BOOM;
 
@@ -93,9 +94,18 @@ int Genotype::getAllele(int i)
  ****************************************************************/
 
 VcfReader::VcfReader(const String &filename)
-  : file(filename)
+  : file(NULL), gzRegex("\\.gz$")
 {
+  file=gzRegex.search(filename) ?
+    new GunzipPipe(filename) : new File(filename);
   advance();
+}
+
+
+
+VcfReader::~VcfReader()
+{
+  delete file;
 }
 
 
@@ -110,9 +120,9 @@ const Vector<String> &VcfReader::getSampleIDs() const
 void VcfReader::advance()
 {
   genotypes.clear();
-  while(!file.eof()) {
-    String line=file.getline();
-    if(line.empty() && file.eof()) break;
+  while(!file->eof()) {
+    String line=file->getline();
+    if(line.empty() && file->eof()) break;
     line.getFields(fields);
     if(fields.size()<1) continue;
     String firstField=fields[0];

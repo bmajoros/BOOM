@@ -10,6 +10,7 @@
 #include "File.H"
 #include "String.H"
 #include "Vector.H"
+#include "Regex.H"
 using namespace std;
 using namespace BOOM;
 
@@ -53,11 +54,13 @@ private:
 class VcfReader {
 public:
   VcfReader(const String &filename);
+  virtual ~VcfReader();
   const Vector<String> &getSampleIDs() const;
   bool nextVariant(Variant &,Vector<Genotype> &);
 private:
   Vector<String> sampleIDs;
-  File file;
+  Regex gzRegex;
+  File *file;
   Vector<String> fields;
   Variant variant;
   Vector<Genotype> genotypes;
