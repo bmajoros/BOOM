@@ -92,6 +92,19 @@ ostream &BOOM::operator<<(ostream &os,const Variant &v)
 
 
 
+const String &Variant::getText() const
+{
+  return text;
+}
+
+
+
+void Variant::setText(const String &t)
+{
+  text=t;
+}
+
+
 
 
 /****************************************************************
@@ -177,8 +190,14 @@ void VcfReader::advance()
     if(fields.size()<1) continue;
     String firstField=fields[0];
     firstField.trimWhitespace();
-    if(firstField=="#CHROM") parseChromLine();
-    else if(firstField.length()>0 && firstField[0]=='#') continue;
+    if(firstField=="#CHROM") {
+      chromLine=line;
+      parseChromLine();
+    }
+    else if(firstField.length()>0 && firstField[0]=='#') {
+      headerLines.push_back(line);
+      continue;
+    }
     else if(parseVariant()) break;
   }
 }
@@ -215,6 +234,12 @@ bool VcfReader::parseVariant()
     if(alleles[i].contains("<") && !CNregex.match(alleles[i])) return false;
     v.addAllele(alleles[i]);
   }
+  String text;
+  for(int i=0 ; i<9 ; ++i) {
+    text+=fields[i];
+    if(i+1<9) text+="\t";
+  }
+  v.setText(text);
   variant=v;
 
   // Parse the genotypes
@@ -251,6 +276,30 @@ bool VcfReader::nextVariant(Variant &v,Vector<Genotype> &g)
 
 
 
+const Vector<String> &VcfReader::getHeaderLines() const
+{
+  return headerLines;
+}
 
+
+
+const String &VcfReader::getChromLine() const
+{
+  return chromLine;
+}
+
+
+
+void VcfReader::close()
+{
+  file->close();
+}
+
+
+
+void VcfReader::rewind()
+{
+  file->rewind();
+}
 
 

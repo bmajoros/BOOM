@@ -31,10 +31,13 @@ public:
   int getPos() const;
   void printOn(ostream &) const;
   bool containsNonstandardAlleles() const;
+  void setText(const String &);
+  const String &getText() const;
 private:
   String id, chr;
   int pos;
   Vector<String> alleles;
+  String text;
 };
 ostream &operator<<(ostream &,const Variant &);
 
@@ -62,9 +65,15 @@ public:
   VcfReader(const String &filename);
   virtual ~VcfReader();
   const Vector<String> &getSampleIDs() const;
+  const Vector<String> &getHeaderLines() const;
+  const String &getChromLine() const;
   bool nextVariant(Variant &,Vector<Genotype> &);
+  void rewind();
+  void close();
 private:
   Vector<String> sampleIDs;
+  Vector<String> headerLines;
+  String chromLine;
   Regex gzRegex; // .gz
   Regex CNregex; // <CN14>
   File *file;
