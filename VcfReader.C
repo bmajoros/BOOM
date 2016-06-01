@@ -64,6 +64,16 @@ int Variant::getPos() const
 
 
 
+bool Variant::containsNonstandardAlleles() const
+{
+  for(Vector<String>::const_iterator cur=alleles.begin(), end=alleles.end() ;
+      cur!=end ; ++cur)
+    if((*cur).contains("<")) return true;
+  return false;
+}
+
+
+
 void Variant::printOn(ostream &os) const
 {
   os<<id<<":"<<chr<<":"<<pos;
@@ -102,7 +112,7 @@ int Genotype::numAlleles() const
 
 
 
-int Genotype::getAllele(int i)
+int Genotype::getAllele(int i) const
 {
   return alleles[i];
 }
@@ -134,7 +144,7 @@ ostream &BOOM::operator<<(ostream &os,const Genotype &g)
  ****************************************************************/
 
 VcfReader::VcfReader(const String &filename)
-  : file(NULL), gzRegex("\\.gz$")
+  : file(NULL), gzRegex("\\.gz$"), CNregex("^<CN(\\d+)>$")
 {
   file=gzRegex.search(filename) ?
     new GunzipPipe(filename) : new File(filename);
@@ -169,7 +179,7 @@ void VcfReader::advance()
     firstField.trimWhitespace();
     if(firstField=="#CHROM") parseChromLine();
     else if(firstField.length()>0 && firstField[0]=='#') continue;
-    else { parseVariant(); break; }
+    else if(parseVariant()) break;
   }
 }
 
@@ -186,7 +196,7 @@ void VcfReader::parseChromLine()
 
 
 
-void VcfReader::parseVariant()
+bool VcfReader::parseVariant()
 {
   const int numFields=fields.size();
   if(numFields<10 || fields[6]!="PASS" || fields[8]!="GT") return;
@@ -201,7 +211,10 @@ void VcfReader::parseVariant()
   Variant v(id,chr,pos);
   v.addAllele(ref);
   Vector<String> alleles; alt.getFields(alleles,",");
-  for(int i=0 ; i<alleles.size() ; ++i) v.addAllele(alleles[i]);
+  for(int i=0 ; i<alleles.size() ; ++i) {
+    if(alleles[i].contains("<") && !CNregex.match(alleles[i])) return false;
+    v.addAllele(alleles[i]);
+  }
   variant=v;
 
   // Parse the genotypes
@@ -211,6 +224,7 @@ void VcfReader::parseVariant()
     parseGenotype(fields[i],g);
     genotypes.push_back(g);
   }
+  return true;
 }
 
 

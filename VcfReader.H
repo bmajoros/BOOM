@@ -30,6 +30,7 @@ public:
   const String &getChr() const;
   int getPos() const;
   void printOn(ostream &) const;
+  bool containsNonstandardAlleles() const;
 private:
   String id, chr;
   int pos;
@@ -45,7 +46,8 @@ public:
   Genotype() {}
   void addAllele(int);
   int numAlleles() const;
-  int getAllele(int);
+  int getAllele(int) const;
+  int operator[](int i) const { return getAllele(i); }
   void printOn(ostream &) const;
 private:
   Vector<int> alleles;
@@ -63,14 +65,15 @@ public:
   bool nextVariant(Variant &,Vector<Genotype> &);
 private:
   Vector<String> sampleIDs;
-  Regex gzRegex;
+  Regex gzRegex; // .gz
+  Regex CNregex; // <CN14>
   File *file;
   Vector<String> fields;
   Variant variant;
   Vector<Genotype> genotypes;
   void advance();
   void parseChromLine();
-  void parseVariant();
+  bool parseVariant();
   void parseGenotype(const String &,Genotype &into);
 };
 
