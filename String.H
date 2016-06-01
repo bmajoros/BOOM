@@ -75,7 +75,8 @@ public:
   int asInt() const { return atoi(c_str()); }
   long asLong() const { return atol(c_str()); }
   unsigned asUnsigned() const { return asLong(); }
-  void chop();
+  void chop(); // unconditionally remove the last character
+  void chomp(); // remove last char if newline or return
   void trimWhitespace(); // only at ends
   void removeWhitespace();
   inline bool isEmpty() {return empty();}

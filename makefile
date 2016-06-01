@@ -1259,3 +1259,11 @@ $(OBJ)/FixedSizeQueue.o:\
 	$(CC) $(CFLAGS) -o $(OBJ)/FixedSizeQueue.o -c \
 		FixedSizeQueue.C
 #---------------------------------------------------------
+
+#--------------------------------------------------------
+$(OBJ)/VcfReader.o:\
+		VcfReader.C\
+		VcfReader.H
+	$(CC) $(CFLAGS) -o $(OBJ)/VcfReader.o -c \
+		VcfReader.C
+#---------------------------------------------------------

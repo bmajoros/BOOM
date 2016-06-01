@@ -315,6 +315,16 @@ void BOOM::String::chop()
 
 
 
+void BOOM::String::chomp()
+{
+  int len=length();
+  if(len<1) return;
+  const char c=(*this)[len-1];
+  if(c=='\r' || c=='\n') resize(len-1);
+}
+
+
+
 void BOOM::String::removeWhitespace()
 {
   String s;
