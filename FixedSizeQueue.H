@@ -15,7 +15,8 @@ namespace BOOM {
 template<class T>
 class FixedSizeQueue {
 public:
-  FixedSizeQueue(int maxSize);
+  FixedSizeQueue(int maxSize=0);
+  void resize(int maxSize) { this->maxSize=maxSize; }
   void enqueue(T);
   typename List<T>::iterator begin();
   typename List<T>::iterator end();
