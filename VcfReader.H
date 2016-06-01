@@ -29,11 +29,13 @@ public:
   const String &getID() const;
   const String &getChr() const;
   int getPos() const;
+  void printOn(ostream &) const;
 private:
   String id, chr;
   int pos;
   Vector<String> alleles;
 };
+ostream &operator<<(ostream &,const Variant &);
 
 /****************************************************************
                              Genotype
@@ -44,9 +46,11 @@ public:
   void addAllele(int);
   int numAlleles() const;
   int getAllele(int);
+  void printOn(ostream &) const;
 private:
   Vector<int> alleles;
 };
+ostream &operator<<(ostream &,const Genotype &);
 
 /****************************************************************
                              VcfReader

@@ -64,6 +64,26 @@ int Variant::getPos() const
 
 
 
+void Variant::printOn(ostream &os) const
+{
+  os<<id<<":"<<chr<<":"<<pos;
+  for(Vector<String>::const_iterator cur=alleles.begin(), end=alleles.end() ;
+      cur!=end ; ++cur)
+    os<<":"<<*cur;
+}
+
+
+
+ostream &BOOM::operator<<(ostream &os,const Variant &v)
+{
+  v.printOn(os);
+  return os;
+}
+
+
+
+
+
 /****************************************************************
                              Genotype
  ****************************************************************/
@@ -85,6 +105,26 @@ int Genotype::numAlleles() const
 int Genotype::getAllele(int i)
 {
   return alleles[i];
+}
+
+
+
+void Genotype::printOn(ostream &os) const
+{
+  const int n=alleles.size();
+  if(n<1) os<<"(none)";
+  else {
+    os<<alleles[0];
+    for(int i=1 ; i<n ; ++i) os<<"|"<<alleles[i];
+  }
+}
+
+
+
+ostream &BOOM::operator<<(ostream &os,const Genotype &g)
+{
+  g.printOn(os);
+  return os;
 }
 
 
