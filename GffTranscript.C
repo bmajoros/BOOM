@@ -874,8 +874,8 @@ void GffTranscript::appendExons(const Vector<GffExon*> &exons,
     const char *type=toString(exon->getExonType());
     Essex::CompositeNode *node=new Essex::CompositeNode(type);
     root->append(node);
-    int b=revComp ? L-exon->getBegin()+1 : exon->getBegin();
-    int e=revComp ? L-exon->getEnd()+1 : exon->getEnd();
+    int b=revComp ? L-exon->getBegin() : exon->getBegin();
+    int e=revComp ? L-exon->getEnd() : exon->getEnd();
     if(b>e) { int t=b; b=e; e=t; }
     node->append(b);
     node->append(e);
