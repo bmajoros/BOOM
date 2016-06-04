@@ -368,8 +368,8 @@ bool GffExon::overlaps(const Interval &other) const
 
 void GffExon::reverseComplement(const int L)
 {
-  begin=L-begin-1;
-  end=L-end-1;
+  begin=L-begin;
+  end=L-end;
 }
 
 

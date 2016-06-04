@@ -838,8 +838,8 @@ Essex::CompositeNode *GffTranscript::toEssex(bool reverseStrand,
   root->append("type",isCoding() ? "protein-coding" : "noncoding");
   root->append("substrate",substrate);
   root->append("source",source);
-  int b=reverseStrand ? substrateLen-begin+1 : begin;
-  int e=reverseStrand ? substrateLen-end+1 : end;
+  int b=reverseStrand ? substrateLen-begin : begin;
+  int e=reverseStrand ? substrateLen-end : end;
   if(b>e) { int t=b; b=e; e=t; }
   root->append("begin",b);
   root->append("end",e);
@@ -993,8 +993,8 @@ void GffTranscript::reverseComplement(const int L)
   BOOM::Vector<BOOM::GffExon*> UTR;
    */
 
-  begin=L-begin-1;
-  end=L-end-1;
+  begin=L-begin; //-1;
+  end=L-end; //-1;
   strand=complement(strand);
   for(Vector<GffExon*>::iterator cur=exons.begin(), end=exons.end() ;
       cur!=end ; ++cur) 
