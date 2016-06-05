@@ -18,6 +18,13 @@ BOOM::SummaryStats::SummaryStats(const BOOM::Vector<int> &v)
 
 
 
+BOOM::SummaryStats::SummaryStats(const BOOM::Vector<long> &v)
+{
+  compute(v);
+}
+
+
+
 BOOM::SummaryStats::SummaryStats(const BOOM::Vector<float> &v)
 {
   compute(v);
@@ -123,6 +130,27 @@ void BOOM::SummaryStats::compute(const BOOM::Vector<float> &v)
 
 
 void BOOM::SummaryStats::compute(const BOOM::Vector<int> &v)
+{
+  n=v.size();
+  double sumX=0.0, sumXX=0.0;
+  int i;
+  for(i=0 ; i<n ; ++i)
+    {
+      double x=(double) v[i];
+      sumX+=x;
+      sumXX+=x*x;
+      if(i==0) min=max=x;
+      else if(x<min) min=x;
+      else if(x>max) max=x;
+    }
+  mean=sumX/n;
+  stddev=sqrt((sumXX-sumX*sumX/n)/(n-1.0));
+  sum=sumX;
+}
+
+
+
+void BOOM::SummaryStats::compute(const BOOM::Vector<long> &v)
 {
   n=v.size();
   double sumX=0.0, sumXX=0.0;

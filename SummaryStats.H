@@ -15,6 +15,7 @@ class SummaryStats
 {
 public:
   SummaryStats(const BOOM::Vector<int> &);
+  SummaryStats(const BOOM::Vector<long> &);
   SummaryStats(const BOOM::Vector<float> &);
   SummaryStats(const BOOM::Vector<double> &);
   double getMax();
@@ -30,6 +31,7 @@ private:
   void compute(const BOOM::Vector<double> &);
   void compute(const BOOM::Vector<float> &);
   void compute(const BOOM::Vector<int> &);
+  void compute(const BOOM::Vector<long> &);
 };
 }
 
