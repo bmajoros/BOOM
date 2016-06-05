@@ -167,4 +167,14 @@ void BOOM::SummaryStats::compute(const BOOM::Vector<long> &v)
   mean=sumX/n;
   stddev=sqrt((sumXX-sumX*sumX/n)/(n-1.0));
   sum=sumX;
+  sumOfSquares=sumXX;
 }
+
+
+
+double BOOM::SummaryStats::getSumOfSquares()
+{
+  return sumOfSquares;
+}
+
+

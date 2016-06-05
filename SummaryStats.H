@@ -25,9 +25,10 @@ public:
   double getVar();
   int getN();
   double getSum();
+  double getSumOfSquares();
 private:
   int n;
-  double mean, stddev, min, max, sum;
+  double mean, stddev, min, max, sum, sumOfSquares;
   void compute(const BOOM::Vector<double> &);
   void compute(const BOOM::Vector<float> &);
   void compute(const BOOM::Vector<int> &);
