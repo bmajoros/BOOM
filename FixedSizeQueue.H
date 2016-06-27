@@ -23,6 +23,7 @@ public:
   bool isFull() const;
   bool isEmpty() const;
   int numElements() const { return q.size(); }
+  void purge() { q.purge(); }
 private:
   List<T> q;
   int maxSize;

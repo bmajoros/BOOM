@@ -1006,4 +1006,14 @@ void GffTranscript::reverseComplement(const int L)
 
 
 
+int GffTranscript::stopCodonGlobalCoord() const
+{
+  int begin, end;
+  getCDSbeginEnd(begin,end);
+  return strand==FORWARD_STRAND ? end-3 : begin;
+}
+
+
+
+
 

@@ -102,6 +102,7 @@ public:
   bool hasUTR5() const;
   bool hasUTR3() const;
   void reverseComplement(const int chromLen);
+  int stopCodonGlobalCoord() const;
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;
