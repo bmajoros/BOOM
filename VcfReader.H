@@ -29,6 +29,7 @@ public:
   const String &getID() const;
   const String &getChr() const;
   int getPos() const;
+  int getEnd() const;
   void printOn(ostream &) const;
   bool containsNonstandardAlleles() const;
   void setText(const String &);
@@ -62,7 +63,7 @@ ostream &operator<<(ostream &,const Genotype &);
  ****************************************************************/
 class VcfReader {
 public:
-  VcfReader(const String &filename);
+  VcfReader(const String &filename); // can be gzipped (*.gz)
   virtual ~VcfReader();
   const Vector<String> &getSampleIDs() const;
   const Vector<String> &getHeaderLines() const;

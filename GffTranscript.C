@@ -628,8 +628,8 @@ void GffTranscript::forgetCDS()
 {
   Vector<GffExon*> raw;
   getRawExons(raw);
-  deleteExons(exons);
-  deleteExons(UTR);
+  deleteExons(exons); exons.clear();
+  deleteExons(UTR); UTR.clear();
   exons=raw;
 }
 

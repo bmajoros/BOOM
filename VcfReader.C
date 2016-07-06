@@ -64,6 +64,14 @@ int Variant::getPos() const
 
 
 
+int Variant::getEnd() const
+{
+  if(alleles.size()==0) return pos;
+  return pos+alleles[0].length();
+}
+
+
+
 bool Variant::containsNonstandardAlleles() const
 {
   for(Vector<String>::const_iterator cur=alleles.begin(), end=alleles.end() ;
