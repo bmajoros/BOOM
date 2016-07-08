@@ -140,6 +140,20 @@ int Genotype::getAllele(int i) const
 
 
 
+String Genotype::getText() const
+{
+  String text;
+  const int n=alleles.size();
+  if(n<1) text="(none)";
+  else {
+    text=alleles[0];
+    for(int i=1 ; i<n ; ++i) { text+="|"; text+=alleles[i]; }
+  }
+  return text;
+}
+
+
+
 void Genotype::printOn(ostream &os) const
 {
   const int n=alleles.size();

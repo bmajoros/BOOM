@@ -53,6 +53,7 @@ public:
   int getAllele(int) const;
   int operator[](int i) const { return getAllele(i); }
   void printOn(ostream &) const;
+  String getText() const;
 private:
   Vector<int> alleles;
 };
