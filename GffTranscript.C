@@ -995,6 +995,7 @@ void GffTranscript::reverseComplement(const int L)
 
   begin=L-begin; //-1;
   end=L-end; //-1;
+  int temp=begin; begin=end; end=temp;
   strand=complement(strand);
   for(Vector<GffExon*>::iterator cur=exons.begin(), end=exons.end() ;
       cur!=end ; ++cur) 

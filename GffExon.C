@@ -370,6 +370,7 @@ void GffExon::reverseComplement(const int L)
 {
   begin=L-begin;
   end=L-end;
+  int temp=begin; begin=end; end=temp;
 }
 
 
