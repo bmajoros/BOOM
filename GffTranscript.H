@@ -122,6 +122,7 @@ private:
 			 const Set<String> &stopCodons); 
   void appendExons(const Vector<GffExon*> &,Essex::CompositeNode *,
 		   bool hasPhase,bool reverseComp,int substrateLen) const;
+  void sortIncreasing(Vector<GffExon*> &);
 };
 
 

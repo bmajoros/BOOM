@@ -295,6 +295,15 @@ void BOOM::GffTranscript::sort(BOOM::Vector<BOOM::GffExon*> &V)
 
 
 
+void BOOM::GffTranscript::sortIncreasing(BOOM::Vector<BOOM::GffExon*> &V)
+{
+  ExonComparator comp;
+  BOOM::VectorSorter<BOOM::GffExon*> sorter(V,comp);
+  sorter.sortAscendInPlace();
+}
+
+
+
 void BOOM::GffTranscript::sortUTR()
 {
   int numUTR=UTR.size();
@@ -652,7 +661,7 @@ void GffTranscript::getRawExons(Vector<GffExon*> &into)
     exon->setFrame(0);
     into.push_back(exon);
   }
-  sort(into);
+  sortIncreasing(into);
   int N=into.size();
   for(int i=0 ; i+1<N ; ++i) {
     GffExon *exon=into[i], *next=into[i+1];
