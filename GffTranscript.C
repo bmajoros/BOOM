@@ -284,9 +284,10 @@ void BOOM::GffTranscript::sortExons()
 
 void BOOM::GffTranscript::sort(BOOM::Vector<BOOM::GffExon*> &V)
 {
+  if(V.empty()) return;
   ExonComparator comp;
   BOOM::VectorSorter<BOOM::GffExon*> sorter(V,comp);
-  switch(strand) {
+  switch(V[0]->getStrand()) {
   case '+': sorter.sortAscendInPlace(); break;
   case '-': sorter.sortDescendInPlace(); break;
   default:  throw "strand is undefined in GffTranscript::sort()";
@@ -512,6 +513,7 @@ void GffTranscript::extendFinalExonBy3()
   GffExon &lastExon=*exons[lastIndex];
   if(strand=='+') lastExon.setEnd(lastExon.getEnd()+3);
   else lastExon.setBegin(lastExon.getBegin()-3);
+  trimOverlaps();
 }
 
 
@@ -666,6 +668,11 @@ void GffTranscript::getRawExons(Vector<GffExon*> &into)
   for(int i=0 ; i+1<N ; ++i) {
     GffExon *exon=into[i], *next=into[i+1];
     if(exon->getEnd()>=next->getBegin()) {
+      int overlap=exon->getEnd()-next->getBegin();
+      if(overlap>0) {
+	String &seq=exon->getSequence(); int L=seq.length();
+	if(L>0) seq.padOrTruncate(L-overlap);
+      }
       exon->setEnd(next->getEnd());
       exon->getSequence()+=next->getSequence();
       into.cut(i+1);
@@ -928,7 +935,7 @@ int GffTranscript::genomicToSplicedCoords(int genomicCoord,
 	rawExons.end() ; cur!=end ; ++cur) {
     GffExon *exon=*cur;
     if(exon->getBegin()>genomicCoord) // it was in the preceding intron
-      return leftSum; // an approximation
+      return -1;
     if(exon->contains(genomicCoord))
       return leftSum+genomicCoord-exon->getBegin();
     else leftSum+=exon->length();
@@ -982,13 +989,14 @@ void GffTranscript::getIntrons(Vector<Interval> &into) const
 {
   Vector<GffExon*> rawExons;
   getRawExons(rawExons);
+  sortIncreasing(rawExons);
   const int n=rawExons.size();
   for(int i=0 ; i<n-1 ; ++i) {
     GffExon *exon=rawExons[i], *next=rawExons[i+1];
-    if(strand==FORWARD_STRAND)
+    //if(strand==FORWARD_STRAND)
       into.push_back(Interval(exon->getEnd(),next->getBegin()));
-    else
-      into.push_back(Interval(next->getEnd(),exon->getBegin()));
+      //else
+      //into.push_back(Interval(next->getEnd(),exon->getBegin()));
   }
   deleteExons(rawExons);
 }
@@ -1023,6 +1031,33 @@ int GffTranscript::stopCodonGlobalCoord() const
   return strand==FORWARD_STRAND ? end-3 : begin;
 }
 
+
+
+void GffTranscript::trimOverlaps()
+{
+  int numUTR=UTR.size();
+  for(int i=0 ; i<numUTR ; ++i) {
+    GffExon &utr=*UTR[i]; int utrBegin=utr.getBegin(), utrEnd=utr.getEnd();
+    for(Vector<GffExon*>::iterator cur=exons.begin(), end=exons.end() ;
+	cur!=end ; ++cur) {
+      GffExon &exon=**cur; int exonBegin=exon.getBegin(), exonEnd=exon.getEnd();
+      if(utrBegin>=exonBegin && utrEnd<=exonEnd) {
+	UTR.cut(i); delete &utr; --numUTR; --i; break; }
+      if(utrBegin<exonBegin && utrEnd>exonBegin) {
+	int overlap=utrEnd-exonBegin;
+	utr.setEnd(exonBegin);
+	String &S=utr.getSequence();
+	if(!S.empty()) S.padOrTruncate(S.length()-overlap);
+      }
+      else if(utrBegin<exonEnd && utrEnd>exonEnd) {
+	int overlap=exonEnd-utrBegin;
+	utr.setBegin(exonEnd);
+	String &S=utr.getSequence();
+	if(!S.empty()) S=S.substring(overlap);
+      }
+    }
+  }
+}
 
 
 

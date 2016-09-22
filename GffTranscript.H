@@ -68,7 +68,7 @@ public:
   void setStrand(char);
   void sortExons(); // translation order - coding only (no UTR)
   void sortUTR(); // transcription order
-  void sort(Vector<GffExon*> &);
+  static void sort(Vector<GffExon*> &);
   void setExonTypes(); // coding only (no UTR)
   void setUTRtypes();
   void toGff(ostream &);
@@ -103,6 +103,7 @@ public:
   bool hasUTR3() const;
   void reverseComplement(const int chromLen);
   int stopCodonGlobalCoord() const;
+  void trimOverlaps();
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;

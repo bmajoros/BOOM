@@ -101,6 +101,7 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
     transcript->sortUTR();
     transcript->setExonTypes();
     transcript->setUTRtypes();
+    transcript->trimOverlaps();
     transcriptList->push_back(transcript);
   }
 
