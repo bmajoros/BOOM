@@ -161,6 +161,7 @@ public:
   void append(Node *node) { appendChild(node); }
   void append(int);
   void append(float);
+  void append(double d) { append(float(d)); }
   void append(const String &);
   void append(const String &tag,int value);
   void append(const String &tag,float value);
