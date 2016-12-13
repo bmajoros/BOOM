@@ -56,7 +56,7 @@ bool ALGLIB_lbfgsb(GSL::ObjectiveFunction *f,const GSL::Vector &initialPoint,
 		   const GSL::Vector &lowerBounds,
 		   const GSL::Vector &upperBounds,
 		   GSL::Vector &optimalPoint,int maxIterations,int M,
-		   double epsg=0.01,double epsf=0.01,double epsx=0.01)
+		   double epsg,double epsf,double epsx)
 {
   // Register the objective function
   alglib_obj_func=f;

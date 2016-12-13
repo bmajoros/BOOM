@@ -29,7 +29,8 @@ BOOM::String BOOM::CommandLine::arg(int i)
 
 BOOM::String BOOM::CommandLine::optParm(char c)
 {
-  if(optionParm.find(c)==optionParm.end()) 
+  //if(optionParm.find(c)==optionParm.end())
+  if(!optionParm.isDefined(c))
     return BOOM::String("");
   return optionParm[c];
 }

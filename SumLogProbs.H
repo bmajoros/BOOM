@@ -134,7 +134,7 @@ REAL sumLogProbs(const Array1D<REAL> &x) {
     if(n==0) return NEGATIVE_INFINITY;
 
     // Pull out the largest value
-    REAL *p=&x[0];
+    const REAL *p=&x[0];
     REAL largestValue=*p;
     ++p;
     for(int i=n-1 ; i ; --i, ++p) {

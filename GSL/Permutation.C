@@ -12,7 +12,7 @@ using namespace std;
 using namespace GSL;
 
 
-Permutation::Permutation(int dim=0)
+Permutation::Permutation(int dim)
 {
   if(dim>0) P=gsl_permutation_calloc(dim);
   else P=NULL;

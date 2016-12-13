@@ -145,15 +145,15 @@ public:
 class CompositeNode : public Node {
   String tag;
   Vector<Node*> children;
-  void printRecursive(ostream &,int depth);
-  void printXMLrecursive(ostream &,int depth);
+  void printRecursive(ostream &,int depth) const;
+  void printXMLrecursive(ostream &,int depth) const;
 public:
   CompositeNode(const String &tag);
   virtual ~CompositeNode();
   const String &getTag() const;
   String &getTag();
-  int getNumChildren();
-  Node *getIthChild(int);
+  int getNumChildren() const;
+  Node *getIthChild(int) const;
   void setIthChild(int,Node *);
   void appendChild(Node *);
   void prepend(const String &);

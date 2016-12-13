@@ -16,8 +16,8 @@ class JointDistr : public BOOM::Array2D<double>
 {
 public:
   JointDistr(int X,int Y);
-  double getMarginalX(int x);
-  double getMarginalY(int y);
+  double getMarginalX(int x) const;
+  double getMarginalY(int y) const;
   void computeMarginals();
 private:
   BOOM::DblArray1D marginalX, marginalY;

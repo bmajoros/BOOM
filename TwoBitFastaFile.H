@@ -29,8 +29,8 @@ public:
     void load(Sequence &into);
     void getSubsequence(long begin,long length,Sequence &into);
     void write(const Sequence &from);
-    encodeFromFasta(const String &fastaFile,String &putDeflineInHere);
-    decodeIntoFasta(const String &fastaFile,String &defline);
+    void encodeFromFasta(const String &fastaFile,String &putDeflineInHere);
+    void decodeIntoFasta(const String &fastaFile,String &defline);
     void close();
     Symbol get(long pos);
     void set(long pos,Symbol);

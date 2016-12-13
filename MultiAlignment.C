@@ -199,6 +199,13 @@ AlignmentTrack &MultiAlignment::getIthTrack(int i)
 
 
 
+const AlignmentTrack &MultiAlignment::getIthTrack(int i) const
+{
+  return *tracks[i];
+}
+
+
+
 int MultiAlignment::getNumTracks() const
 {
   return tracks.size();
@@ -223,6 +230,7 @@ void MultiAlignment::printSlice(ostream &os,int begin,int length,
 				char strand,int lineLength,
 				String extraTags) const
 {
+  String header=this->header;
   if(header=="") header="a score=0.0";
   os<<header<<" "<<extraTags<<endl;
     int n=tracks.size();

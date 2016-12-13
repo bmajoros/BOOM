@@ -115,7 +115,7 @@ void BOOM::Vector<T>::append(const BOOM::Vector<T> &other)
   typename BOOM::Vector<T>::const_iterator cur=other.begin(), 
     end=other.end();
   for( ; cur!=end ; ++cur)
-    push_back(*cur);
+    this->push_back(*cur);
 }
 
 
@@ -126,7 +126,7 @@ void BOOM::Vector<T>::append(const BOOM::List<T> &other)
   typename BOOM::List<T>::const_iterator cur=other.begin(), 
     end=other.end();
   for( ; cur!=end ; ++cur)
-    push_back(*cur);
+    this->push_back(*cur);
 }
 
 
@@ -144,7 +144,7 @@ void BOOM::Vector<T>::getSubrange(int from,int to,BOOM::Vector<T> &into)
 template<class T>
 void BOOM::Vector<T>::push_front(const T &x)
 {
-  insert(vector<T>::begin(),x);
+  this->insert(this->begin(),x);
 }
 
 
@@ -190,7 +190,7 @@ void BOOM::Vector<T>::insertByIndex(const T &newT,int beforeIndex)
 {
   int n=vector<T>::size();
   BOOM::Vector<T> &self=*this;
-  push_back(newT);
+  this->push_back(newT);
   for(int i=n ; i>beforeIndex ; --i) self[i]=self[i-1];
   self[beforeIndex]=newT;
 }

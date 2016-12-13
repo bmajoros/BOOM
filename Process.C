@@ -10,7 +10,7 @@ using namespace std;
 using namespace BOOM;
 
 
-static pid_t Process::pid()
+pid_t Process::pid()
 {
   return ::getpid();
 }

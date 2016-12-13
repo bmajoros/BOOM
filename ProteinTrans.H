@@ -34,7 +34,7 @@ private:
   static ProteinTrans initializer;
   struct mapstrcmp
   {
-    bool operator()(const char *p,const char *q)
+    bool operator()(const char *p,const char *q) const
       {	return strcmp(p,q)<0; }
   };
   static BOOM::Map<const char *,char,mapstrcmp> codonMap;

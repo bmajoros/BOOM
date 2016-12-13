@@ -240,12 +240,12 @@ void VcfReader::parseChromLine()
 bool VcfReader::parseVariant()
 {
   const int numFields=fields.size();
-  if(numFields<10 || fields[6]!="PASS" || fields[8]!="GT") return;
+  if(numFields<10 || fields[6]!="PASS" || fields[8]!="GT") return false;
 
   // Parse the variant
   const String chr=fields[0];
   const int pos=fields[1].asInt();
-  const String id=fields[2];
+  String id=fields[2];
   if(id==".") id=chr+"@"+pos;
   const String ref=fields[3];
   const String alt=fields[4];

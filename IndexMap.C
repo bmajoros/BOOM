@@ -12,12 +12,12 @@
 using namespace std;
 using namespace BOOM;
 
-static const int IndexMap::UNDEFINED = -1;
-static const unsigned char IndexMap::MATCH = 0;
-static const unsigned char IndexMap::INSERT = 1;
-static const unsigned char IndexMap::DELETE = 2;
-static const unsigned char IndexMap::END = 3;
-static const unsigned char IndexMap::MAX_RUNLEN=253;
+const int IndexMap::UNDEFINED = -1;
+const unsigned char IndexMap::MATCH = 0;
+const unsigned char IndexMap::INSERT = 1;
+const unsigned char IndexMap::DELETE = 2;
+const unsigned char IndexMap::END = 3;
+const unsigned char IndexMap::MAX_RUNLEN=253;
 
 
 IndexMap::IndexMap(int length)

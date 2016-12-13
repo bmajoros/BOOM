@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-double BOOM::MutInfo::compute(const BOOM::ContingencyTbl &table)
+double BOOM::MutInfo::compute(BOOM::ContingencyTbl &table)
 {
   /*
     Computes mutual information between variables whose joint

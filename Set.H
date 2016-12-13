@@ -20,7 +20,7 @@ public:
   Set() {}
   bool operator+=(const BOOM::Set<T,C> &);
   bool operator+=(const T &);
-  bool isMember(const T &);
+  bool isMember(const T &) const;
   void remove(const T &t);
   BOOM::Set<T,C> *intersectWith(BOOM::Set<T,C> &);
   void intersectWith(BOOM::Set<T,C> &,BOOM::Set<T,C> &destination);
@@ -89,7 +89,7 @@ BOOM::Set<T,C> *BOOM::Set<T,C>::unionWith(BOOM::Set<T,C> &other)
 
 
 template<class T, class C>
-bool BOOM::Set<T,C>::isMember(const T &t)
+bool BOOM::Set<T,C>::isMember(const T &t) const
 {
   return this->find(t)!=this->end();
 }
@@ -101,7 +101,7 @@ bool BOOM::Set<T,C>::operator+=(const T &other)
 {
   if(!isMember(other))
     {
-      insert(other);
+      this->insert(other);
       return true;
     }
   return false;

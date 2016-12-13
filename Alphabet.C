@@ -73,14 +73,14 @@ bool BOOM::Alphabet::save(ostream &os)
 
 
 
-Symbol BOOM::Alphabet::complement(Symbol s)
+Symbol BOOM::Alphabet::complement(Symbol s) const
 {
   return lookup(complement(lookup(s)));
 }
 
 
 
-char BOOM::Alphabet::complement(char c)
+char BOOM::Alphabet::complement(char c) const
 {
   switch(c)
     {

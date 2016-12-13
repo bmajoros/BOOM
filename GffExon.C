@@ -211,14 +211,14 @@ void BOOM::GffExon::setEnd(int e)
 
 
 
-int BOOM::GffExon::getBegin()  
+int BOOM::GffExon::getBegin() const
 {
   return begin;
 }
 
 
 
-int BOOM::GffExon::getEnd()  
+int BOOM::GffExon::getEnd() const
 {
   return end;
 }
@@ -338,7 +338,7 @@ bool GffExon::hasAcceptor()
 
 
 
-bool GffExon::contains(int coordinate)
+bool GffExon::contains(int coordinate) const
 {
   return coordinate>=begin && coordinate<end;
 }

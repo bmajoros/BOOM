@@ -15,7 +15,7 @@ namespace BOOM {
 class MutInfo
 {
 public:
-  static double compute(const BOOM::ContingencyTbl &);
+  static double compute(BOOM::ContingencyTbl &);
   static double compute(const BOOM::JointDistr &);
 };
 }

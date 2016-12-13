@@ -53,7 +53,7 @@ BOOM::File::~File()
 
 
 
-static BOOM::String BOOM::File::getPath(const BOOM::String &filename)
+BOOM::String BOOM::File::getPath(const BOOM::String &filename)
 {
   const char *begin=filename.c_str();
   const char *end=findEndOfString(begin);
@@ -145,7 +145,7 @@ bool BOOM::File::exists(const BOOM::String &filename)
 
 bool BOOM::File::isOpen() const
 {
-  return (bool)(int)fp;
+  return fp!=NULL;
 }
 
 
@@ -158,7 +158,7 @@ bool BOOM::File::open()
 
   if(!fp)
     fp=fopen(filename.c_str(),mode.c_str());
-  return (bool)(int)fp;
+  return fp!=NULL;
 }
 
 
@@ -610,7 +610,7 @@ void BOOM::File::mkdir(const String &path)
 
 
 
-static BOOM::String BOOM::File::getTempFilename(const String &dir,const String &prefix)
+BOOM::String BOOM::File::getTempFilename(const String &dir,const String &prefix)
 {
   while(1) {
     int r=RandomNumber(INT_MAX);

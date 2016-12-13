@@ -245,7 +245,7 @@ void GffReader::addNoncodingFeatures(Vector<GffFeature*> &codingFeatures,
         if(end-begin>maxFeatureLength) end=begin+maxFeatureLength;
         GffFeature *feature=
             new GffFeature("",substrate,source,"noncoding",begin,end,1.0,
-                           false,".",0,false);
+                           false,'.',0,false);
         newFeatures.push_back(feature);
     }
     codingFeatures.append(newFeatures);

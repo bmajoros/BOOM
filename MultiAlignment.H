@@ -31,6 +31,7 @@ public:
   AlignmentTrack &findOrCreateTrack(const BOOM::String &trackName);
   void addTrack(AlignmentTrack *);
   AlignmentTrack &getIthTrack(int i);
+  const AlignmentTrack &getIthTrack(int i) const;
   void releaseTrack(int i); // won't delete it; set it to NULL
   AlignmentTrack &getTrackByName(const BOOM::String &);
   int getNumTracks() const;

@@ -19,14 +19,14 @@ BOOM::JointDistr::JointDistr(int X,int Y)
 
 
 
-double BOOM::JointDistr::getMarginalX(int x)
+double BOOM::JointDistr::getMarginalX(int x) const
 {
   return marginalX[x];
 }
 
 
 
-double BOOM::JointDistr::getMarginalY(int y)
+double BOOM::JointDistr::getMarginalY(int y) const
 {
   return marginalY[y];
 }

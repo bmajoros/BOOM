@@ -77,12 +77,13 @@ void TwoBitFastaFile::write(const Sequence &from)
     int leftovers=len%3;
     if(leftovers>0)
     {
-        for(int j=0 ; j<leftovers ; ++j)
-            reg[j]=from[seqPos++];
-        for(; j<3 ; ++j)
-            reg[j]=0;
-        unsigned char c=encode();
-        file.write(1,(void*)&c);
+      int j=0;
+      for(; j<leftovers ; ++j)
+	reg[j]=from[seqPos++];
+      for(; j<3 ; ++j)
+	reg[j]=0;
+      unsigned char c=encode();
+      file.write(1,(void*)&c);
     }
 }
 
@@ -160,7 +161,7 @@ long TwoBitFastaFile::nucPosToRegPos(long nucPos)
 
 
 
-TwoBitFastaFile::encodeFromFasta(const String &fastaFilename,
+void TwoBitFastaFile::encodeFromFasta(const String &fastaFilename,
                                  String &defline)
 {
     file.seek(sizeof(long));
@@ -204,7 +205,7 @@ TwoBitFastaFile::encodeFromFasta(const String &fastaFilename,
 
 
 
-TwoBitFastaFile::decodeIntoFasta(const String &fastaFile,String &defline)
+void TwoBitFastaFile::decodeIntoFasta(const String &fastaFile,String &defline)
 {
   Alphabet &alphabet=DnaAlphabet::global();
     ofstream os(fastaFile.c_str());

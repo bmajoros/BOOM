@@ -16,7 +16,7 @@ namespace BOOM {
 template<class T>
 struct DefaultMapComparator
 {
-  bool operator()(const T &a,const T &b){return a<b;}
+  bool operator()(const T &a,const T &b) const {return a<b;}
 };
 
 

@@ -47,7 +47,8 @@ CodonIterator::CodonIterator(const GffTranscript &transcript,
 CodonIterator::CodonIterator(const GffTranscript &transcript,
 			     const Vector<GffExon*> &rawExons,
 			     const String &substrate)
-  : substrate(substrate), exons(rawExons)
+  : transcript(transcript), substrate(substrate), exons(rawExons),
+    atgExon(0), atgPosInExon(0)
 {
   // This assumes forward-strand!
 

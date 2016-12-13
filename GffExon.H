@@ -56,24 +56,24 @@ public:
   BOOM::String &getSequence();
   ExonType getExonType() const;
   void changeExonType(ExonType);
-  bool isUTR5() { return ::isUTR5(exonType); }
-  bool isUTR3() { return ::isUTR3(exonType); }
+  bool isUTR5() const { return ::isUTR5(exonType); }
+  bool isUTR3() const { return ::isUTR3(exonType); }
   BOOM::GffTranscript &getParent();
   Strand getStrand() const;
   const BOOM::String &getSource() const;
   const BOOM::String &getSubstrate() const;
-  int getBegin();
-  int getEnd();
-  bool contains(int coordinate);
-  int length() { return end-begin; }
-  int getLength() { return length(); }
+  int getBegin() const;
+  int getEnd() const;
+  bool contains(int coordinate) const;
+  int length() const { return end-begin; }
+  int getLength() const { return length(); }
   void setBegin(int);
   void setEnd(int);
   void toGff(ostream &);
-  float getScore() { return score; }
+  float getScore() const { return score; }
   bool hasDonor();
   bool hasAcceptor();
-  int getFrame() { return frame; }
+  int getFrame() const { return frame; }
   void setFrame(int f) { frame=f; }
   bool identical(const GffExon &) const;
   bool overlaps(const GffExon &) const;
@@ -91,7 +91,7 @@ private:
   BOOM::String sequence;
   friend class ExonTypeInitializer;
   static void initExonTypeNames();
-  GffExon(const GffExon &other) {INTERNAL_ERROR;}
+  GffExon(const GffExon &other) : parent(parent) {INTERNAL_ERROR;}
 };
 }
 

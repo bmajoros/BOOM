@@ -112,7 +112,7 @@ BOOM::String BOOM::String::operator+(unsigned u) const
 
 
 
-int BOOM::String::count(char c)
+int BOOM::String::count(char c) const
 {
     const char *p=c_str();
     int n=0;

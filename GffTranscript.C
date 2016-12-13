@@ -110,6 +110,13 @@ BOOM::GffExon &BOOM::GffTranscript::getIthExon(int i)
 
 
 
+const BOOM::GffExon &BOOM::GffTranscript::getIthExon(int i) const
+{
+  return *exons[i];
+}
+
+
+
 BOOM::GffFeature *BOOM::GffTranscript::getStartCodon()
 {
   return startCodon;
@@ -131,7 +138,7 @@ BOOM::GffFeature *BOOM::GffTranscript::getStopCodon()
 
 
 
-char BOOM::GffTranscript::getStrand()
+char BOOM::GffTranscript::getStrand() const
 {
   return strand;
 }
@@ -296,7 +303,7 @@ void BOOM::GffTranscript::sort(BOOM::Vector<BOOM::GffExon*> &V)
 
 
 
-void BOOM::GffTranscript::sortIncreasing(BOOM::Vector<BOOM::GffExon*> &V)
+void BOOM::GffTranscript::sortIncreasing(BOOM::Vector<BOOM::GffExon*> &V) const
 {
   ExonComparator comp;
   BOOM::VectorSorter<BOOM::GffExon*> sorter(V,comp);
@@ -420,7 +427,7 @@ void BOOM::GffTranscript::setUTRtypes()
 
 
 
-void GffTranscript::getCDSbeginEnd(int &cdsBegin,int &cdsEnd)
+void GffTranscript::getCDSbeginEnd(int &cdsBegin,int &cdsEnd) const
 {
   if(exons.size()==0) { cdsBegin=cdsEnd=-1; return; }
   cdsBegin=exons[0]->getBegin();
@@ -469,7 +476,7 @@ void BOOM::GffTranscript::loadSequence(const BOOM::String &substrate)
 
 
 
-BOOM::String BOOM::GffTranscript::getSequence() // CDS only!
+BOOM::String BOOM::GffTranscript::getSequence() const // CDS only!
 {
   BOOM::String sequence;
   int numExons=exons.size();
@@ -646,19 +653,19 @@ void GffTranscript::forgetCDS()
 
 
 
-void GffTranscript::getRawExons(Vector<GffExon*> &into)
+void GffTranscript::getRawExons(Vector<GffExon*> &into) const
 {
   into.clear();
-  for(Vector<GffExon*>::iterator cur=UTR.begin(), end=UTR.end() ;
+  for(Vector<GffExon*>::const_iterator cur=UTR.begin(), end=UTR.end() ;
       cur!=end ; ++cur) {
-    GffExon *exon=new GffExon(**cur,*this);
+    GffExon *exon=new GffExon(**cur,const_cast<GffTranscript&>(*this));
     exon->changeExonType(ET_EXON);
     exon->setFrame(0);
     into.push_back(exon);
   }
-  for(Vector<GffExon*>::iterator cur=exons.begin(), end=exons.end() ;
+  for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end() ;
       cur!=end ; ++cur) {
-    GffExon *exon=new GffExon(**cur,*this);
+    GffExon *exon=new GffExon(**cur,const_cast<GffTranscript&>(*this));
     exon->changeExonType(ET_EXON);
     exon->setFrame(0);
     into.push_back(exon);
