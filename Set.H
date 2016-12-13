@@ -26,7 +26,7 @@ public:
   void intersectWith(BOOM::Set<T,C> &,BOOM::Set<T,C> &destination);
   BOOM::Set<T,C> *unionWith(BOOM::Set<T,C> &);
   void unionWith(BOOM::Set<T,C> &,BOOM::Set<T,C> &destination);
-  inline bool isEmpty() const {return empty();}
+  inline bool isEmpty() const {return this->empty();}
   void printOn(ostream &) const;
   T getSingleElement() const; // throws exception if size()!=1
 };
@@ -42,8 +42,8 @@ using namespace BOOM;
 template<class T, class C>
 T BOOM::Set<T,C>::getSingleElement() const
 {
-  if(size()!=1) throw "Set size not 1 in Set<T,C>::getSingleElement()";
-  return *begin();
+  if(this->size()!=1) throw "Set size not 1 in Set<T,C>::getSingleElement()";
+  return *this->begin();
 }
 
 
@@ -52,7 +52,7 @@ template<class T, class C>
 void BOOM::Set<T,C>::intersectWith(BOOM::Set<T,C> &other,
 				 BOOM::Set<T,C> &destination)
 {
-  set_intersection(begin(),end(),other.begin(),other.end(),
+  set_intersection(this->begin(),this->end(),other.begin(),other.end(),
 		   inserter(destination,destination.begin()));
 }
 
@@ -72,7 +72,7 @@ template<class T, class C>
 void BOOM::Set<T,C>::unionWith(BOOM::Set<T,C> &other,
 			       BOOM::Set<T,C> &destination)
 {
-  set_union(begin(),end(),other.begin(),other.end(),
+  set_union(this->begin(),this->end(),other.begin(),other.end(),
 	    inserter(destination,destination.begin()));
 }
 
@@ -137,7 +137,7 @@ template<class T, class C>
 void BOOM::Set<T,C>::printOn(ostream &os) const
 {
   os<<"[";
-  typename Set<T,C>::const_iterator cur=begin(), e=end();
+  typename Set<T,C>::const_iterator cur=this->begin(), e=this->end();
   for(; cur!=e ; ++cur)
     os<<*cur<<" ";
   os<<"]";
