@@ -29,10 +29,10 @@ public:
   void insertAfter(const T &t,typename list<T>::iterator after) {list<T>::insert(++after,t);}
   void prepend(const T &t) {push_front(t);}
   T &firstElem() {return this->front();}
-  T &lastElem() {return back();}
-  void removeFirstElem() {pop_front();}
-  void removeLastElem() {pop_back();}
-  void purge() {clear();}
+  T &lastElem() {return this->back();}
+  void removeFirstElem() {this->pop_front();}
+  void removeLastElem() {this->pop_back();}
+  void purge() {this->clear();}
   //void reverseOrder() {reverse();}
   //void removeDuplicates() {unique();}
   void sortInPlace(Compare comp=Compare()) {this->sort(comp);}//sort(begin(),end(),comp);}
@@ -60,7 +60,7 @@ template<class T, class C>
 void BOOM::List<T,C>::intersectWith(BOOM::List<T,C> &other,
 				 BOOM::List<T,C> &destination)
 {
-  set_intersection(begin(),this->end(),other.begin(),other.end(),
+  set_intersection(this->begin(),this->end(),other.begin(),other.end(),
 		   inserter(destination,destination.begin()));
 }
 
@@ -80,7 +80,7 @@ template<class T, class C>
 void BOOM::List<T,C>::unionWith(BOOM::List<T,C> &other,
 			       BOOM::List<T,C> &destination)
 {
-  set_union(begin(),this->end(),other.begin(),other.end(),
+  set_union(this->begin(),this->end(),other.begin(),other.end(),
 	    inserter(destination,destination.begin()));
 }
 
