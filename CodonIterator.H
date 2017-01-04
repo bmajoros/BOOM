@@ -43,7 +43,7 @@ public:
 protected:
   const GffTranscript &transcript;
   const String &substrate;
-  const GffExon *currentExon;
+  GffExon *currentExon;
   const Vector<GffExon*> &exons;
   int atgExon, atgPosInExon, utr5len;
   int currentExonIndex;

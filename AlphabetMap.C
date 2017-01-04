@@ -56,14 +56,14 @@ void AlphabetMap::clear()
 
 
 
-Alphabet *AlphabetMap::getDomain() 
+const Alphabet *AlphabetMap::getDomain() 
 {
   return domain;
 }
 
 
 
-Alphabet *AlphabetMap::getRange() 
+const Alphabet *AlphabetMap::getRange() 
 {
   return range;
 }

@@ -62,7 +62,7 @@ public:
   BOOM::Vector<BOOM::String> *getFields(const char *separators=" \t\n\r") 
     const;
   void getFields(Vector<String> &into,const char *separators=" \t\n\r") const;
-  int count(char);
+  int count(char) const;
   bool contains(const BOOM::String &searchString) const;
   bool occursAt(const BOOM::String &substring,int pos) const;
   bool containsWordChar();

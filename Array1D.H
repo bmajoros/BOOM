@@ -29,7 +29,7 @@ public:
   T &operator[](int);
   const T &operator[](int) const;
   int size() const;
-  void printOn(ostream &os);
+  void printOn(ostream &os) const;
   void readFrom(istream &is);
   void resize(int newSize);
   void safeResize(int newSize); // retains original contents (nondestructive)
@@ -159,7 +159,7 @@ void BOOM::Array1D<T>::checkIndex(int index) const
 
 
 template<class T>
-void BOOM::Array1D<T>::printOn(ostream &os)
+void BOOM::Array1D<T>::printOn(ostream &os) const
 {
   os<<n<<endl;
   int i;

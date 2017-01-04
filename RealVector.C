@@ -33,7 +33,7 @@ double &BOOM::RealVector::operator[](int i)
 
 
 
-double BOOM::RealVector::distanceTo(const BOOM::RealVector &other)
+double BOOM::RealVector::distanceTo(const BOOM::RealVector &other) const
 {
   int dim=theMatrix.getNumColumns();
   double sumSquares=0;
@@ -47,7 +47,7 @@ double BOOM::RealVector::distanceTo(const BOOM::RealVector &other)
 
 
 
-double BOOM::RealVector::dotProduct(const BOOM::RealVector &other)
+double BOOM::RealVector::dotProduct(const BOOM::RealVector &other) const
 {
   double sumProducts=0;
   int columns=theMatrix.getNumColumns();
@@ -58,7 +58,7 @@ double BOOM::RealVector::dotProduct(const BOOM::RealVector &other)
 
 
 
-double BOOM::RealVector::getAngle(const BOOM::RealVector &other)
+double BOOM::RealVector::getAngle(const BOOM::RealVector &other) const
 {
   double dotProd=dotProduct(other);
   double norm=getMagnitude();
@@ -69,7 +69,7 @@ double BOOM::RealVector::getAngle(const BOOM::RealVector &other)
 
 
 
-double BOOM::RealVector::getMagnitude()
+double BOOM::RealVector::getMagnitude() const
 {
   double sumSquares=0;
 
@@ -85,7 +85,7 @@ double BOOM::RealVector::getMagnitude()
 
 
 
-int BOOM::RealVector::getDimension()
+int BOOM::RealVector::getDimension() const
 {
   return theMatrix.getNumColumns();
 }

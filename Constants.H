@@ -87,7 +87,7 @@ inline bool didOverflow()
 }
 #endif
 
-inline setPrecision(ostream &os,int d)
+inline void setPrecision(ostream &os,int d)
 {
   os.setf(ios::fixed);
   os.precision(d);

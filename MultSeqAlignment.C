@@ -118,7 +118,7 @@ void MultSeqAlignment::convert(const MultiAlignment &alignment)
 
   int n=alignment.getNumTracks();
   for(int i=0 ; i<n ; ++i) {
-    AlignmentTrack &oldTrack=alignment.getIthTrack(i);
+    const AlignmentTrack &oldTrack=alignment.getIthTrack(i);
     BOOM::String seqStr=oldTrack.getSeq();
     seqStr.toupper();
     BOOM::String name=oldTrack.getName();
@@ -301,7 +301,7 @@ void MultSeqAlignment::printSlice(ostream &os,int begin,int length,
 
 
 
-void MultSeqAlignment::emitAnnotationSlice(ostream &os,int begin,int L)
+void MultSeqAlignment::emitAnnotationSlice(ostream &os,int begin,int L) const
 {
   int end=begin+L;
   int len=annotationTrack.size();

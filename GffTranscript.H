@@ -30,13 +30,14 @@ public:
   GffTranscript &operator=(const GffTranscript &);
   void loadSequence(const BOOM::String &substrate);//CDS & UTR
   void loadSequence(BOOM::IndexedFasta &);//CDS & UTR
-  BOOM::String getSequence(); // CDS only!
+  BOOM::String getSequence() const; // CDS only!
   BOOM::String getFullSequence(); // UTR & CDS
   int getSplicedLength() const;//includes CDS and UTR
   int getCDSlength() const;//total length of all CDS
   inline int getNumExons() const { return exons.size(); }// coding only
   inline int numExons() const { return getNumExons(); }// coding only
   BOOM::GffExon &getIthExon(int); // coding only
+  const BOOM::GffExon &getIthExon(int) const; // coding only
   bool isCoding() const;
   void deleteIthExon(int); // coding only
   inline int numUTR() const { return UTR.size(); }
@@ -46,7 +47,7 @@ public:
   // ^ all exons must either be stored in UTR or exons attribute, but not both
   BOOM::GffFeature *getStartCodon();
   BOOM::GffFeature *getStopCodon();
-  char getStrand();
+  char getStrand() const;
   const BOOM::String &getSource() const;
   const BOOM::String &getSubstrate() const;
   void setSubstrate(const String &);
@@ -58,7 +59,7 @@ public:
   int getBegin() const; // includes UTR
   int getEnd() const; // includes UTR
   int getExtent() const; // genomic length (unspliced) = end-begin
-  void getCDSbeginEnd(int &begin,int &end); // begin<end
+  void getCDSbeginEnd(int &begin,int &end) const; // begin<end
   void addExon(BOOM::GffExon *); // coding only -- no UTR!
   void addUTR(GffExon *);
   void printOn(ostream &) const;
@@ -82,7 +83,7 @@ public:
   void getUTR(Vector<GffExon*> &UTR5,Vector<GffExon*> &UTR3);
   int getUTR5length() const;
   void getIntrons(Vector<Interval> &into) const;
-  void getRawExons(Vector<GffExon*> &shouldDelete);//combines CDS and UTR
+  void getRawExons(Vector<GffExon*> &shouldDelete) const;//combines CDS and UTR
   static void deleteExons(Vector<GffExon*> &);
   void forgetCDS();
   int mapToTranscriptCoords(int genomicCoord);//UTR & CDS; -1 if not in exon
@@ -123,7 +124,7 @@ private:
 			 const Set<String> &stopCodons); 
   void appendExons(const Vector<GffExon*> &,Essex::CompositeNode *,
 		   bool hasPhase,bool reverseComp,int substrateLen) const;
-  void sortIncreasing(Vector<GffExon*> &);
+  void sortIncreasing(Vector<GffExon*> &) const;
 };
 
 

@@ -12,7 +12,7 @@ using namespace std;
 
 
 
-BOOM::ComplexNum::ComplexNum(double real=0.0,double imag=0.0)
+BOOM::ComplexNum::ComplexNum(double real,double imag)
   : real(real), imag(imag)
 {
    

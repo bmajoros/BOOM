@@ -22,8 +22,8 @@ public:
   inline char lookup(int) const;
   inline int lookup(char) const;
   void printOn(ostream &);
-  char complement(char);
-  Symbol complement(Symbol);
+  char complement(char) const;
+  Symbol complement(Symbol) const;
   bool save(ostream &);
   bool isDefined(char) const;
 private:

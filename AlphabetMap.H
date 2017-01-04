@@ -32,8 +32,8 @@ public:
   void defineInverse(Symbol from,Symbol to);
   int getDomainSize() const;
   int getRangeSize() const;
-  Alphabet *getDomain();
-  Alphabet *getRange();
+  const Alphabet *getDomain();
+  const Alphabet *getRange();
 protected:
   const Alphabet *domain, *range;
   Array1D<BOOM::Symbol> theMap, inverseMap;

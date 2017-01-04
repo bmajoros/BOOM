@@ -23,16 +23,16 @@ public:
   {return insert(i,x);}
   bool isEmpty() {return List<T>::empty();}
   int numElements() {return List<T>::size();}
-  void append(const T &t) {insert(end(),t);}
-  void append(const List<T> &other) {insert(end(),other.begin(),other.end());}
-  void append(const typename list<T>::iterator i,const typename list<T>::iterator j) { list<T>::insert(end(),i,j); }
+  void append(const T &t) {insert(this->end(),t);}
+  void append(const List<T> &other) {insert(this->end(),other.begin(),other.end());}
+  void append(const typename list<T>::iterator i,const typename list<T>::iterator j) { list<T>::insert(this->end(),i,j); }
   void insertAfter(const T &t,typename list<T>::iterator after) {list<T>::insert(++after,t);}
   void prepend(const T &t) {push_front(t);}
-  T &firstElem() {return front();}
-  T &lastElem() {return back();}
-  void removeFirstElem() {pop_front();}
-  void removeLastElem() {pop_back();}
-  void purge() {clear();}
+  T &firstElem() {return this->front();}
+  T &lastElem() {return this->back();}
+  void removeFirstElem() {this->pop_front();}
+  void removeLastElem() {this->pop_back();}
+  void purge() {this->clear();}
   //void reverseOrder() {reverse();}
   //void removeDuplicates() {unique();}
   void sortInPlace(Compare comp=Compare()) {this->sort(comp);}//sort(begin(),end(),comp);}
@@ -60,7 +60,7 @@ template<class T, class C>
 void BOOM::List<T,C>::intersectWith(BOOM::List<T,C> &other,
 				 BOOM::List<T,C> &destination)
 {
-  set_intersection(begin(),end(),other.begin(),other.end(),
+  set_intersection(this->begin(),this->end(),other.begin(),other.end(),
 		   inserter(destination,destination.begin()));
 }
 
@@ -80,7 +80,7 @@ template<class T, class C>
 void BOOM::List<T,C>::unionWith(BOOM::List<T,C> &other,
 			       BOOM::List<T,C> &destination)
 {
-  set_union(begin(),end(),other.begin(),other.end(),
+  set_union(this->begin(),this->end(),other.begin(),other.end(),
 	    inserter(destination,destination.begin()));
 }
 

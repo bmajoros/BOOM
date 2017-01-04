@@ -115,7 +115,7 @@ void BOOM::Vector<T>::append(const BOOM::Vector<T> &other)
   typename BOOM::Vector<T>::const_iterator cur=other.begin(), 
     end=other.end();
   for( ; cur!=end ; ++cur)
-    push_back(*cur);
+    this->push_back(*cur);
 }
 
 
@@ -126,7 +126,7 @@ void BOOM::Vector<T>::append(const BOOM::List<T> &other)
   typename BOOM::List<T>::const_iterator cur=other.begin(), 
     end=other.end();
   for( ; cur!=end ; ++cur)
-    push_back(*cur);
+    this->push_back(*cur);
 }
 
 
@@ -144,7 +144,7 @@ void BOOM::Vector<T>::getSubrange(int from,int to,BOOM::Vector<T> &into)
 template<class T>
 void BOOM::Vector<T>::push_front(const T &x)
 {
-  insert(vector<T>::begin(),x);
+  this->insert(this->begin(),x);
 }
 
 
@@ -190,7 +190,7 @@ void BOOM::Vector<T>::insertByIndex(const T &newT,int beforeIndex)
 {
   int n=vector<T>::size();
   BOOM::Vector<T> &self=*this;
-  push_back(newT);
+  this->push_back(newT);
   for(int i=n ; i>beforeIndex ; --i) self[i]=self[i-1];
   self[beforeIndex]=newT;
 }
@@ -288,8 +288,8 @@ void BOOM::Vector<T>::insertByIndex(const BOOM::Vector<T> &other,int pos)
 template<class T>
 T BOOM::Vector<T>::pop()
 {
-  T t=back();
-  pop_back();
+  T t=this->back();
+  this->pop_back();
   return t;
 }
 
@@ -298,8 +298,8 @@ T BOOM::Vector<T>::pop()
 template<class T>
 T BOOM::Vector<T>::shift()
 {
-  T t=front();
-  erase(begin());
+  T t=this->front();
+  this->erase(this->begin());
   return t;
 }
 
@@ -309,7 +309,7 @@ template<class T>
 void BOOM::Vector<T>::shuffle()
 {
   Vector<T> &self=*this;
-  int L=size();
+  int L=self.size();
   for(int i=0 ; i<L-1 ; ++i) {
     int j=RandomNumber(i,L-1);
     T temp=self[i];
@@ -325,8 +325,8 @@ BOOM::Vector<T> *BOOM::Vector<T>::uniq() const
 {
   const BOOM::Vector<T> &self=*this;
   int newSize=0;
-  for(typename BOOM::Vector<T>::const_iterator cur=begin(), end=self.end() ; 
-      cur!=end ; ) {
+  for(typename BOOM::Vector<T>::const_iterator cur=self.begin(),
+	end=self.end() ; cur!=end ; ) {
     typename BOOM::Vector<T>::const_iterator next=cur;
     ++next;
     while(next!=end && (*next)==(*cur)) ++next;
@@ -334,8 +334,8 @@ BOOM::Vector<T> *BOOM::Vector<T>::uniq() const
     cur=next;
   }
   Vector<T> *r=new BOOM::Vector<T>();
-  for(typename BOOM::Vector<T>::const_iterator cur=begin(), end=self.end() ; 
-      cur!=end ; ) {
+  for(typename BOOM::Vector<T>::const_iterator cur=self.begin(),
+	end=self.end() ; cur!=end ; ) {
     r->push_back(*cur);
     typename BOOM::Vector<T>::const_iterator next=cur;
     ++next;

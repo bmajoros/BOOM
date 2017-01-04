@@ -74,7 +74,7 @@ protected:
   double score;
   
   void convert(const MultiAlignment &);
-  void emitAnnotationSlice(ostream &os,int begin,int L);
+  void emitAnnotationSlice(ostream &os,int begin,int L) const;
 };
 }
 

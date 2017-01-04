@@ -25,7 +25,7 @@ class FastaReader
 public:
   FastaReader(const BOOM::String &filename,const Alphabet & 
 	      =DnaAlphabet::global());
-  static load(const String &filename,String &defline,String &sequence,
+  static void load(const String &filename,String &defline,String &sequence,
 	      const Alphabet & =DnaAlphabet::global());
   BOOM::Vector< pair<BOOM::String,BOOM::String> > *readAll();
   bool nextSequence(BOOM::String &defline,BOOM::String &sequence);

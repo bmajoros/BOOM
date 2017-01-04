@@ -17,11 +17,11 @@ public:
   RealVector(int dimension);
   double operator[](int index) const;
   double &operator[](int index);
-  double distanceTo(const RealVector &other);
-  double dotProduct(const RealVector &with);
-  double getAngle(const RealVector &from);
-  double getMagnitude();
-  inline int getDimension();
+  double distanceTo(const RealVector &other) const;
+  double dotProduct(const RealVector &with) const;
+  double getAngle(const RealVector &from) const;
+  double getMagnitude() const;
+  inline int getDimension() const;
   void scale(double factor);
   void unitize();
 private:

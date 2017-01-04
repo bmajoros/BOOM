@@ -89,6 +89,7 @@ public:
   void scale(double factor);
   void swapCells(int row1,int col1,int row2,int col2);
   gsl_matrix *peek() {return M;}
+  const gsl_matrix *peek() const {return M;}
   void getDiagonal(GSL::Vector &diag) const;
   void findDependence(int &rowA,int &rowB,double &ratioVariance) const;
   void symmetrize(void);

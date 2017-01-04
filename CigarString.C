@@ -124,14 +124,14 @@ void CigarString::printOn(ostream &os) const
 CigarAlignment *CigarString::getAlignment()
 {
   int len=0;
-  for(const Vector<CigarOp>::iterator cur=ops.begin(), end=ops.end() ; 
+  for(Vector<CigarOp>::const_iterator cur=ops.begin(), end=ops.end() ; 
       cur!=end ; ++cur) {
     CigarOp op=*cur;
     if(op.type!=CIGAR_INSERT) len+=op.rep;
   }
   CigarAlignment &A=*new CigarAlignment(len);
   int fromPos=0, toPos=0;
-  for(const Vector<CigarOp>::iterator cur=ops.begin(), end=ops.end() ; 
+  for(Vector<CigarOp>::const_iterator cur=ops.begin(), end=ops.end() ; 
       cur!=end ; ++cur) {
     CigarOp op=*cur;
     switch(op.type)

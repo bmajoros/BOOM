@@ -391,14 +391,14 @@ String &CompositeNode::getTag()
 
 
 
-int CompositeNode::getNumChildren()
+int CompositeNode::getNumChildren() const
 {
   return children.size();
 }
 
 
 
-Node *CompositeNode::getIthChild(int i)
+Node *CompositeNode::getIthChild(int i) const
 {
   return children[i];
 }
@@ -510,7 +510,7 @@ bool CompositeNode::hasCompositeChildren() const
 
 
 
-void CompositeNode::printRecursive(ostream &os,int depth)
+void CompositeNode::printRecursive(ostream &os,int depth) const
 {
   String tab;
   tab.padOrTruncate(TAB_SIZE*depth);
@@ -536,7 +536,7 @@ void CompositeNode::printRecursive(ostream &os,int depth)
 
 
 
-void CompositeNode::printXMLrecursive(ostream &os,int depth)
+void CompositeNode::printXMLrecursive(ostream &os,int depth) const
 {
   String tab;
   tab.padOrTruncate(TAB_SIZE*depth);
@@ -1193,7 +1193,7 @@ Node *Parser::ppCombination()
   if(token->getTokenType()!=TOK_IDENT) syntaxError(token);
   String tag=token->getLexeme();
   delete token;
-  Node *combo=new CompositeNode(tag);
+  CompositeNode *combo=new CompositeNode(tag);
   ppExprList(combo);
   match(TOK_RIGHT_PAREN);
   return combo;
