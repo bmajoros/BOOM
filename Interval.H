@@ -32,6 +32,7 @@ public:
   void intersect(const Interval &other,Interval &into) const;
   void printOn(ostream &) const;
   bool operator==(const Interval &) const;
+  int distanceTo(const Interval &) const;
 protected:
   int begin, end; // zero-based, half open: (inclusive,exclusive]
 };

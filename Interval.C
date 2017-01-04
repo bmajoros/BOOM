@@ -123,6 +123,15 @@ bool Interval::operator==(const Interval &other) const
 
 
 
+int Interval::distanceTo(const Interval &other) const
+{
+  if(begin>other.end) return begin-other.end;
+  if(other.begin>end) return other.begin-end;
+  return 0;
+}
+
+
+
 
 /****************************************************************
                            FloatInterval
