@@ -29,7 +29,7 @@ template<class X>
     inline const X &operator[](int) const;
     void setAllTo(const X &);
     void printOn(ostream &) const;
-    inline X *getRawData() {return theArray.getColumnPointer(firstInd);}
+    inline X *getRawData() {return theArray.getRowPointer(firstInd);}
     inline int numBytes() const {return sizeof(X)*theArray.getSecondDim();}
   private:
     int firstInd;
@@ -54,12 +54,14 @@ template<class X>
   void readFrom(istream &);
   void setAllTo(T);
   void resize(int,int);
+  void deleteRow(int); // rows correspond to the first index
+  void deleteColumn(int); // columns correspond to the second index
   void saveBytes(BOOM::File &); // use only for basic data types!
   void loadBytes(BOOM::File &); // use only for basic data types!
   const Array2D<T> &operator=(const Array2D<T> &);
   void getColumn(int colIndex,Vector<T> &) const;
   void getRow(int rowIndex,Vector<T> &) const;
-  inline T *getColumnPointer(int i) {return theArray+i*dim2;}
+  inline T *getRowPointer(int i) {return theArray+i*dim2;}
 private:
   int dim1, dim2;
   T *theArray;
@@ -344,6 +346,46 @@ void BOOM::Array2D<T>::getRow(int row,Vector<T> &v) const
   if(v.size()!=cols) v.resize(cols);
   for(int i=0 ; i<cols ; ++i)
     v[i]=self[row][i];
+}
+
+
+
+// This function is not optimized.
+template<class T>
+void BOOM::Array2D<T>::deleteRow(int victim)
+{
+  const int newDim1=dim1-1, newDim2=dim2;
+  T *newArray=new T[newDim1*newDim2];
+  for(int i=0 ; i<dim1 ; ++i) {
+    if(i==victim) continue;
+    const int newI=i<victim ? i : i-1;
+    for(int j=0 ; j<dim2 ; ++j)
+      *(newArray+newI*dim2+j)=*(theArray+i*dim2+j);
+  }
+  delete [] theArray;
+  theArray=newArray;
+  dim1=newDim1;
+  dim2=newDim2;
+}
+
+
+
+// This function is not optimized.
+template<class T>
+void BOOM::Array2D<T>::deleteColumn(int victim)
+{
+  const int newDim1=dim1, newDim2=dim2-1;
+  T *newArray=new T[newDim1*newDim2];
+  for(int j=0 ; j<dim2 ; ++j) {
+    if(j==victim) continue;
+    const int newJ=j<victim ? j : j-1;
+    for(int i=0 ; i<dim1 ; ++i)
+      *(newArray+i*dim2+newJ)=*(theArray+i*dim2+j);
+  }
+  delete [] theArray;
+  theArray=newArray;
+  dim1=newDim1;
+  dim2=newDim2;
 }
 
 
