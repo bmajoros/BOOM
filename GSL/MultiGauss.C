@@ -197,6 +197,7 @@ void MultiGauss::initAux()
     int n=values.getDim();
     cLogDet=complex<double>(0.0,0.0);
     neg=false;
+    if(n<0) INTERNAL_ERROR
     for(int i=0 ; i<n ; ++i) {
       if(values[i]<0) continue;
       complex<double> c(values[i],imag[i]);
