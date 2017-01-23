@@ -42,6 +42,7 @@ MultiGauss::MultiGauss(const MultiGauss &other)
 }
 
 
+
 MultiGauss::MultiGauss(const GSL::Vector &means,
 		       const GSL::Matrix &covarianceMatrix,
 		       bool diagonal)

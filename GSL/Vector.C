@@ -200,6 +200,7 @@ GSL::Vector &Vector::operator=(const GSL::Vector &other)
   //if(V->size!=other.V->size) throw "GSL::Vector::operator=";
   isZeroLength=other.isZeroLength;
   if(V) gsl_vector_memcpy(V,other.V);
+  return *this;
 }
 
 
