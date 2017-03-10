@@ -513,30 +513,61 @@ const BOOM::String &BOOM::GffTranscript::getGeneId() const
 
 
 
-void GffTranscript::extendFinalExonBy3()
-{
-  const int lastIndex=exons.size()-1;
-  if(lastIndex<0) throw "Empty transcript in extendFinalExonBy3()";
-  GffExon &lastExon=*exons[lastIndex];
-  if(strand=='+') {
-    int t=mapToTranscriptCoords(lastExon.getEnd())+3;
-    if(t>=getSplicedLength()) return;
-    lastExon.setEnd(t);
-  }
-  else throw "GffTranscript::extendFinalExonBy3() not implement for - strand";
-  trimOverlaps();
-}
 /*
-void GffTranscript::extendFinalExonBy3()
+void GffTranscript::extendCDSby3()
 {
-  const int lastIndex=exons.size()-1;
-  if(lastIndex<0) throw "Empty transcript in extendFinalExonBy3()";
-  GffExon &lastExon=*exons[lastIndex];
-  if(strand=='+') lastExon.setEnd(lastExon.getEnd()+3);
-  else lastExon.setBegin(lastExon.getBegin()-3);
-  trimOverlaps();
+  int cdsBegin, cdsEnd;
+  getCDSbeginEnd(cdsBegin,cdsEnd);
+  
 }
 */
+
+
+void GffTranscript::extendFinalExonBy3()
+{
+  const int lastIndex=exons.size()-1;
+  if(lastIndex<0) throw "Empty transcript in extendFinalExonBy3()";
+  GffExon &lastExon=*exons[lastIndex];
+  Vector<GffExon*> rawExons;
+  getRawExons(rawExons);
+  if(strand=='+') {
+    int exonEnd=lastExon.getEnd();
+    int found=
+      findExonOverlapping(rawExons,Interval(lastExon.getBegin(),exonEnd));
+    GffExon *rawExon=rawExons[found];
+    if(exonEnd+3<rawExon->getEnd())
+      lastExon.setEnd(exonEnd+3);
+    else if(found+1<rawExons.size()) {
+      int added=rawExon->getEnd()-exonEnd;
+      lastExon.setEnd(rawExon->getEnd());
+      int stillNeed=3-added;
+      GffExon *nextRaw=rawExons[found+1];
+      int begin=nextRaw->getBegin();
+      GffExon *exon=new GffExon(ET_EXON,begin,begin+stillNeed,*this,
+				false,0,false,0);
+      exons.push_back(exon);
+      sortExons();
+    }
+  }
+  else throw "GffTranscript::extendFinalExonBy3() not implement for - strand";
+  deleteExons(rawExons);
+  trimOverlaps();
+}
+
+
+
+int GffTranscript::findExonOverlapping(const Vector<GffExon*> exons,
+					    Interval interval)
+{
+  const numExons=exons.size();
+  for(int i=0 ; i<numExons ; ++i) {
+    GffExon *exon=exons[i];
+    if(exon->getBegin()<interval.getEnd() &&
+       interval.getBegin()<exon->getEnd()) return i;
+  }
+  return -1;
+}
+
 
 
 void BOOM::GffTranscript::setGeneId(const BOOM::String &id)
