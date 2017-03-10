@@ -381,7 +381,7 @@ void BOOM::Array2D<T>::deleteColumn(int victim)
     if(j==victim) continue;
     const int newJ=j<victim ? j : j-1;
     for(int i=0 ; i<dim1 ; ++i)
-      *(newArray+i*dim2+newJ)=*(theArray+i*dim2+j);
+      *(newArray+i*newDim2+newJ)=*(theArray+i*dim2+j);
   }
   delete [] theArray;
   theArray=newArray;
