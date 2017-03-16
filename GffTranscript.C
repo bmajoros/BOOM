@@ -523,6 +523,11 @@ void GffTranscript::extendCDSby3()
 */
 
 
+
+/*
+  This function can fail if the next raw exon is 1bp or 2bp long (which should
+  never happen anyway!).
+ */
 void GffTranscript::extendFinalExonBy3()
 {
   const int lastIndex=exons.size()-1;
@@ -549,7 +554,7 @@ void GffTranscript::extendFinalExonBy3()
       sortExons();
     }
   }
-  else throw "GffTranscript::extendFinalExonBy3() not implement for - strand";
+  else throw "GffTranscript::extendFinalExonBy3() not implemented for - strand";
   deleteExons(rawExons);
   trimOverlaps();
 }

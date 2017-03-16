@@ -56,6 +56,7 @@ public:
 		     const BOOM::String &substrate);
   void getMatchIndices(int regNum,int &start,int &end);
   operator String() {return regex;}
+
 private:
   re_registers reg;
   re_pattern_buffer patbuf;
@@ -65,6 +66,10 @@ private:
   static Map<String,Regex*> precompiled;
   BOOM::String preprocess(const BOOM::String &);
   void compile();
+
+// Don't use these:
+  Regex(const Regex &) { throw "unsafe copy ctor for Regex object"; }
+  const Regex &operator=(const Regex &) { throw "unsafe copy of Regex object"; }
 };
 }
 

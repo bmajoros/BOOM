@@ -29,8 +29,8 @@ BOOM::Regex::Regex(const BOOM::String &regex)
 BOOM::Regex::~Regex()
 {
   regfree(&patbuf);
-  free(reg.start);
-  free(reg.end);
+  if(reg.start) free(reg.start);
+  if(reg.end) free(reg.end);
 }
 
 
