@@ -132,6 +132,19 @@ int Interval::distanceTo(const Interval &other) const
 
 
 
+int Interval::longest(const Vector<Interval> &intervals)
+{
+  int longest=0;
+  for(Vector<Interval>::const_iterator cur=intervals.begin(),
+	end=intervals.end() ; cur!=end ; ++cur) {
+    const int len=(*cur).length();
+    if(len>longest) longest=len;
+  }
+  return longest;
+}
+
+
+
 
 /****************************************************************
                            FloatInterval

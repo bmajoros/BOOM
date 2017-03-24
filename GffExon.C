@@ -211,6 +211,13 @@ void BOOM::GffExon::setEnd(int e)
 
 
 
+Interval BOOM::GffExon::getInterval() const
+{
+  return Interval(begin,end);
+}
+
+
+
 int BOOM::GffExon::getBegin() const
 {
   return begin;

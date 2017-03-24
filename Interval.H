@@ -7,9 +7,9 @@
 #ifndef INCL_Interval_H
 #define INCL_Interval_H
 #include <iostream>
+#include "Vector.H"
 using namespace std;
 namespace BOOM {
-
 
 
 /****************************************************************
@@ -23,6 +23,7 @@ public:
   int getBegin() const;
   int getEnd() const;
   int length() const { return end-begin; }
+  int getLength() const { return length(); }
   void setBegin(int);
   void setEnd(int);
   bool isEmpty() const;
@@ -33,6 +34,7 @@ public:
   void printOn(ostream &) const;
   bool operator==(const Interval &) const;
   int distanceTo(const Interval &) const;
+  static int longest(const Vector<Interval> &);
 protected:
   int begin, end; // zero-based, half open: (inclusive,exclusive]
 };
@@ -50,6 +52,7 @@ public:
   float getBegin() const;
   float getEnd() const;
   float length() const { return end-begin; }
+  float getLength() const { return length(); }
   void setBegin(float);
   void setEnd(float);
   bool isEmpty() const;

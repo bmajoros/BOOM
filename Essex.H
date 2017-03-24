@@ -172,6 +172,7 @@ public:
   virtual void findChildren(const String &tag,Vector<Node*> &);
   virtual void findDescendents(const String &tag,Vector<Node*> &);
   virtual String getAttribute(const String &tag);
+  virtual void setAttribute(const String &tag,const String &value);
   virtual void printOn(ostream &) const;
   virtual void printXML(ostream &) const;
   bool hasCompositeChildren() const;

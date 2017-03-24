@@ -64,6 +64,7 @@ public:
   const BOOM::String &getSubstrate() const;
   int getBegin() const;
   int getEnd() const;
+  Interval getInterval() const;
   bool contains(int coordinate) const;
   int length() const { return end-begin; }
   int getLength() const { return length(); }

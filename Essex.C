@@ -486,6 +486,16 @@ String CompositeNode::getAttribute(const String &tag)
 
 
 
+void CompositeNode::setAttribute(const String &tag,const String &value)
+{
+  Node *child=findChild(tag);
+  if(!child) return;
+  CompositeNode *attrNode=static_cast<CompositeNode*>(child);
+  delete attrNode->getIthChild(0);
+  attrNode->setIthChild(0,new StringNode(value));
+}
+
+
 void CompositeNode::printXML(ostream &os) const
 {
   printXMLrecursive(os,0);
