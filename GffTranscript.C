@@ -564,7 +564,7 @@ void GffTranscript::extendFinalExonBy3()
 int GffTranscript::findExonOverlapping(const Vector<GffExon*> exons,
 					    Interval interval)
 {
-  const numExons=exons.size();
+  const int numExons=exons.size();
   for(int i=0 ; i<numExons ; ++i) {
     GffExon *exon=exons[i];
     if(exon->getBegin()<interval.getEnd() &&
