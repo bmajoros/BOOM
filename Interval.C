@@ -116,6 +116,13 @@ bool Interval::contains(int pos) const
 
 
 
+bool Interval::contains(const Interval &other) const
+{
+  return begin<=other.begin && end>=other.end;
+}
+
+
+
 bool Interval::operator==(const Interval &other) const
 {
   return begin==other.begin && end==other.end;

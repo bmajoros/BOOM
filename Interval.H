@@ -28,6 +28,7 @@ public:
   void setEnd(int);
   bool isEmpty() const;
   bool contains(int pos) const;
+  bool contains(const Interval &) const;
   bool overlaps(const Interval &) const;
   Interval intersect(const Interval &) const;
   void intersect(const Interval &other,Interval &into) const;
