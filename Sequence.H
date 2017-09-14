@@ -73,6 +73,7 @@ public:
   inline BOOM::Vector<Symbol>::iterator begin();
   inline BOOM::Vector<Symbol>::iterator end();
   void useOnlyTheseSymbols(Array1D<bool> &indexBySymbol);
+  int asInt(int base);
 private:
   static BOOM::Regex deflineRegex;
   BOOM::Vector<Symbol> symbols;

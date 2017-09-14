@@ -28,6 +28,7 @@ GffReader::GffReader(const String &filename)
   exonTypes.insert("single-exon");
 
   UTRtypes.insert("UTR");
+  UTRtypes.insert("exon"); // ###
   UTRtypes.insert("five_prime_UTR");
   UTRtypes.insert("three_prime_UTR");
   UTRtypes.insert("UTR5");
@@ -79,12 +80,18 @@ Vector<GffTranscript*> *GffReader::loadTranscripts(const String &filename)
 Vector<GffTranscript*> *GffReader::loadTranscripts()
 {
   // Read the features from the GFF file
+  Map<String,double> scores;
   Map<String,GffTranscript*> transHash;
   while(GffFeature *f=nextFeature()) {
     if(f->hasExtraFields()) {
       const String &featureType=f->getFeatureType();
       if(exonTypes.isMember(featureType)) parseExon(f,transHash);
       else if(UTRtypes.isMember(featureType)) parseUTR(f,transHash);
+      else if(featureType=="transcript") {
+	String id=f->lookupExtra("transcript_id");
+	double score=f->isScored() ? f->getScore() : 0.0;
+	scores[id]=score;
+      }
     }
     delete f;
   }
@@ -102,6 +109,8 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
     transcript->setExonTypes();
     transcript->setUTRtypes();
     transcript->trimOverlaps();
+    String ID=transcript->getTranscriptId();
+    if(scores.isDefined(ID)) transcript->setScore(scores[ID]);
     transcriptList->push_back(transcript);
   }
 

@@ -13,7 +13,9 @@ using namespace std;
 BOOM::String BOOM::getDateAndTime()
 {
   time_t t=time(NULL);
-  return BOOM::String(ctime(&t));
+  String time=BOOM::String(ctime(&t));
+  time.chomp();
+  return time;
 }
 
 

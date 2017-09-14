@@ -30,6 +30,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/Bed3Record.o \
 	$(OBJ)/VcfReader.o \
 	$(OBJ)/CombinationIterator.o \
 	$(OBJ)/Process.o \
@@ -160,6 +161,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/Bed3Record.o \
 	$(OBJ)/VcfReader.o \
 	$(OBJ)/CombinationIterator.o \
 	$(OBJ)/TempFilename.o \
@@ -1264,4 +1266,10 @@ $(OBJ)/VcfReader.o:\
 		VcfReader.H
 	$(CC) $(CFLAGS) -o $(OBJ)/VcfReader.o -c \
 		VcfReader.C
+#---------------------------------------------------------
+$(OBJ)/Bed3Record.o:\
+		Bed3Record.C\
+		Bed3Record.H
+	$(CC) $(CFLAGS) -o $(OBJ)/Bed3Record.o -c \
+		Bed3Record.C
 #---------------------------------------------------------

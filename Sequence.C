@@ -6,6 +6,7 @@
  License (GPL) version 3, as described at www.opensource.org.
  ***********************************************************************/
 using namespace std;
+#include <math.h>
 #include "Sequence.H"
 #include "FastaReader.H"
 using namespace BOOM;
@@ -516,4 +517,14 @@ void Sequence::useOnlyTheseSymbols(Array1D<bool> &indexBySymbol)
 
 
 
+int Sequence::asInt(int base)
+{
+  const int L=getLength();
+  int x=0;
+  for(int i=L-1 ; i>=0 ; --i) {
+    Symbol s=symbols[i];
+    x+=int(s*pow(base,(L-1-i)));
+  }
+  return x;
+}
 

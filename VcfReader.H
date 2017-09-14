@@ -1,6 +1,6 @@
 /****************************************************************
  VcfReader.H
- Copyright (C)2016 William H. Majoros (martiandna@gmail.com).
+ Copyright (C)2017 William H. Majoros (martiandna@gmail.com).
  This is OPEN SOURCE SOFTWARE governed by the Gnu General Public
  License (GPL) version 3, as described at www.opensource.org.
  ****************************************************************/
@@ -28,12 +28,15 @@ public:
   const String &getAllele(int) const; // 0=ref
   const String &getID() const;
   const String &getChr() const;
+  String &getChr();
   int getPos() const;
+  int getBegin() const { return pos; }
   int getEnd() const;
   void printOn(ostream &) const;
   bool containsNonstandardAlleles() const;
   void setText(const String &);
   const String &getText() const;
+  bool isIndel() const;
 private:
   String id, chr;
   int pos;
@@ -54,10 +57,22 @@ public:
   int operator[](int i) const { return getAllele(i); }
   void printOn(ostream &) const;
   String getText() const;
+  bool anyAltAlleles() const;
 private:
   Vector<int> alleles;
 };
 ostream &operator<<(ostream &,const Genotype &);
+
+/****************************************************************
+                         VariantAndGenotypes
+ ****************************************************************/
+struct VariantAndGenotypes {
+  VariantAndGenotypes() {}
+  VariantAndGenotypes(Variant &v,Vector<Genotype> &g) 
+    : variant(v), genotypes(g) {}
+  Variant variant;
+  Vector<Genotype> genotypes;
+};
 
 /****************************************************************
                              VcfReader
@@ -69,8 +84,14 @@ public:
   const Vector<String> &getSampleIDs() const;
   const Vector<String> &getHeaderLines() const;
   const String &getChromLine() const;
-  bool nextVariant(Variant &,Vector<Genotype> &);
+  bool nextVariant(Variant &,Vector<Genotype> &);// calls advance()
+  bool nextVariant(VariantAndGenotypes &);// calls advance()
+  bool currentVariant(Variant &,Vector<Genotype> &);// doesn't advance()
+  bool currentVariant(VariantAndGenotypes &);// doesn't advance()
+  void advance(); // loads next variant into buffer
   void close();
+  static void getVariableSites(const String &filename,Vector<Variant> &,
+			       int &totalSites,int &numVarSites);
 private:
   Vector<String> sampleIDs;
   Vector<String> headerLines;
@@ -81,7 +102,6 @@ private:
   Vector<String> fields;
   Variant variant;
   Vector<Genotype> genotypes;
-  void advance();
   void parseChromLine();
   bool parseVariant();
   void parseGenotype(const String &,Genotype &into);

@@ -106,6 +106,7 @@ public:
   int stopCodonGlobalCoord() const;
   void trimOverlaps();
   int findExonOverlapping(const Vector<GffExon*> exons,Interval);//-1 if none
+  bool hasValidScore() { return hasScore; }
 private:
   int begin, end;  // actually coordinates of CDS portion of gene
   double score;

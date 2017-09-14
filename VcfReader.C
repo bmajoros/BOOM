@@ -57,6 +57,13 @@ const String &Variant::getChr() const
 
 
 
+String &Variant::getChr()
+{
+  return chr;
+}
+
+
+
 int Variant::getPos() const
 {
   return pos;
@@ -114,6 +121,17 @@ void Variant::setText(const String &t)
 
 
 
+bool Variant::isIndel() const
+{
+  if(alleles.size()==0) return false;
+  const int refLen=alleles[0].length();
+  for(int i=1 ; i<alleles.size() ; ++i)
+    if(alleles[i].length()!=refLen) return true;
+  return false;
+}
+
+
+
 
 /****************************************************************
                              Genotype
@@ -162,6 +180,16 @@ void Genotype::printOn(ostream &os) const
     os<<alleles[0];
     for(int i=1 ; i<n ; ++i) os<<"|"<<alleles[i];
   }
+}
+
+
+
+bool Genotype::anyAltAlleles() const
+{
+  for(Vector<int>::const_iterator cur=alleles.begin(), end=alleles.end() ;
+      cur!=end ; ++cur)
+    if(*cur!=0) return true;
+  return false;
 }
 
 
@@ -298,6 +326,37 @@ bool VcfReader::nextVariant(Variant &v,Vector<Genotype> &g)
 
 
 
+bool VcfReader::nextVariant(VariantAndGenotypes &rec)
+{
+  if(genotypes.size()==0) return false;
+  rec.variant=variant;
+  rec.genotypes=genotypes;
+  advance();
+  return true;
+}
+
+
+
+bool VcfReader::currentVariant(Variant &v,Vector<Genotype> &g)
+{
+  if(genotypes.size()==0) return false;
+  v=variant;
+  g=genotypes;
+  return true;
+}
+
+
+
+bool VcfReader::currentVariant(VariantAndGenotypes &rec)
+{
+  if(genotypes.size()==0) return false;
+  rec.variant=variant;
+  rec.genotypes=genotypes;
+  return true;
+}
+
+
+
 const Vector<String> &VcfReader::getHeaderLines() const
 {
   return headerLines;
@@ -317,6 +376,28 @@ void VcfReader::close()
   file->close();
 }
 
+
+
+void VcfReader::getVariableSites(const String &filename,
+				 Vector<Variant> &varSites,
+				 int &totalSites,int &numVarSites)
+{
+  totalSites=0;
+  VcfReader reader(filename);
+  Variant variant;
+  Vector<Genotype> genotypes;
+  while(reader.nextVariant(variant,genotypes)) {
+    ++totalSites;
+    bool variable=false;
+    for(Vector<Genotype>::const_iterator cur=genotypes.begin(),
+	  end=genotypes.end() ; cur!=end ; ++cur) {
+      const Genotype &g=*cur;
+      if(g.anyAltAlleles()) { variable=true; break; }
+    }
+    if(variable) varSites.push_back(variant);
+  }
+  numVarSites=varSites.size();
+}
 
 
 
