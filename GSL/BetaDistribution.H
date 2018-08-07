@@ -17,7 +17,7 @@ namespace GSL {
 class BetaDistribution : public GSL::ContinuousDistribution
 {
 public:
-  BetaDistribution(double shape,double scale);
+  BetaDistribution(double alpha,double beta);
   virtual double random();
   virtual double probabilityEquals(double value);
   virtual double probabilityLessThan(double value);
@@ -25,7 +25,7 @@ public:
   virtual double criticalValueLessThan(double P);
   virtual double criticalValueGreaterThan(double P);
 private:
-  double shape, scale;
+  double alpha, beta;
 };
 
 }

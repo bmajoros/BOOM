@@ -15,9 +15,9 @@ using namespace std;
 using namespace GSL;
 
 
-BetaDistribution::BetaDistribution(double shape,
-				     double scale)
-  : shape(shape), scale(scale)
+BetaDistribution::BetaDistribution(double alpha,
+				   double beta)
+  : alpha(alpha), beta(beta)
 {
     // ctor
 }
@@ -25,37 +25,37 @@ BetaDistribution::BetaDistribution(double shape,
 
 
 double BetaDistribution::random() {
-  return gsl_ran_beta(Random::getGenerator(),shape,scale);
+  return gsl_ran_beta(Random::getGenerator(),alpha,beta);
 }
 
 
 
 double BetaDistribution::probabilityEquals(double value) {
-  return gsl_ran_beta_pdf(value,shape,scale);
+  return gsl_ran_beta_pdf(value,alpha,beta);
 }
 
 
 
 double BetaDistribution::probabilityLessThan(double value) {
-  return gsl_cdf_beta_P(value,shape,scale);
+  return gsl_cdf_beta_P(value,alpha,beta);
 }
 
 
 
 double BetaDistribution::probabilityGreaterThan(double value) {
-  return gsl_cdf_beta_Q(value,shape,scale);
+  return gsl_cdf_beta_Q(value,alpha,beta);
 }
 
 
 
 double BetaDistribution::criticalValueLessThan(double P) {
-  return gsl_cdf_beta_Pinv(P,shape,scale);
+  return gsl_cdf_beta_Pinv(P,alpha,beta);
 }
 
 
 
 double BetaDistribution::criticalValueGreaterThan(double P) {
-  return gsl_cdf_beta_Qinv(P,shape,scale);
+  return gsl_cdf_beta_Qinv(P,alpha,beta);
 }
 
 
