@@ -28,7 +28,6 @@ private:
   double shape, scale;
 };
 
-
 }
 #endif
 
