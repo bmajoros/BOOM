@@ -2,7 +2,6 @@ CC		= g++
 C		= gcc
 DEBUG		= -g
 OPTIMIZE	= -O
-#CFLAGS		= $(OPTIMIZE) -w -fpermissive -I/gpfs/fs0/data/reddylab/bmajoros/gsl/include
 CFLAGS		= $(OPTIMIZE) -w -fpermissive -I$(GSLDIR)/include
 LDFLAGS		= $(OPTIMIZE)
 BOOM		= .
