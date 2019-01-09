@@ -2,7 +2,6 @@ CC		= g++
 C		= gcc
 DEBUG		= -g
 OPTIMIZE	= -O
-#CFLAGS		= $(OPTIMIZE) -w -fpermissive -I/gpfs/fs0/data/reddylab/bmajoros/gsl/include
 CFLAGS		= $(OPTIMIZE) -w -fpermissive -I$(GSLDIR)/include
 LDFLAGS		= $(OPTIMIZE)
 BOOM		= .
@@ -55,6 +54,7 @@ libBOOM.a:\
 	$(OBJ)/HigherOrderAlphabet.o \
 	$(OBJ)/IndexMap.o \
 	$(OBJ)/GammaDistribution.o \
+	$(OBJ)/BetaDistribution.o \
 	$(OBJ)/DirichletDistribution.o \
 	$(OBJ)/Essex.o \
 	$(OBJ)/MolecularSequenceType.o \
@@ -190,6 +190,7 @@ libBOOM.a:\
 	$(OBJ)/HigherOrderAlphabet.o \
 	$(OBJ)/IndexMap.o \
 	$(OBJ)/GammaDistribution.o \
+	$(OBJ)/BetaDistribution.o \
 	$(OBJ)/DirichletDistribution.o \
 	$(OBJ)/Essex.o \
 	$(OBJ)/MolecularSequenceType.o \
@@ -330,6 +331,12 @@ $(OBJ)/GammaDistribution.o:\
 		$(GSL)/GammaDistribution.C
 	$(CC) $(CFLAGS) -o $(OBJ)/GammaDistribution.o -c \
 		$(GSL)/GammaDistribution.C
+#---------------------------------------------------------
+$(OBJ)/BetaDistribution.o:\
+		$(GSL)/BetaDistribution.H \
+		$(GSL)/BetaDistribution.C
+	$(CC) $(CFLAGS) -o $(OBJ)/BetaDistribution.o -c \
+		$(GSL)/BetaDistribution.C
 #---------------------------------------------------------
 $(OBJ)/DirichletDistribution.o:\
 		$(GSL)/DirichletDistribution.H \

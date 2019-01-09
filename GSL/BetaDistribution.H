@@ -1,12 +1,12 @@
 /****************************************************************
- GammaDistribution.H
+ BetaDistribution.H
  BOOM : Bioinformatics Object Oriented Modules
  Copyright (C)2012 William H. Majoros (martiandna@gmail.com).
  This is OPEN SOURCE SOFTWARE governed by the Gnu General Public
  License (GPL) version 3, as described at www.opensource.org.
  ****************************************************************/
-#ifndef INCL_GammaDistribution_H
-#define INCL_GammaDistribution_H
+#ifndef INCL_BetaDistribution_H
+#define INCL_BetaDistribution_H
 #include <iostream>
 #include "ContinuousDistribution.H"
 using namespace std;
@@ -14,10 +14,10 @@ using namespace std;
 
 namespace GSL {
 
-class GammaDistribution : public GSL::ContinuousDistribution
+class BetaDistribution : public GSL::ContinuousDistribution
 {
 public:
-  GammaDistribution(double shape,double scale);
+  BetaDistribution(double alpha,double beta);
   virtual double random();
   virtual double probabilityEquals(double value);
   virtual double probabilityLessThan(double value);
@@ -25,7 +25,7 @@ public:
   virtual double criticalValueLessThan(double P);
   virtual double criticalValueGreaterThan(double P);
 private:
-  double shape, scale;
+  double alpha, beta;
 };
 
 }
