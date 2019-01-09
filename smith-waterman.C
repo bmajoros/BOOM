@@ -65,11 +65,12 @@ Application::Application()
 int Application::main(int argc,char *argv[])
   {
     // Process command line
-    CommandLine cmd(argc,argv,"qn:w:");
+    CommandLine cmd(argc,argv,"qn:w:s");
     if(cmd.numArgs()!=6)
       throw string("smith-waterman <SubstitutionMatrix> <+GapOpenPenalty> <+GapExtendPenalty> \n               <*.fasta> <*.fasta> DNA|PROTEIN [-q] [-w #]\n\n\
 example: smith-waterman blosum62 5 2 1.fasta 2.fasta DNA\n\
 -q = quiet (no alignment output)\n\
+-s = filenames are actually sequences on command line\n\
 -w # = format output to given width (default is 60)\n");
     String matrixFile=cmd.arg(0);
     double gapOpen=-fabs(cmd.arg(1).asDouble());
@@ -83,43 +84,45 @@ example: smith-waterman blosum62 5 2 1.fasta 2.fasta DNA\n\
 
     Alphabet &alphabet=
       (type=="DNA") ? 
-      static_cast<Alphabet&>(DnaAlphabet::global) : 
-      static_cast<Alphabet&>(AminoAlphabet::global);
+      static_cast<Alphabet&>(DnaAlphabet::global()) : 
+      static_cast<Alphabet&>(AminoAlphabet::global());
     SubstitutionMatrix<double> M(matrixFile,alphabet);
-    Sequence *seq1=Sequence::load(file1,alphabet);
-    Sequence *seq2=Sequence::load(file2,alphabet);
+    Sequence *seq1, *seq2;
+    if(cmd.option('s')) 
+      { seq1=new Sequence(file1,alphabet); seq2=new Sequence(file2,alphabet); }
+    else {
+      seq1=Sequence::load(file1,alphabet);
+      seq2=Sequence::load(file2,alphabet); }
 
-    int n=cmd.option('n') ? cmd.optParm('n').asInt() : 1;
-    for(int i=0 ; i<n ; ++i)
+    SmithWaterman<double> aligner(alphabet,*seq1,*seq2,M,gapOpen,
+				  gapExtend);
+    Alignment *alignment=aligner.fullAlignment();
+    int mismatches, insertions;
+    alignment->countMismatches(mismatches,insertions);
+    int alignmentLength=alignment->getAlignmentLength();
+    int nearMatches=alignment->countNearMatches(M);
+    float percentSimilarity=
+      int(1000*nearMatches/float(alignmentLength))/10;
+    int matches=alignmentLength-insertions-mismatches;
+    float percentIdentity=int(1000*matches/float(alignmentLength))/10;
+    double score=alignment->getScore();
+    if(quiet) cout<<"score="<<score
+		  <<" CIGAR="<<alignment->getCigarString()<<endl;
+    else
       {
-	SmithWaterman<double> aligner(alphabet,*seq1,*seq2,M,gapOpen,
-				      gapExtend);
-	Alignment *alignment=aligner.fullAlignment();
-	int mismatches, insertions;
-	alignment->countMismatches(mismatches,insertions);
-	int alignmentLength=alignment->getAlignmentLength();
-	int nearMatches=alignment->countNearMatches(M);
-	float percentSimilarity=
-	  int(1000*nearMatches/float(alignmentLength))/10;
-	int matches=alignmentLength-insertions-mismatches;
-	float percentIdentity=int(1000*matches/float(alignmentLength))/10;
-	double score=alignment->getScore();
-	if(quiet) cout<<"score="<<score<<endl;
-	else
-	  {
-	    cout << "\n-----------------------------------------------------------------------\n";
-	    cout << "Sequence #1: " << file1 << endl;
-	    cout << "Sequence #2: " << file2 << endl;
-	    cout << "Percent identity: " << percentIdentity
-		 << "%, matches=" << matches << ", mismatches="<< mismatches
-		 << "\nPercent similarity: "<<percentSimilarity<<"%"
-		 << ",\ninsertions=" << insertions
-		 << ", alignment length=" << alignmentLength 
-		 << ", score=" << score
-		 << endl;
-	    cout << "\n<alignment>\n\n" << *alignment << "\n</alignment>\n";
-	    cout << "-----------------------------------------------------------------------\n";
-	  }
+	cout << "\n-----------------------------------------------------------------------\n";
+	cout << "Sequence #1: " << file1 << endl;
+	cout << "Sequence #2: " << file2 << endl;
+	cout << "Percent identity: " << percentIdentity
+	     << "%, matches=" << matches << ", mismatches="<< mismatches
+	     << "\nPercent similarity: "<<percentSimilarity<<"%"
+	     << ",\ninsertions=" << insertions
+	     << ", alignment length=" << alignmentLength 
+	     << ", score=" << score
+	     << "\nCIGAR=" << alignment->getCigarString()
+	     << endl;
+	cout << "\n<alignment>\n\n" << *alignment << "\n</alignment>\n";
+	cout << "-----------------------------------------------------------------------\n";
       }
     return 0;
   }

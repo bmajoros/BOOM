@@ -9,6 +9,7 @@ BOOM		= .
 OBJ		= obj
 AR		= ar -s
 GSL		= GSL
+LIBS		= -lpthread  -lgsl -lm -lgslcblas -LBOOM -lBOOM 
 
 all:	GSL/BOOM lambda/BOOM libBOOM.a lambda/liblambda.a 
 
@@ -975,7 +976,7 @@ needleman: \
 		$(OBJ)/needleman.o
 	$(CC) $(LDFLAGS) -o needleman \
 		$(OBJ)/needleman.o \
-		-L. -lBOOM
+		$(LIBS)
 #---------------------------------------------------------
 $(OBJ)/rapid-comparison.o:\
 		$(BOOM)/rapid-comparison.H \
@@ -990,10 +991,15 @@ $(OBJ)/refalign.o:\
 		$(BOOM)/refalign.C
 #---------------------------------------------------------
 $(OBJ)/smith-waterman.o:\
-		$(BOOM)/smith-waterman.H \
+		$(BOOM)/SmithWaterman.H \
 		$(BOOM)/smith-waterman.C
 	$(CC) $(CFLAGS) -o $(OBJ)/smith-waterman.o -c \
 		$(BOOM)/smith-waterman.C
+smith-waterman:\
+		$(OBJ)/smith-waterman.o
+	$(CC) $(LDFLAGS) -o smith-waterman \
+		$(OBJ)/smith-waterman.o \
+		$(LIBS)
 #---------------------------------------------------------
 $(OBJ)/test-binary-tree.o:\
 		$(BOOM)/test-binary-tree.H \
@@ -1038,10 +1044,16 @@ $(OBJ)/test-threads.o:\
 		$(BOOM)/test-threads.C
 #---------------------------------------------------------
 $(OBJ)/ungapped-aligner.o:\
-		$(BOOM)/ungapped-aligner.H \
+		$(BOOM)/UngappedAligner.H \
 		$(BOOM)/ungapped-aligner.C
 	$(CC) $(CFLAGS) -o $(OBJ)/ungapped-aligner.o -c \
 		$(BOOM)/ungapped-aligner.C
+ungapped-aligner:\
+		$(OBJ)/ungapped-aligner.o
+	$(CC) $(LDFLAGS) -o ungapped-aligner \
+		$(OBJ)/ungapped-aligner.o \
+		$(LIBS)
+		#-L. -lBOOM
 #---------------------------------------------------------
 
 #--------------------------------------------------------

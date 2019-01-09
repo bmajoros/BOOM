@@ -142,13 +142,15 @@ Alignment *Needleman<SCORE_TYPE>::align(SCORE_TYPE finalExtendPenalty)
     {
       Cell &bottomCell=alignmentMatrix[i][0];
       bottomCell.link=LEFT;
-      bottomCell.score=alignmentMatrix[i-1][0].score+gapExtendPenalty;
+      //bottomCell.score=alignmentMatrix[i-1][0].score+gapExtendPenalty;
+      bottomCell.score=alignmentMatrix[i-1][0].score+finalExtendPenalty;
     }
   for(int i=1 ; i<matrixHeight ; ++i)
     {
       Cell &leftCell=alignmentMatrix[0][i];
       leftCell.link=DOWN;
-      leftCell.score=alignmentMatrix[0][i-1].score+gapExtendPenalty;
+      //leftCell.score=alignmentMatrix[0][i-1].score+gapExtendPenalty;
+      leftCell.score=alignmentMatrix[0][i-1].score+finalExtendPenalty;
     }
 
   // Fill out the main portion of the matrix

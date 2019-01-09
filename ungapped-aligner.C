@@ -76,8 +76,8 @@ example: ungapped-aligner blosum62 5 2 1.fasta 2.fasta DNA|PROTEIN\n");
 
     Alphabet &alphabet=
       (type=="DNA") ? 
-      static_cast<Alphabet&>(DnaAlphabet::global) : 
-      static_cast<Alphabet&>(AminoAlphabet::global);
+      static_cast<Alphabet&>(DnaAlphabet::global()) : 
+      static_cast<Alphabet&>(AminoAlphabet::global());
     SubstitutionMatrix<float> M(matrixFile,alphabet);
     Sequence *seq1=Sequence::load(file1,alphabet);
     Sequence *seq2=Sequence::load(file2,alphabet);
