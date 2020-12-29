@@ -170,7 +170,8 @@ int BOOM::Array1DSorter<T>::partition(BOOM::Array1D<int> &indices,
 template <class T>
 void BOOM::Array1DSorter<T>::initIndexArray(BOOM::Array1D<int> &indices)
 {
-  for(int i=0 ; i<numElements ; ++i) indices.push_back(i);
+  indices.resize(numElements);
+  for(int i=0 ; i<numElements ; ++i) indices[i]=i;
 }
 
 

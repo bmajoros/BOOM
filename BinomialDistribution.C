@@ -22,7 +22,7 @@ double BOOM::BinomialDistribution::rightTailedPValue(int successes,int n,
 
   double P=0;
   for(int x=successes ; x<=n ; ++x)
-    P+=density(x,n,p);
+    P+=likelihood(x,n,p);
 
   return P;
 }

@@ -30,7 +30,8 @@ public:
     if(i>=size() || i<0) throw "VECTOR";
     return (*(vector<T>*)this)[i];
   }*/
-  bool isMember(const T &);
+  void setAllTo(T);
+  bool isMember(const T &) const;
   void append(const BOOM::Vector<T> &);
   void append(const BOOM::List<T> &);
   void push_front(const T &);
@@ -87,6 +88,15 @@ BOOM::Vector<T>::Vector(int size) : vector<T>(size)
 
 
 template<class T>
+void BOOM::Vector<T>::setAllTo(T t)
+{
+  const int n=size();
+  for(int i=0 ; i<n ; ++i) (*this)[i]=t;
+}
+
+
+
+template<class T>
 BOOM::Vector<T> *BOOM::Vector<T>::getSubrange(int from,int to)
 {
   BOOM::Vector<T> &newVector=*new BOOM::Vector<T>;
@@ -97,9 +107,9 @@ BOOM::Vector<T> *BOOM::Vector<T>::getSubrange(int from,int to)
 
 
 template<class T>
-bool BOOM::Vector<T>::isMember(const T &x)
+bool BOOM::Vector<T>::isMember(const T &x) const
 {
-  typename BOOM::Vector<T>::iterator cur=vector<T>::begin(), 
+  typename BOOM::Vector<T>::const_iterator cur=vector<T>::begin(), 
     end=vector<T>::end();
   for(; cur!=end ; ++cur)
     if(*cur==x) 

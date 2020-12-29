@@ -21,7 +21,8 @@ namespace BOOM {
 enum CigarOpType {
   CIGAR_MATCH,
   CIGAR_INSERT,
-  CIGAR_DELETE
+  CIGAR_DELETE,
+  CIGAR_SOFT_MASK
 };
 ostream &operator<<(ostream &,const CigarOpType &);
 

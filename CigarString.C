@@ -21,6 +21,7 @@ ostream &BOOM::operator<<(ostream &os,const CigarOpType &t)
     case CIGAR_MATCH: os<<"M"; break;
     case CIGAR_INSERT:os<<"I"; break;
     case CIGAR_DELETE:os<<"D"; break;
+    case CIGAR_SOFT_MASK:os<<"S"; break;
     default: INTERNAL_ERROR;
     }
   return os;
@@ -106,6 +107,7 @@ CigarOpType CigarString::charToOpType(char c)
     case 'M': return CIGAR_MATCH;
     case 'I': return CIGAR_INSERT;
     case 'D': return CIGAR_DELETE;
+    case 'S': return CIGAR_SOFT_MASK;
     default: throw String("unrecognized CIGAR operator: ")+c;
     }
 }
@@ -145,6 +147,8 @@ CigarAlignment *CigarString::getAlignment()
       case CIGAR_INSERT:
 	toPos+=op.rep;
 	break;
+      case CIGAR_SOFT_MASK:
+	throw RootException("soft-masking not implemented in CigarString::getAlignment()");
       }
   }
   return &A;

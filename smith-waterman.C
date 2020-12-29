@@ -96,7 +96,8 @@ example: smith-waterman blosum62 5 2 1.fasta 2.fasta DNA\n\
 
     SmithWaterman<double> aligner(alphabet,*seq1,*seq2,M,gapOpen,
 				  gapExtend);
-    Alignment *alignment=aligner.fullAlignment();
+    //Alignment *alignment=aligner.fullAlignment();
+    Alignment *alignment=aligner.partialAlignment();
     int mismatches, insertions;
     alignment->countMismatches(mismatches,insertions);
     int alignmentLength=alignment->getAlignmentLength();

@@ -400,6 +400,8 @@ int CompositeNode::getNumChildren() const
 
 Node *CompositeNode::getIthChild(int i) const
 {
+  if(i>=children.size()) 
+    throw "Index out of range in CompositeNode::getIthChild()";
   return children[i];
 }
 
@@ -469,13 +471,14 @@ String CompositeNode::getAttribute(const String &tag)
   Node *child=findChild(tag);
   if(!child) return "";
   child=static_cast<CompositeNode*>(child)->getIthChild(0);
+  if(!child) throw "No 0 element in CompositeNode::getAttribute()";
   String attr;
   switch(child->getNodeType()) 
     {
     case COMPOSITE:
       throw "Can't convert composite attribute in Essex structure";
     case NUMBER:
-      attr=String(static_cast<StringNode*>(child)->getValue());
+      attr=String(static_cast<NumericNode*>(child)->getValue());
       break;
     case STRING:
       attr=static_cast<StringNode*>(child)->getValue();

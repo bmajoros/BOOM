@@ -195,7 +195,7 @@ Alignment *SmithWaterman<FLT_TYP>::align(FLT_TYP finalOpenPenalty,
       Cell &bottomCell=alignmentMatrix[i][0];
       bottomCell.links[LEFT]=LEFT;
       bottomCell.scores[LEFT]=
-	alignmentMatrix[i-1][0].scores[LEFT]+gapExtendPenalty;
+	alignmentMatrix[i-1][0].scores[LEFT]+finalExtendPenalty;//gapExtendPenalty;
       bottomCell.scores[DOWN]=bottomCell.scores[DIAGONAL]=NEGATIVE_INFINITY;
     }
   for(int i=1 ; i<matrixHeight ; ++i)
@@ -203,7 +203,7 @@ Alignment *SmithWaterman<FLT_TYP>::align(FLT_TYP finalOpenPenalty,
       Cell &leftCell=alignmentMatrix[0][i];
       leftCell.links[DOWN]=DOWN;
       leftCell.scores[DOWN]=
-	alignmentMatrix[0][i-1].scores[DOWN]+gapExtendPenalty;
+	alignmentMatrix[0][i-1].scores[DOWN]+finalExtendPenalty;//gapExtendPenalty;
       leftCell.scores[LEFT]=leftCell.scores[DIAGONAL]=NEGATIVE_INFINITY;
     }
 

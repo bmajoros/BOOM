@@ -64,10 +64,11 @@ Application::Application()
 int Application::main(int argc,char *argv[])
   {
     // Process command line
-    CommandLine cmd(argc,argv,"");
+    CommandLine cmd(argc,argv,"s");
     if(cmd.numArgs()!=4)
-      throw string("ungapped-aligner <SubstitutionMatrix> <*.fasta> <*.fasta> DNA|PROTEIN\n\n\
-example: ungapped-aligner blosum62 5 2 1.fasta 2.fasta DNA|PROTEIN\n");
+      throw string("ungapped-aligner [-s] <SubstitutionMatrix> <*.fasta> <*.fasta> DNA|PROTEIN\n\n\
+-s = filenames are actually inline sequences\n\
+example: ungapped-aligner blosum62 1.fasta 2.fasta DNA|PROTEIN\n");
     String matrixFile=cmd.arg(0);
     String file1=cmd.arg(1);
     String file2=cmd.arg(2);
@@ -79,8 +80,13 @@ example: ungapped-aligner blosum62 5 2 1.fasta 2.fasta DNA|PROTEIN\n");
       static_cast<Alphabet&>(DnaAlphabet::global()) : 
       static_cast<Alphabet&>(AminoAlphabet::global());
     SubstitutionMatrix<float> M(matrixFile,alphabet);
-    Sequence *seq1=Sequence::load(file1,alphabet);
-    Sequence *seq2=Sequence::load(file2,alphabet);
+
+    Sequence *seq1=NULL, *seq2=NULL;
+    if(cmd.option('s'))
+      { seq1=new Sequence(file1,alphabet); seq2=new Sequence(file2,alphabet); }
+    else {
+      seq1=Sequence::load(file1,alphabet); seq2=Sequence::load(file2,alphabet);
+    }
 
     UngappedAligner<float> aligner(alphabet,*seq1,*seq2,M);
     float score=aligner.getScore();
