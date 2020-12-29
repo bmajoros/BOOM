@@ -8,6 +8,7 @@
 #define INCL_Interval_H
 #include <iostream>
 #include "Vector.H"
+#include "Comparator.H"
 using namespace std;
 namespace BOOM {
 
@@ -40,6 +41,20 @@ protected:
   int begin, end; // zero-based, half open: (inclusive,exclusive]
 };
 
+
+/****************************************************************
+                       IntervalComparator
+ ****************************************************************/
+struct IntervalComparator : public Comparator<Interval> {
+  bool equal(Interval &a,Interval &b)
+    { return a.getBegin()==b.getBegin() && a.getEnd()==b.getEnd(); }
+  bool greater(Interval &a,Interval &b)=0;
+    { return a.getBegin()>b.getBegin() ||
+	a.getBegin()==b.getBegin() && a.getEnd()>b.getEnd(); }
+  bool less(Interval &a,Interval &b)=0;
+    { return a.getBegin()<b.getBegin() ||
+	a.getBegin()==b.getBegin() && a.getEnd()<b.getEnd(); }
+};
 
 
 /****************************************************************
