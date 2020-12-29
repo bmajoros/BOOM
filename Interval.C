@@ -32,6 +32,23 @@ Interval::Interval(int begin,int end)
 
 
 
+void Interval::Union(Vector<Interval> &v)
+{
+  // PRECONDITION: vector is sorted by position
+  int n=v.size();
+  for(int i=0 ; i<n-1 ; ++i) {
+    Interval thisInterval=v[i], nextInterval=v[i+1];
+    if(thisInterval.overlaps(nextInterval)) {
+      thisInterval.setEnd(nextInterval.getEnd());
+      v.cut(i);
+      --n;
+      --i;
+    }
+  }
+}
+
+
+
 int Interval::getBegin() const
 {
   return begin;

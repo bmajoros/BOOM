@@ -37,6 +37,7 @@ public:
   bool operator==(const Interval &) const;
   int distanceTo(const Interval &) const;
   static int longest(const Vector<Interval> &);
+  static void Union(Vector<Interval> &);
 protected:
   int begin, end; // zero-based, half open: (inclusive,exclusive]
 };
