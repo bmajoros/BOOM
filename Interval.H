@@ -48,10 +48,10 @@ protected:
 struct IntervalComparator : public Comparator<Interval> {
   bool equal(Interval &a,Interval &b)
     { return a.getBegin()==b.getBegin() && a.getEnd()==b.getEnd(); }
-  bool greater(Interval &a,Interval &b)=0;
+  bool greater(Interval &a,Interval &b)
     { return a.getBegin()>b.getBegin() ||
 	a.getBegin()==b.getBegin() && a.getEnd()>b.getEnd(); }
-  bool less(Interval &a,Interval &b)=0;
+  bool less(Interval &a,Interval &b)
     { return a.getBegin()<b.getBegin() ||
 	a.getBegin()==b.getBegin() && a.getEnd()<b.getEnd(); }
 };
