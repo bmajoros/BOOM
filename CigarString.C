@@ -106,7 +106,7 @@ CigarOpType CigarString::charToOpType(char c)
     {
     case 'M': return CIGAR_MATCH;
     case 'I': return CIGAR_INSERT;
-    case 'D': return CIGAR_DELETE;
+    case 'D': case 'N': return CIGAR_DELETE;
     case 'S': return CIGAR_SOFT_MASK;
     default: throw String("unrecognized CIGAR operator: ")+c;
     }

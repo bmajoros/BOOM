@@ -12,7 +12,7 @@ using namespace std;
 
 
 BOOM::Regex BOOM::GffFeature::transgrpRegex("transgrp=([^;]+)");
-BOOM::Regex BOOM::GffFeature::assignRegex("(\\S+)\\s*=\\s*([^; \t\r\n]+)");
+BOOM::Regex BOOM::GffFeature::assignRegex("(\\S+)\\s*[=\s]\\s*([^; \t\r\n]+)");
 BOOM::Regex BOOM::GffFeature::pairRegex("(\\S+)\\s+([^; \t\r\n]+)");
 
 
