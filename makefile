@@ -41,6 +41,7 @@ libBOOM.a:\
 	$(OBJ)/GCF.o \
 	$(OBJ)/CigarAlignment.o \
 	$(OBJ)/CigarString.o \
+	$(OBJ)/SamCigarString.o \
 	$(OBJ)/SubsetEnumerator.o \
 	$(OBJ)/Math.o \
 	$(OBJ)/WigBinary.o \
@@ -173,6 +174,7 @@ libBOOM.a:\
 	$(OBJ)/GCF.o \
 	$(OBJ)/CigarAlignment.o \
 	$(OBJ)/CigarString.o \
+	$(OBJ)/SamCigarString.o \
 	$(OBJ)/SubsetEnumerator.o \
 	$(OBJ)/Math.o \
 	$(OBJ)/WigBinary.o \
@@ -1188,6 +1190,12 @@ $(OBJ)/SubsetEnumerator.o:\
 		SubsetEnumerator.H
 	$(CC) $(CFLAGS) -o $(OBJ)/SubsetEnumerator.o -c \
 		SubsetEnumerator.C
+#--------------------------------------------------------
+$(OBJ)/SamCigarString.o:\
+		SamCigarString.C\
+		SamCigarString.H
+	$(CC) $(CFLAGS) -o $(OBJ)/SamCigarString.o -c \
+		SamCigarString.C
 #--------------------------------------------------------
 $(OBJ)/CigarString.o:\
 		CigarString.C\

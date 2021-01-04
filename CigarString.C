@@ -14,6 +14,7 @@ using namespace BOOM;
 Regex CigarString::re("^(\\d+)(\\D)(.*)");
 
 
+
 ostream &BOOM::operator<<(ostream &os,const CigarOpType &t)
 {
   switch(t)
@@ -104,7 +105,7 @@ CigarOpType CigarString::charToOpType(char c)
 {
   switch(c)
     {
-    case 'M': return CIGAR_MATCH;
+    case 'M': case '=': case 'X': return CIGAR_MATCH;
     case 'I': return CIGAR_INSERT;
     case 'D': case 'N': return CIGAR_DELETE;
     case 'S': return CIGAR_SOFT_MASK;
@@ -129,7 +130,7 @@ CigarAlignment *CigarString::getAlignment()
   for(Vector<CigarOp>::const_iterator cur=ops.begin(), end=ops.end() ; 
       cur!=end ; ++cur) {
     CigarOp op=*cur;
-    if(op.type!=CIGAR_INSERT) len+=op.rep;
+    if(op.type!=CIGAR_INSERT && op.type!=CIGAR_SOFT_MASK) len+=op.rep;
   }
   CigarAlignment &A=*new CigarAlignment(len);
   int fromPos=0, toPos=0;
@@ -148,7 +149,9 @@ CigarAlignment *CigarString::getAlignment()
 	toPos+=op.rep;
 	break;
       case CIGAR_SOFT_MASK:
-	throw RootException("soft-masking not implemented in CigarString::getAlignment()");
+	toPos+=op.rep;
+	//throw RootException("soft-masking not implemented in CigarString::getAlignment()");
+	break;
       }
   }
   return &A;
@@ -180,5 +183,54 @@ CigarString *CigarString::unrollMatches() const
   return unrolled;
 }
 
+
+
+bool CigarOp::advanceInQuery()
+{
+  switch(type) {
+  case CIGAR_MATCH:
+  case CIGAR_INSERT:
+  case CIGAR_SOFT_MASK:
+    return true;
+  }
+  return false;
+}
+
+
+
+bool CigarOp::advanceInRef()
+{
+  switch(type) {
+  case CIGAR_MATCH:
+  case CIGAR_DELETE:
+    return true;
+  }
+  return false;
+}
+
+
+
+void CigarString::computeIntervals(int refPos)
+{
+  const int n=ops.size();
+  int begin1=0, begin2=refPos;
+  for(int i=0 ; i<n ; ++i) {
+      CigarOp &op=ops[i];
+      const int L=op.getLength();
+      int end1=begin1, end2=begin2;
+      if(op.advanceInQuery()) end1+=L;
+      if(op.advanceInRef()) end2+=L;
+      op.interval1=Interval(begin1,end1);
+      op.interval2=Interval(begin2,end2);
+      begin1=end1; begin2=end2;
+    }
+}
+
+
+
+bool CigarString::completeMatch()
+{
+  return ops.size()==1 && ops[0].getOp()==CIGAR_MATCH;
+}
 
 
