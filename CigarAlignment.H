@@ -22,6 +22,7 @@ public:
   int mapApproximate(int,Direction prefer=DIR_NONE) const;
   CigarAlignment *invert(int length) const;
   int length() const;
+  Array1D<int> &getArray() { return A; }
 private:
   Array1D<int> A;
 };

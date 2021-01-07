@@ -34,9 +34,6 @@ namespace BOOM {
 struct SamCigarOp : public CigarOp {
   SamCigarOp() {}
   SamCigarOp(CigarOpType,int);
-
-  virtual bool advanceInQuery();
-  virtual bool advanceInRef();
 };
 
 

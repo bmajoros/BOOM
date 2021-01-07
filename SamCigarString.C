@@ -20,6 +20,14 @@ SamCigarOp::SamCigarOp(CigarOpType t,int r)
 
 
 
+SamCigarString::SamCigarString(const String &s)
+  : CigarString(s)
+{
+  // ctor
+}
+
+
+
 CigarAlignment *SamCigarString::getAlignment()
 {
   int len=0;
