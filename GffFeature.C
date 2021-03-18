@@ -12,7 +12,7 @@ using namespace std;
 
 
 BOOM::Regex BOOM::GffFeature::transgrpRegex("transgrp=([^;]+)");
-BOOM::Regex BOOM::GffFeature::assignRegex("(\\S+)\\s*[=\s]\\s*([^; \t\r\n]+)");
+BOOM::Regex BOOM::GffFeature::assignRegex("(\\S+)\\s*=\\s*([^; \t\r\n]+)");
 BOOM::Regex BOOM::GffFeature::pairRegex("(\\S+)\\s+([^; \t\r\n]+)");
 
 
@@ -212,10 +212,14 @@ void BOOM::GffFeature::parseLine(const BOOM::String &line)
     const int n=extraFields.size();
     for(int i=0 ; i<n ; ++i) {
       extraFields[i].trimWhitespace();
-      if(assignRegex.match(extraFields[i]))
+      if(assignRegex.match(extraFields[i])) {
+	//cout<<extraFields[i]<<" EXTRA: "<<assignRegex[1]<<"="<<assignRegex[2]<<endl;
 	setExtra(assignRegex[1],assignRegex[2]);
-      else if(pairRegex.match(extraFields[i])) 
+      }
+      else if(pairRegex.match(extraFields[i])) {
+	//cout<<extraFields[i]<<" EXTRA: "<<pairRegex[1]<<" "<<pairRegex[2]<<endl;
 	setExtra(pairRegex[1],pairRegex[2]);
+      }
       if(i+1<extraFields.size() && extraFields[i].lastChar()!=';') //###???
 	extra+=';';//###???
     }

@@ -188,8 +188,7 @@ int BOOM::VectorSorter<T>::partition(BOOM::Vector<T> &sorted,
    while(true) 
      {
        do --j; while((comp.*ptrToMmbrGreater)(sorted[j],temp));
-       do ++i;
-       while((comp.*ptrToMmbrLess)(sorted[i],temp));
+       do ++i; while((comp.*ptrToMmbrLess)(sorted[i],temp));
        if(i>=j) break;
        else swap(sorted,i,j);
      }

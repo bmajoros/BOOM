@@ -26,6 +26,7 @@ GffReader::GffReader(const String &filename)
   exonTypes.insert("internal-exon");
   exonTypes.insert("final-exon");
   exonTypes.insert("single-exon");
+  //exonTypes.insert("exon");
 
   UTRtypes.insert("UTR");
   UTRtypes.insert("exon"); // ###
@@ -84,6 +85,7 @@ Vector<GffTranscript*> *GffReader::loadTranscripts()
   Map<String,GffTranscript*> transHash;
   while(GffFeature *f=nextFeature()) {
     if(f->hasExtraFields()) {
+      //cout<<"transcript_id = "<<f->lookupExtra("transcript_id")<<endl; // ###                           
       const String &featureType=f->getFeatureType();
       if(exonTypes.isMember(featureType)) parseExon(f,transHash);
       else if(UTRtypes.isMember(featureType)) parseUTR(f,transHash);
@@ -283,15 +285,19 @@ void GffReader::filterBySource(Vector<GffFeature*> &features,
 
 Vector<GffGene> *GffReader::loadGenes()
 {
+  //cerr<<"GffReader::loadGenes()"<<endl;
   Vector<GffGene> &genes=*new Vector<GffGene>;
   Map<String,GffGene*> byID;
   Vector<GffTranscript*> &allTrans=*loadTranscripts();
+  //cerr<<allTrans.size()<<" transcripts loaded"<<endl; // ###
   for(Vector<GffTranscript*>::iterator cur=allTrans.begin(), end=
 	allTrans.end() ; cur!=end ; ++cur) {
     GffTranscript *trans=*cur;
     const String &geneID=trans->getGeneId();
     if(!byID.isDefined(geneID)) byID[geneID]=new GffGene(geneID);
-    byID[geneID]->addTranscript(trans);
+    GffGene *gene=byID[geneID];
+    gene->addTranscript(trans);
+    genes.push_back(*gene);
   }
   delete &allTrans;
   return &genes;

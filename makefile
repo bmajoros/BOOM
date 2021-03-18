@@ -30,6 +30,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/IlluminaQual.o \
 	$(OBJ)/Bed3Record.o \
 	$(OBJ)/VcfReader.o \
 	$(OBJ)/CombinationIterator.o \
@@ -163,6 +164,7 @@ libBOOM.a:\
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/IlluminaQual.o \
 	$(OBJ)/Bed3Record.o \
 	$(OBJ)/VcfReader.o \
 	$(OBJ)/CombinationIterator.o \
@@ -1299,4 +1301,12 @@ $(OBJ)/Bed3Record.o:\
 		Bed3Record.H
 	$(CC) $(CFLAGS) -o $(OBJ)/Bed3Record.o -c \
 		Bed3Record.C
+#---------------------------------------------------------
+
+#--------------------------------------------------------
+$(OBJ)/IlluminaQual.o:\
+		IlluminaQual.C\
+		IlluminaQual.H
+	$(CC) $(CFLAGS) -o $(OBJ)/IlluminaQual.o -c \
+		IlluminaQual.C
 #---------------------------------------------------------

@@ -9,6 +9,7 @@
 #include <iostream>
 #include "GffTranscript.H"
 #include "Vector.H"
+#include "Comparator.H"
 using namespace std;
 using namespace BOOM;
 
@@ -17,6 +18,7 @@ class GffGene {
 public:
   GffGene(const String &id);
   GffGene(const GffGene &);
+  //GffGene &operator=(const GffGene &);
   virtual ~GffGene();
   void addTranscript(GffTranscript *);
   int numTranscripts() const;
@@ -32,6 +34,17 @@ protected:
   int begin, end;
   Vector<GffTranscript*> transcripts;
 };
+
+struct GffGeneComparator : public Comparator<GffGene> 
+{
+  bool equal(GffGene &a,GffGene &b) 
+  { return a.getBegin()==b.getBegin() && a.getEnd()==b.getEnd(); }
+  bool greater(GffGene &a,GffGene &b) 
+  { return a.getBegin()>b.getBegin(); }
+  bool less(GffGene &a,GffGene &b)
+  { return a.getBegin()<b.getBegin(); }
+};
+
 
 #endif
 
