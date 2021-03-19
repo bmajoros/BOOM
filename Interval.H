@@ -36,6 +36,7 @@ public:
   void printOn(ostream &) const;
   bool operator==(const Interval &) const;
   int distanceTo(const Interval &) const;
+  int distanceTo(const int pos) const;
   static int longest(const Vector<Interval> &);
   static void Union(Vector<Interval> &);
 protected:

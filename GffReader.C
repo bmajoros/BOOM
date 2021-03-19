@@ -285,21 +285,21 @@ void GffReader::filterBySource(Vector<GffFeature*> &features,
 
 Vector<GffGene> *GffReader::loadGenes()
 {
-  //cerr<<"GffReader::loadGenes()"<<endl;
-  Vector<GffGene> &genes=*new Vector<GffGene>;
   Map<String,GffGene*> byID;
   Vector<GffTranscript*> &allTrans=*loadTranscripts();
-  //cerr<<allTrans.size()<<" transcripts loaded"<<endl; // ###
   for(Vector<GffTranscript*>::iterator cur=allTrans.begin(), end=
 	allTrans.end() ; cur!=end ; ++cur) {
     GffTranscript *trans=*cur;
     const String &geneID=trans->getGeneId();
     if(!byID.isDefined(geneID)) byID[geneID]=new GffGene(geneID);
-    GffGene *gene=byID[geneID];
-    gene->addTranscript(trans);
-    genes.push_back(*gene);
+    byID[geneID]->addTranscript(trans);
   }
   delete &allTrans;
+  Set<String> IDs;
+  byID.getKeys(IDs);
+  Vector<GffGene> &genes=*new Vector<GffGene>;
+  for(Set<String>::iterator cur=IDs.begin(), end=IDs.end() ; cur!=end ; ++cur)
+    genes.push_back(*byID[*cur]);
   return &genes;
 }
 

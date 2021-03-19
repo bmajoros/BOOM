@@ -156,6 +156,15 @@ int Interval::distanceTo(const Interval &other) const
 
 
 
+int Interval::distanceTo(const int pos) const
+{
+  if(pos<begin) return begin-pos;
+  if(pos>end) return pos-end;
+  return 0;
+}
+
+
+
 int Interval::longest(const Vector<Interval> &intervals)
 {
   int longest=0;

@@ -65,6 +65,7 @@ public:
   int getBegin() const;
   int getEnd() const;
   Interval getInterval() const;
+  static void getIntervals(const Vector<GffExon*> &,Vector<Interval> &into);
   bool contains(int coordinate) const;
   int length() const { return end-begin; }
   int getLength() const { return length(); }

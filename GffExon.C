@@ -218,6 +218,18 @@ Interval BOOM::GffExon::getInterval() const
 
 
 
+void BOOM::GffExon::getIntervals(const Vector<GffExon*> &exons,
+				 Vector<Interval> &intervals)
+{
+  for(Vector<GffExon*>::const_iterator cur=exons.begin(), end=exons.end() ;
+      cur!=end ; ++cur) {
+    const GffExon *exon=*cur;
+    intervals.push_back(exon->getInterval());
+  }
+}
+
+
+
 int BOOM::GffExon::getBegin() const
 {
   return begin;
