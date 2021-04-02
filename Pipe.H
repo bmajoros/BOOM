@@ -29,5 +29,10 @@ public:
   GzipPipe(const String &outfile);
 };
 
+class BGzipPipe : public Pipe {
+public:
+  BGzipPipe(const String &outfile);
+};
+
 }
 #endif

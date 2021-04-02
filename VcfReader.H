@@ -11,6 +11,7 @@
 #include "String.H"
 #include "Vector.H"
 #include "Regex.H"
+#include "Comparator.H"
 using namespace std;
 using namespace BOOM;
 
@@ -45,6 +46,16 @@ private:
 };
 ostream &operator<<(ostream &,const Variant &);
 
+class VariantComparator : public Comparator<Variant> {
+public:
+  bool equal(Variant &a,Variant &b) 
+  { return a.getPos()==b.getPos(); }
+  bool greater(Variant &a,Variant &b) 
+  { return a.getPos()>b.getPos(); }
+  bool less(Variant &a,Variant &b) 
+  { return a.getPos()<b.getPos(); }
+};
+
 /****************************************************************
                              Genotype
  ****************************************************************/
@@ -72,6 +83,16 @@ struct VariantAndGenotypes {
     : variant(v), genotypes(g) {}
   Variant variant;
   Vector<Genotype> genotypes;
+};
+
+class VariantAndGenotypesComparator : public Comparator<VariantAndGenotypes>{
+public:
+  bool equal(VariantAndGenotypes &a,VariantAndGenotypes &b) 
+  { return a.variant.getPos()==b.variant.getPos(); }
+  bool greater(VariantAndGenotypes &a,VariantAndGenotypes &b) 
+  { return a.variant.getPos()>b.variant.getPos(); }
+  bool less(VariantAndGenotypes &a,VariantAndGenotypes &b) 
+  { return a.variant.getPos()<b.variant.getPos(); }
 };
 
 /****************************************************************

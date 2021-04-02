@@ -48,3 +48,10 @@ GzipPipe::GzipPipe(const String &outfile)
 
 
 
+BGzipPipe::BGzipPipe(const String &outfile)
+  : Pipe(String("bgzip > "+outfile),"w")
+{
+}
+
+
+
