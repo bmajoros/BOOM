@@ -121,7 +121,7 @@ using namespace BOOM;
 template<class T>
 BOOM::Array2D<T>::Array2D(const BOOM::Array2D<T> &other)
   : dim1(other.dim1), dim2(other.dim2), 
-    theArray(new T[other.dim1*other.dim2])
+    theArray(other.dim1*other.dim2>0 ? new T[other.dim1*other.dim2] : NULL)
 {
   T *dest=theArray, *src=other.theArray;
   int n=dim1*dim2;
@@ -144,13 +144,14 @@ const BOOM::Array2D<T> &BOOM::Array2D<T>::operator=(const BOOM::Array2D<T>
   T *dest=theArray, *src=other.theArray;
   const int n=dim1*dim2;
   for(int i=0 ; i<n ; ++i) *dest++=*src++;
+  return other;
 }
 
 
 
 template<class T>
 BOOM::Array2D<T>::Array2D(int d1,int d2)
-  : dim1(d1), dim2(d2), theArray(new T[d1*d2])
+  : dim1(d1), dim2(d2), theArray(d1*d2>0 ? new T[d1*d2] : NULL)
 {
   // ctor
 }
@@ -161,7 +162,7 @@ template<class T>
 BOOM::Array2D<T>::~Array2D()
 {
   // dtor
-  delete [] theArray;
+  if(theArray) delete [] theArray;
 }
 
 
@@ -260,7 +261,6 @@ void BOOM::Array2D<T>::setAllTo(T f)
 
   T *p=theArray;
   int n=dim1*dim2;
-  //for(int i=0 ; i<n ; ++i, ++p)
   for(int i=n ; i ; --i, ++p)
     *p=f;
 }

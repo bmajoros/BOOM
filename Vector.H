@@ -177,7 +177,8 @@ void BOOM::Vector<T>::removeFirst(const T &x)
 template<class T>
 void BOOM::Vector<T>::cut(int index)
 {
-  cut(index,1);
+  //cut(index,1);
+  erase(this->begin()+index);
 }
 
 
@@ -188,8 +189,7 @@ void BOOM::Vector<T>::cut(int i,int howMany)
   BOOM::Vector<T> &self=*this;
   int n=vector<T>::size();
   int src=i+howMany;
-  for(; src<n ; ++i, ++src)
-    self[i]=self[src];
+  for(; src<n ; ++i, ++src) self[i]=self[src];
   resize(n-howMany);
 }
 
