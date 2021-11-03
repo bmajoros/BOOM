@@ -60,11 +60,24 @@ CigarAlignment *SamCigarString::getAlignment()
 
 
 
-
-
-
-
-
+int SamCigarString::genomicSpan() const
+{
+  int span=0;
+  for(Vector<CigarOp>::const_iterator cur=ops.begin(), end=ops.end() ;
+      cur!=end ; ++cur) {
+    CigarOp op=*cur;
+    switch(op.type) {
+    case CIGAR_MATCH:
+    case CIGAR_DELETE:
+      span+=op.getLength();
+      break;
+    case CIGAR_INSERT:
+    case CIGAR_SOFT_MASK:
+      break;
+    }
+  }
+  return span;
+}
 
 
 

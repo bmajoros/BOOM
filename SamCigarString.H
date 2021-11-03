@@ -46,6 +46,7 @@ public:
   SamCigarString(const String &);
   SamCigarString() {}
   virtual CigarAlignment *getAlignment();
+  int genomicSpan() const;
   //void computeIntervals(int refPos);
 };
 
