@@ -17,7 +17,7 @@ BOOM::Map<String,Regex*> Regex::precompiled;
 
 
 BOOM::Regex::Regex(const BOOM::String &regex)
-  : regex(preprocess(regex))
+  : regex(preprocess(regex)), substrate(NULL)
 {
   reg.start=NULL;
   reg.end=NULL;

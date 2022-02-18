@@ -150,7 +150,7 @@ void BOOM::Map<KeyType,ValueType,Comp>::getValues(Set<ValueType> &values)
   for(; cur!=end ; ++cur)
     {
       pair<const KeyType,ValueType> &p=*cur;
-      values.insert(p.first);
+      values.insert(p.second);
     }
 }
 

@@ -31,6 +31,7 @@ public:
   bool contains(int pos) const;
   bool contains(const Interval &) const;
   bool overlaps(const Interval &) const;
+  bool nextTo(const Interval &) const; // no gap between intervals
   Interval intersect(const Interval &) const;
   void intersect(const Interval &other,Interval &into) const;
   void printOn(ostream &) const;
@@ -39,6 +40,7 @@ public:
   int distanceTo(const int pos) const;
   static int longest(const Vector<Interval> &);
   static void Union(Vector<Interval> &);
+  static void coalesce(Vector<Interval> &);
 protected:
   int begin, end; // zero-based, half open: (inclusive,exclusive]
 };

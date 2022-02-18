@@ -34,11 +34,33 @@ Interval::Interval(int begin,int end)
 
 void Interval::Union(Vector<Interval> &v)
 {
+  // This merges overlapping intervals, but does not merge intervals
+  // that are next to each other with no gap between.
   // PRECONDITION: vector is sorted by position
   int n=v.size();
   for(int i=0 ; i<n-1 ; ++i) {
     Interval thisInterval=v[i], nextInterval=v[i+1];
     if(thisInterval.overlaps(nextInterval)) {
+      thisInterval.setEnd(nextInterval.getEnd());
+      v.cut(i);
+      --n;
+      --i;
+    }
+  }
+}
+
+
+
+void Interval::coalesce(Vector<Interval> &v)
+{
+  // This works like Union() except that it also coalesces
+  // any intervals that are right next to each other with no gap between.
+  // PRECONDITION: vector is sorted by position
+  int n=v.size();
+  for(int i=0 ; i<n-1 ; ++i) {
+    Interval thisInterval=v[i], nextInterval=v[i+1];
+    if(thisInterval.overlaps(nextInterval) ||
+       thisInterval.nextTo(nextInterval)) {
       thisInterval.setEnd(nextInterval.getEnd());
       v.cut(i);
       --n;
@@ -80,6 +102,14 @@ void Interval::setEnd(int e)
 bool Interval::overlaps(const Interval &other) const
 {
   return begin<other.end && other.begin<end;
+}
+
+
+
+bool Interval::nextTo(const Interval &other) const
+{
+  //return end==other.begin-1 || begin==other.end+1;
+  return end==other.begin || begin==other.end;
 }
 
 
