@@ -30,6 +30,7 @@ $(OBJ):
 
 libBOOM.a:\
 	$(OBJ) \
+	$(OBJ)/GslBinomial.o \
 	$(OBJ)/IlluminaQual.o \
 	$(OBJ)/Bed3Record.o \
 	$(OBJ)/VcfReader.o \
@@ -158,12 +159,14 @@ libBOOM.a:\
 	$(OBJ)/LabeledMatrixLoader.o \
 	$(OBJ)/Optimizer.o \
 	$(OBJ)/GslContinuousDist.o \
+	$(OBJ)/GslDiscreteDist.o \
 	$(OBJ)/GslGaussian.o \
 	$(OBJ)/GslMultiGauss.o \
 	$(OBJ)/GslGaussianMixture.o \
 	$(OBJ)/GslMultivariateDistribution.o \
 	$(OBJ)/TwoBitFastaFile.o 
 		$(AR) -r libBOOM.a \
+	$(OBJ)/GslBinomial.o \
 	$(OBJ)/IlluminaQual.o \
 	$(OBJ)/Bed3Record.o \
 	$(OBJ)/VcfReader.o \
@@ -292,6 +295,7 @@ libBOOM.a:\
 	$(OBJ)/LabeledMatrixLoader.o \
 	$(OBJ)/Optimizer.o \
 	$(OBJ)/GslContinuousDist.o \
+	$(OBJ)/GslDiscreteDist.o \
 	$(OBJ)/GslGaussian.o \
 	$(OBJ)/GslMultiGauss.o \
 	$(OBJ)/GslGaussianMixture.o \
@@ -353,6 +357,18 @@ $(OBJ)/GslContinuousDist.o:\
 		$(GSL)/ContinuousDistribution.C
 	$(CC) $(CFLAGS) -o $(OBJ)/GslContinuousDist.o -c \
 		$(GSL)/ContinuousDistribution.C
+#---------------------------------------------------------
+$(OBJ)/GslDiscreteDist.o:\
+		$(GSL)/DiscreteDistribution.H \
+		$(GSL)/DiscreteDistribution.C
+	$(CC) $(CFLAGS) -o $(OBJ)/GslDiscreteDist.o -c \
+		$(GSL)/DiscreteDistribution.C
+#---------------------------------------------------------
+$(OBJ)/GslBinomial.o:\
+		$(GSL)/GslBinomial.H \
+		$(GSL)/GslBinomial.C
+	$(CC) $(CFLAGS) -o $(OBJ)/GslBinomial.o -c \
+		$(GSL)/GslBinomial.C
 #---------------------------------------------------------                     
 $(OBJ)/LabeledMatrixLoader.o:\
                 $(GSL)/LabeledMatrixLoader.H \

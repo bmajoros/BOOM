@@ -158,6 +158,21 @@ int Genotype::getAllele(int i) const
 
 
 
+bool Genotype::isHet() const
+{
+  switch(alleles.size()) {
+  case 0:
+  case 1:
+    return false;
+  case 2:
+    return alleles[0]!=alleles[1];
+  default:
+    throw RootException("Too many alleles in Genotype::isHet()");
+  }
+}
+
+
+
 String Genotype::getText() const
 {
   String text;
@@ -401,4 +416,19 @@ void VcfReader::getVariableSites(const String &filename,
 
 
 
+void VcfReader::hashSampleIDs()
+{
+  const int n=sampleIDs.size();
+  for(int i=0 ; i<n ; ++i)
+    sampleIDhash[sampleIDs[i]]=i;
+}
+
+
+
+int VcfReader::getSampleIndex(const String sampleID)
+{
+  // PRECONDITION: hashSampleIDs() has already been called
+  if(sampleIDhash.isDefined(sampleID)) return sampleIDhash[sampleID];
+  throw sampleID+" : not found in sampleID map in BOOM::VcfReader";
+}
 

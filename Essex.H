@@ -126,6 +126,7 @@ class NumericNode : public Node {
 public:
   NumericNode(float);
   float getValue() const;
+  void setValue(float v) { value=v; }
   virtual void acceptVisitor(NodeVisitor &);
   virtual void printOn(ostream &) const;
   virtual void printXML(ostream &) const;

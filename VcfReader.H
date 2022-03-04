@@ -12,6 +12,7 @@
 #include "Vector.H"
 #include "Regex.H"
 #include "Comparator.H"
+#include "Map.H"
 using namespace std;
 using namespace BOOM;
 
@@ -69,6 +70,8 @@ public:
   void printOn(ostream &) const;
   String getText() const;
   bool anyAltAlleles() const;
+  bool isHet() const;
+  Vector<int> &asVector() { return alleles; }
 private:
   Vector<int> alleles;
 };
@@ -111,10 +114,14 @@ public:
   bool currentVariant(VariantAndGenotypes &);// doesn't advance()
   void advance(); // loads next variant into buffer
   void close();
+  void rewind() { file->seek(0); }
   static void getVariableSites(const String &filename,Vector<Variant> &,
 			       int &totalSites,int &numVarSites);
+  void hashSampleIDs();
+  int getSampleIndex(const String sampleID); // Call hashSampleIDs() first!
 private:
   Vector<String> sampleIDs;
+  Map<String,int> sampleIDhash;
   Vector<String> headerLines;
   String chromLine;
   Regex gzRegex; // .gz

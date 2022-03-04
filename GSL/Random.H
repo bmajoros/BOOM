@@ -26,6 +26,7 @@ public:
 					      unsigned long int max);
   static unsigned int randomUnsigned(unsigned min,unsigned max);
   static int randomInt(int min,int max); // interval [min,max] inclusive!
+  static bool randomBool() { return (bool) randomInt(0,1); }
   static float randomFloat(float min,float max); // interval [min,max)
   static double randomDouble(double min,double max);//interval [min,max)
   static inline double random0to1() {return randomDouble(0.0,1.0);}
