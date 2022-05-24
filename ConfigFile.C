@@ -80,8 +80,9 @@ int BOOM::ConfigFile::getIntOrDie(BOOM::String attr)
 bool BOOM::ConfigFile::getBoolOrDie(BOOM::String attr)
 {
   BOOM::String b=charLookupOrDie(attr);
-  if(b=="true" || b=="t" || b=="yes" || b=="y") return true;
-  if(b=="false" || b=="f" || b=="no" || b=="n") return false;
+  b.tolower();
+  if(b=="true" || b=="t" || b=="yes" || b=="y" || b=="1") return true;
+  if(b=="false" || b=="f" || b=="no" || b=="n" || b=="0") return false;
   throw attr+" must be true or false in config file";
 }
 

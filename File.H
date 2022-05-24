@@ -67,6 +67,7 @@ public:
   char *readCharString();
   void readString(BOOM::String &);
   BOOM::String *readStringPtr();
+  void flush();
 protected:
   struct stat fileInfo;
   BOOM::String filename, mode;

@@ -176,6 +176,13 @@ bool BOOM::File::open(const BOOM::String &fn,const BOOM::String &md)
 
 
 
+void BOOM::File::flush()
+{
+  fflush(fp);
+}
+
+
+
 long BOOM::File::read(long numbytes,void *buffer)
 {
   //return fread(buffer,1,numbytes,fp);

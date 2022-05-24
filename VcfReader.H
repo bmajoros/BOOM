@@ -114,7 +114,7 @@ public:
   bool currentVariant(VariantAndGenotypes &);// doesn't advance()
   void advance(); // loads next variant into buffer
   void close();
-  void rewind() { file->seek(0); }
+  void rewind() { file->seek(0); advance(); }
   static void getVariableSites(const String &filename,Vector<Variant> &,
 			       int &totalSites,int &numVarSites);
   void hashSampleIDs();
